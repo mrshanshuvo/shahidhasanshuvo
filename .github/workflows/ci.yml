@@ -21,6 +21,8 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 12
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,10 +43,14 @@ jobs:
         run: pnpm typecheck
 
       - name: Build Next.js Application
-        if: ${{ secrets.MONGODB_URI != '' }}
         env:
           NEXT_PUBLIC_SITE_URL: "https://shahidhasanshuvo.vercel.app"
           NEXTAUTH_URL: "https://shahidhasanshuvo.vercel.app"
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'ci-build-placeholder-secret-key-32chars' }}
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        run: pnpm build
+        run: |
+          if [ -n "$MONGODB_URI" ]; then
+            pnpm build
+          else
+            echo "MONGODB_URI secret not set. Skipping production build."
+          fi
