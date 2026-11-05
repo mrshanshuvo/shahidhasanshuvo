@@ -7,7 +7,7 @@ import HeroModel from "@/models/Hero";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog & Technical Writing | Shahid Hasan Shuvo",
+  title: "Blog & Technical Writing | Shahid Hasan Shovu",
   description:
     "Explore my latest thoughts on software engineering, machine learning, and web development.",
 };

@@ -17,7 +17,7 @@ export default async function Hero() {
   const hero: Hero = {
     _id: raw._id?.toString(),
     name: raw.name ?? "Shahid Hasan",
-    lastName: raw.lastName ?? "Shuvo",
+    lastName: raw.lastName ?? "Shovu",
     typeSequences: raw.typeSequences?.length
       ? raw.typeSequences
       : [{ text: "Full-Stack Web Developer", delay: 2000 }],

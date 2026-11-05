@@ -53,7 +53,7 @@ import { cn } from "@/lib/utils";
 
 const DEFAULT: Hero = {
   name: "Shahid Hasan",
-  lastName: "Shuvo",
+  lastName: "Shovu",
   typeSequences: [
     { text: "Full-Stack Web Developer", delay: 2000 },
     { text: "Computer Engineer", delay: 2000 },
@@ -397,7 +397,7 @@ function HeroFormClient({ initialData }: { initialData: Hero }) {
                         onChange={(e) =>
                           setData((d) => ({ ...d, lastName: e.target.value }))
                         }
-                        placeholder="e.g. Shuvo"
+                        placeholder="e.g. Shovu"
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">

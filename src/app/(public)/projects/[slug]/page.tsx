@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${project.title} · Projects`;
   const description = project.description;
-  const image = project.image || "/favicons/android-chrome-512x512.png";
+  const image = project.image || null;
 
   return {
     title,
@@ -33,13 +33,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: "article",
-      images: [{ url: image, width: 1200, height: 630, alt: project.title }],
+      ...(image
+        ? { images: [{ url: image, width: 1200, height: 630, alt: project.title }] }
+        : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [image],
+      ...(image ? { images: [image] } : {}),
     },
   };
 }

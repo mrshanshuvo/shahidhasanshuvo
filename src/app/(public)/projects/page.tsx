@@ -10,7 +10,7 @@ import Technology from "@/models/Technology";
 import Category from "@/models/Category";
 
 export const metadata: Metadata = {
-  title: "Projects Archive | Shahid Hasan Shuvo",
+  title: "Projects Archive | Shahid Hasan Shovu",
   description:
     "A comprehensive showcase of my technical projects across various domains.",
 };

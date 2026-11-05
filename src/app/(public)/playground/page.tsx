@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 import Technology from "@/models/Technology";
 
 export const metadata: Metadata = {
-  title: "Technical Playground | Shahid Hasan Shuvo",
+  title: "Technical Playground | Shahid Hasan Shovu",
   description: "A lab for experimental code, prototypes, and technical explorations.",
 };
 

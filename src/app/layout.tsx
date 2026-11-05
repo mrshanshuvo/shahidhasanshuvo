@@ -22,19 +22,19 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await Setting.findOne().lean();
 
   const title =
-    settings?.siteName || "Shahid Hasan Shuvo – Full-Stack Developer & ML Engineer";
+    settings?.siteName || "Shahid Hasan Shovu – Full-Stack Developer & ML Engineer";
   const description =
     settings?.siteDescription ||
     "Full-Stack Developer & Machine Learning Enthusiast building high-performance, cinematic digital experiences.";
-  const ogImage = settings?.ogImage || "/favicons/android-chrome-512x512.png";
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://shahidhasanshuvo.vercel.app";
+  const ogImage = settings?.ogImage || `${siteUrl}/opengraph-image`;
 
   return {
     metadataBase: new URL(siteUrl),
     title: {
       default: title,
-      template: `%s | Shahid Hasan Shuvo`,
+      template: `%s | Shahid Hasan Shovu`,
     },
     description,
     keywords: [
@@ -45,10 +45,10 @@ export async function generateMetadata(): Promise<Metadata> {
       "Python",
       "TypeScript",
       "Portfolio",
-      "Shahid Hasan Shuvo",
+      "Shahid Hasan Shovu",
     ],
-    authors: [{ name: "Shahid Hasan Shuvo" }],
-    creator: "Shahid Hasan Shuvo",
+    authors: [{ name: "Shahid Hasan Shovu" }],
+    creator: "Shahid Hasan Shovu",
     robots: {
       index: true,
       follow: true,
@@ -83,7 +83,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       {
         "@type": "Person",
         "@id": "https://shahidhasanshuvo.vercel.app/#person",
-        name: "Shahid Hasan Shuvo",
+        name: "Shahid Hasan Shovu",
         jobTitle: "Full-Stack Developer & Machine Learning Engineer",
         url: "https://shahidhasanshuvo.vercel.app",
         image: "https://shahidhasanshuvo.vercel.app/favicons/android-chrome-512x512.png",
@@ -108,7 +108,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         "@type": "WebSite",
         "@id": "https://shahidhasanshuvo.vercel.app/#website",
         url: "https://shahidhasanshuvo.vercel.app",
-        name: settings?.siteName || "Shahid Hasan Shuvo – Portfolio",
+        name: settings?.siteName || "Shahid Hasan Shovu – Portfolio",
         publisher: {
           "@id": "https://shahidhasanshuvo.vercel.app/#person",
         },
