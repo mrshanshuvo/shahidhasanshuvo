@@ -4,4 +4,7 @@ node_modules
 .vscode
 coverage
 scratch
+test-results
+playwright-report
+e2e
 
