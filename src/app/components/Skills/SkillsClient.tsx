@@ -17,9 +17,15 @@ export default function SkillsClient({ expertises, brandTechs, techList }: Props
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   // Fall back to legacy techList strings if no brandTechs exist yet
+  const isValidIcon = (url?: string) =>
+    Boolean(url && url.trim() && !url.includes("placeholder.svg"));
+
   const marqueeItems =
     brandTechs.length > 0
-      ? brandTechs.map((t) => ({ name: t.name, iconUrl: t.iconUrl }))
+      ? brandTechs.map((t) => ({
+          name: t.name,
+          iconUrl: isValidIcon(t.iconUrl) ? t.iconUrl : undefined,
+        }))
       : techList.map((name) => ({ name, iconUrl: undefined }));
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -73,9 +79,9 @@ export default function SkillsClient({ expertises, brandTechs, techList }: Props
                     <motion.div key={skill.name} variants={itemVariants}>
                       <div className="flex items-start gap-5">
                         <div className="flex items-center justify-center rounded-2xl transition-transform">
-                          {skill.iconUrl ? (
+                          {isValidIcon(skill.iconUrl) ? (
                             <Image
-                              src={skill.iconUrl}
+                              src={skill.iconUrl!}
                               alt={skill.name}
                               width={50}
                               height={50}
@@ -141,9 +147,9 @@ export default function SkillsClient({ expertises, brandTechs, techList }: Props
                           variant="outline"
                           className="flex cursor-default items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-5 py-4 font-medium whitespace-nowrap text-slate-700 shadow-sm transition-all hover:scale-102 hover:border-emerald-500/30 hover:text-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-emerald-400/30 dark:hover:text-emerald-400"
                         >
-                          {tech.iconUrl ? (
+                          {isValidIcon(tech.iconUrl) ? (
                             <Image
-                              src={tech.iconUrl}
+                              src={tech.iconUrl!}
                               alt={tech.name}
                               width={20}
                               height={20}

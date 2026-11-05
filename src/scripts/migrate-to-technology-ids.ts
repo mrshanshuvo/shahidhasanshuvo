@@ -92,8 +92,7 @@ async function migrate() {
         console.log(`Creating missing technology document for: "${techName}"`);
         const newTech = await Technology.create({
           name: techName,
-          iconUrl:
-            "https://res.cloudinary.com/doqpmh01f/image/upload/v1780455417/portfolio/placeholder.svg", // Admin/User can update with Cloudinary URL later, text fallback works immediately
+          iconUrl: "", // Left blank so elegant icon fallback renders until updated with a real Cloudinary SVG
           order: 0,
         });
         techNameMap.set(canonicalKey, newTech._id as mongoose.Types.ObjectId);
