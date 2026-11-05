@@ -7,9 +7,17 @@ interface RecaptchaProviderProps {
 }
 
 export default function RecaptchaProvider({ children }: RecaptchaProviderProps) {
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+  if (!siteKey) return <>{children}</>;
+
   return (
     <GoogleReCaptchaProvider
-      reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
+      reCaptchaKey={siteKey}
+      scriptProps={{
+        async: true,
+        defer: true,
+        appendTo: "body",
+      }}
     >
       {children}
     </GoogleReCaptchaProvider>

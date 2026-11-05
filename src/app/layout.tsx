@@ -99,7 +99,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Script
           src="https://cdn.userway.org/widget.js"
           data-account="XpO6b06zbX"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       </body>
     </html>

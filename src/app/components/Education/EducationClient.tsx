@@ -158,6 +158,11 @@ export default function EducationClient({ education }: Props) {
                         </span>
                         <button
                           onClick={() => toggleExpand(index)}
+                          aria-label={
+                            isExpanded(index)
+                              ? "Collapse academic details"
+                              : "Expand academic details"
+                          }
                           className={`flex h-9 w-9 items-center justify-center rounded-xl shadow-md transition-all duration-500 ${
                             isExpanded(index)
                               ? "bg-blue-500 text-white shadow-blue-500/30"

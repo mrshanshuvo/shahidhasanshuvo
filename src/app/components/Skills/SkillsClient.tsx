@@ -110,9 +110,9 @@ export default function SkillsClient({ expertises, brandTechs, techList }: Props
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <div className="mb-8 text-center">
-              <h4 className="font-display text-2xl font-bold text-slate-900 dark:text-white">
+              <h3 className="font-display text-2xl font-bold text-slate-900 dark:text-white">
                 Technologies I Work With
-              </h4>
+              </h3>
             </div>
             <div className="relative overflow-hidden py-6">
               {/* Premium Gradient Edge Fade Overlays */}
