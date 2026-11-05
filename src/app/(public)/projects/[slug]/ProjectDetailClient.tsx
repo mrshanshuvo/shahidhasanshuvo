@@ -303,8 +303,10 @@ export default function ProjectDetailClient({ project, iconRegistry }: Props) {
                   ) : m.type === "embed" ? (
                     <iframe
                       src={m.url}
+                      title={m.caption || `${project.title} interactive preview`}
                       className="h-full w-full border-0"
                       allowFullScreen
+                      loading="lazy"
                     />
                   ) : (
                     <Image

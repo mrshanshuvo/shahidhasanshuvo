@@ -54,6 +54,14 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
       googleBot: { index: true, follow: true },
     },
+    alternates: {
+      canonical: "/",
+      types: {
+        "application/rss+xml": [
+          { url: `${siteUrl}/feed.xml`, title: "Shahid Hasan Shovu - Tech Writings" },
+        ],
+      },
+    },
     openGraph: {
       type: "website",
       locale: "en_US",

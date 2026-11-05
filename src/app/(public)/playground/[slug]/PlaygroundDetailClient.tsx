@@ -261,8 +261,10 @@ export default function PlaygroundDetailClient({
                   ) : m.type === "embed" ? (
                     <iframe
                       src={m.url}
+                      title={m.caption || `${demo.title} interactive preview`}
                       className="h-full w-full border-0"
                       allowFullScreen
+                      loading="lazy"
                     />
                   ) : (
                     <Image

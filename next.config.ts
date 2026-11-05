@@ -7,7 +7,7 @@ const cspHeader = `
   img-src 'self' blob: data: https://res.cloudinary.com https://cdn.userway.org https://*.google.com https://*.googleusercontent.com;
   font-src 'self' data: https://cdn.userway.org;
   connect-src 'self' https://api.userway.org https://cdn.userway.org https://www.google.com https://res.cloudinary.com https://*.vercel-insights.com https://vitals.vercel-insights.com;
-  frame-src 'self' https://www.google.com https://recaptcha.google.com;
+  frame-src 'self' https://www.google.com https://recaptcha.google.com https://www.youtube.com https://player.vimeo.com https://codesandbox.io https://codepen.io https://stackblitz.com;
   object-src 'none';
   base-uri 'self';
   form-action 'self';
