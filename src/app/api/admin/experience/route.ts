@@ -6,7 +6,8 @@ import Experience from "@/models/Experience";
 export async function GET(req: Request) {
   try {
     const session = await auth();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
@@ -28,7 +29,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const body = await req.json();
@@ -48,7 +50,8 @@ export async function POST(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const session = await auth();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
@@ -80,7 +83,8 @@ export async function PATCH(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const session = await auth();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
@@ -100,7 +104,8 @@ export async function DELETE(req: Request) {
 export async function PUT(req: Request) {
   try {
     const session = await auth();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const items = await req.json();

@@ -13,7 +13,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Protect all /admin routes
+  // Protect all /admin pages
   if (pathname.startsWith("/admin")) {
     const sessionToken =
       request.cookies.get("authjs.session-token")?.value ||
@@ -28,9 +28,22 @@ export function proxy(request: NextRequest) {
     }
   }
 
+  // Protect all /api/admin endpoints
+  if (pathname.startsWith("/api/admin")) {
+    const sessionToken =
+      request.cookies.get("authjs.session-token")?.value ||
+      request.cookies.get("__Secure-authjs.session-token")?.value ||
+      request.cookies.get("next-auth.session-token")?.value ||
+      request.cookies.get("__Secure-next-auth.session-token")?.value;
+
+    if (!sessionToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };

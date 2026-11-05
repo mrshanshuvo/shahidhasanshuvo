@@ -6,7 +6,8 @@ import SocialLink from "@/models/SocialLink";
 
 export async function GET() {
   const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   await connectDB();
   const hero = await Hero.findOne().lean();
@@ -20,7 +21,8 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   await connectDB();
   const body = await request.json();
