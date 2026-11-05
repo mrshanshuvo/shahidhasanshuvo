@@ -252,6 +252,7 @@ export default function Contact({
           >
             <form
               onSubmit={handleSubmit}
+              aria-label="Contact form"
               className="space-y-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
             >
               <div>

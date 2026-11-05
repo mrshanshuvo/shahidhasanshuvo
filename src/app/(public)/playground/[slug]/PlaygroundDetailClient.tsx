@@ -134,6 +134,7 @@ export default function PlaygroundDetailClient({
                     href={demo.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Open ${demo.title} live experiment`}
                     className="group flex items-center justify-between rounded-lg bg-purple-600 p-4 text-sm font-black text-white shadow-lg shadow-purple-950/40 transition-all duration-300 hover:-translate-y-0.5 hover:bg-purple-500 hover:shadow-xl hover:shadow-purple-500/20"
                   >
                     <div className="flex items-center gap-3.5">
@@ -157,6 +158,7 @@ export default function PlaygroundDetailClient({
                     href={demo.github}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`View ${demo.title} source code on GitHub`}
                     className="hover:bg-slate-850 group flex items-center justify-between rounded-lg border border-white/5 bg-slate-900 p-4 text-sm font-black text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-white/10"
                   >
                     <div className="flex items-center gap-3.5">

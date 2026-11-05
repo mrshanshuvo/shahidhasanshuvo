@@ -91,6 +91,7 @@ export default function ProjectCard({
                 }
                 className="rounded-full border border-white/20 bg-white/10 p-7 text-white shadow-lg backdrop-blur-md transition-colors hover:border-emerald-400/50 hover:bg-white/10 hover:text-emerald-400"
                 title="Live Demo"
+                aria-label={`Open ${project.title} live demo`}
               >
                 <FaExternalLinkAlt className="size-6 drop-shadow-sm" />
               </Button>

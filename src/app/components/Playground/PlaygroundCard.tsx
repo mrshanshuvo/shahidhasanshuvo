@@ -82,6 +82,7 @@ export default function PlaygroundCard({
               render={<a href={demo.url} target="_blank" rel="noopener noreferrer" />}
               className="rounded-full border border-white/20 bg-white/10 p-7 text-white shadow-lg backdrop-blur-md transition-colors hover:border-purple-400/50 hover:bg-white/10 hover:text-purple-400"
               title="Open Lab Experiment"
+              aria-label={`Open ${demo.title} live experiment`}
             >
               <FaExternalLinkAlt className="size-6 drop-shadow-sm" />
             </Button>
