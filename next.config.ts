@@ -2,10 +2,25 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true, // Keep true to prevent local dev timeouts/500 errors on Windows
-    remotePatterns: [
-      { protocol: "https", hostname: "**" }, // Securely allows all https sources
-    ],
+    unoptimized: process.env.NODE_ENV === "development",
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-DNS-Prefetch-Control", value: "on" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+    ];
   },
 };
 

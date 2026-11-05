@@ -83,31 +83,68 @@ export async function POST(req: NextRequest): Promise<Response> {
       );
     }
 
-    // Input validation
-    if (!name || !email || !message) {
+    // Input validation & size limits
+    if (
+      !name ||
+      typeof name !== "string" ||
+      !email ||
+      typeof email !== "string" ||
+      !message ||
+      typeof message !== "string"
+    ) {
       return new Response(
         JSON.stringify({ success: false, error: "All fields are required." }),
         { status: 400 }
       );
     }
 
+    if (name.trim().length === 0 || name.length > 100) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Name must be between 1 and 100 characters.",
+        }),
+        { status: 400 }
+      );
+    }
+
+    if (message.trim().length === 0 || message.length > 5000) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Message must be between 1 and 5000 characters.",
+        }),
+        { status: 400 }
+      );
+    }
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
+    if (email.length > 120 || !emailPattern.test(email)) {
       return new Response(
         JSON.stringify({ success: false, error: "Invalid email address." }),
         { status: 400 }
       );
     }
 
-    // Sanitize message
-    const sanitizedMessage = message.replace(/<\/?[^>]+(>|$)/g, "");
+    // Sanitize inputs
+    const sanitizedName = name.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    const sanitizedMessage = message.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    const safeSubjectName = sanitizedName.replace(/[\r\n]+/g, " ").slice(0, 80);
+
+    const escapeHtml = (str: string) =>
+      str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
     // 1. Save to Database
     try {
       await connectDB();
       await Message.create({
-        name,
-        email,
+        name: sanitizedName,
+        email: email.trim(),
         message: sanitizedMessage,
       });
     } catch (dbError) {
@@ -127,17 +164,17 @@ export async function POST(req: NextRequest): Promise<Response> {
 
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
-        replyTo: email,
+        replyTo: email.trim(),
         to: process.env.EMAIL_USER,
-        subject: `Portfolio Contact: ${name}`,
+        subject: `Portfolio Contact: ${safeSubjectName}`,
         html: `
           <div style="font-family: sans-serif; padding: 20px; color: #333;">
             <h2 style="color: #10b981;">New Inquiry from Portfolio</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Name:</strong> ${escapeHtml(sanitizedName)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(email.trim())}</p>
             <p><strong>Message:</strong></p>
             <div style="background: #f4f4f4; padding: 15px; border-radius: 8px;">
-              ${sanitizedMessage.replace(/\n/g, "<br/>")}
+              ${escapeHtml(sanitizedMessage).replace(/\n/g, "<br/>")}
             </div>
             <p style="margin-top: 20px; font-size: 12px; color: #666;">This message has also been saved to your admin dashboard.</p>
           </div>

@@ -16,7 +16,14 @@ export async function POST(req: Request) {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return NextResponse.json({ message: "Email not found" }, { status: 404 });
+      // Prevent account enumeration: return 200 with generic success response
+      return NextResponse.json(
+        {
+          message:
+            "If an account exists with this email, a reset link and OTP have been sent.",
+        },
+        { status: 200 }
+      );
     }
 
     // Generate token
@@ -41,7 +48,11 @@ export async function POST(req: Request) {
     await user.save();
 
     // Create reset URL
-    const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}`;
+    const baseUrl =
+      process.env.NEXTAUTH_URL ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      "https://shahidhshuvo.dev";
+    const resetUrl = `${baseUrl.replace(/\/$/, "")}/reset-password?token=${resetToken}`;
 
     // Configure nodemailer
     const transporter = nodemailer.createTransport({
@@ -75,7 +86,13 @@ export async function POST(req: Request) {
 
     await transporter.sendMail(message);
 
-    return NextResponse.json({ message: "Email sent" }, { status: 200 });
+    return NextResponse.json(
+      {
+        message:
+          "If an account exists with this email, a reset link and OTP have been sent.",
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Forgot password error:", error);
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });

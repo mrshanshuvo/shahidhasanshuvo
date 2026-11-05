@@ -7,8 +7,11 @@ import bcrypt from "bcryptjs";
 export async function POST(req: Request) {
   try {
     const { token, otp, email, password } = await req.json();
-    if (!password) {
-      return NextResponse.json({ message: "Password is required" }, { status: 400 });
+    if (!password || typeof password !== "string" || password.length < 8) {
+      return NextResponse.json(
+        { message: "Password must be at least 8 characters long" },
+        { status: 400 }
+      );
     }
     if (!token && (!otp || !email)) {
       return NextResponse.json(

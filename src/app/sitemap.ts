@@ -1,16 +1,18 @@
 import type { MetadataRoute } from "next";
 import { connectDB } from "@/lib/mongodb";
 import ProjectModel from "@/models/Project";
+import DemoModel from "@/models/Demo";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://shahidhshuvo.dev";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await connectDB();
 
-  // Fetch all published project slugs
-  const projects = await ProjectModel.find({}, { slug: 1, updatedAt: 1 })
-    .sort({ order: 1 })
-    .lean();
+  // Fetch all published project and demo slugs
+  const [projects, demos] = await Promise.all([
+    ProjectModel.find({}, { slug: 1, updatedAt: 1 }).sort({ order: 1 }).lean(),
+    DemoModel.find({}, { slug: 1, updatedAt: 1 }).sort({ order: 1 }).lean(),
+  ]);
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -42,5 +44,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  return [...staticRoutes, ...projectRoutes];
+  // Dynamic playground routes
+  const playgroundRoutes: MetadataRoute.Sitemap = demos.map((demo) => ({
+    url: `${BASE_URL}/playground/${demo.slug}`,
+    lastModified: demo.updatedAt ?? new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticRoutes, ...projectRoutes, ...playgroundRoutes];
 }

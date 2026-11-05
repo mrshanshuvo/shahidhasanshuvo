@@ -15,6 +15,8 @@ export interface IDemo extends Document {
     caption?: string;
   }[];
   order: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const DemoSchema = new Schema<IDemo>(

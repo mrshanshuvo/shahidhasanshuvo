@@ -37,6 +37,8 @@ const MessageSchema = new Schema<IMessage>(
   { timestamps: true }
 );
 
+MessageSchema.index({ status: 1, createdAt: -1 });
+
 // Force delete the model from mongoose.models in development to pick up schema changes
 if (process.env.NODE_ENV === "development") {
   delete mongoose.models.Message;

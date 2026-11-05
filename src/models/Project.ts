@@ -61,6 +61,9 @@ const ProjectSchema = new Schema<IProject>(
   { timestamps: true }
 );
 
+ProjectSchema.index({ order: 1, createdAt: -1 });
+ProjectSchema.index({ featured: 1, order: 1 });
+
 // Force delete the model from mongoose.models in development to pick up schema changes
 if (process.env.NODE_ENV === "development") {
   delete mongoose.models.Project;

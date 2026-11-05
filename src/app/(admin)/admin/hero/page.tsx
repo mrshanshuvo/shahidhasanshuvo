@@ -171,16 +171,24 @@ function HeroFormClient({ initialData }: { initialData: Hero }) {
     type: "success" | "error";
   } | null>(null);
 
+  const escapeHtml = (str: string): string =>
+    str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
   const parseMarkdown = (text: string): string => {
     if (!text) return "";
-    let html = text;
+    let html = escapeHtml(text);
     // Bold: **text** -> <strong>text</strong>
     html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
     // Italic: *text* -> <em>text</em>
     html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
-    // Links: [text](url) -> <a href="url" target="_blank" rel="noopener noreferrer">text</a>
+    // Links: [text](url) -> only allow http(s), mailto, and relative paths
     html = html.replace(
-      /\[(.*?)\]\((.*?)\)/g,
+      /\[(.*?)\]\(((?:https?:\/\/|mailto:|\/)[^\s)]+)\)/g,
       '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
     );
     return html;
