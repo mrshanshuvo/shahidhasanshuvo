@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Lint, Typecheck & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prettier Code Style Check
+        run: pnpm format:check
+
+      - name: ESLint Check
+        run: pnpm lint
+
+      - name: TypeScript Type Check
+        run: pnpm typecheck
+
+      - name: Build Next.js Application
+        if: ${{ secrets.MONGODB_URI != '' }}
+        env:
+          NEXT_PUBLIC_SITE_URL: "https://shahidhshuvo.dev"
+          NEXTAUTH_URL: "https://shahidhshuvo.dev"
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'ci-build-placeholder-secret-key-32chars' }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: pnpm build
