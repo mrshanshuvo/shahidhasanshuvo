@@ -13,14 +13,14 @@ export default function AdminMobileHeader({
   isOpen,
 }: AdminMobileHeaderProps) {
   return (
-    <header className="lg:hidden sticky top-0 z-40 w-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/5 px-4 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-xl lg:hidden dark:border-white/5 dark:bg-slate-950/80">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg flex items-center justify-center">
-          <span className="text-slate-900 dark:text-white font-black text-sm tracking-tighter">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-slate-900">
+          <span className="text-sm font-black tracking-tighter text-slate-900 dark:text-white">
             A
           </span>
         </div>
-        <p className="text-slate-900 dark:text-white font-bold text-sm tracking-tight">
+        <p className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
           Admin <span className="text-emerald-400">Panel</span>
         </p>
       </div>

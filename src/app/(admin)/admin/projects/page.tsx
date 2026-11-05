@@ -63,14 +63,8 @@ function SortableProjectCard({
   onDelete: () => void;
   deleting: boolean;
 }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: project._id! });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: project._id! });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -88,70 +82,63 @@ function SortableProjectCard({
     <div
       ref={setNodeRef}
       style={style}
-      className="group relative flex items-center gap-4 bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 rounded-xl p-2 transition-all duration-300 shadow-sm dark:shadow-none"
+      className="group relative flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-2 shadow-sm backdrop-blur-xl transition-all duration-300 hover:border-slate-300 dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none dark:hover:border-white/10"
     >
       {/* Drag handle */}
       <div
         {...attributes}
         {...listeners}
-        className="cursor-grab active:cursor-grabbing text-slate-700 hover:text-slate-400 transition-colors shrink-0 touch-none"
+        className="shrink-0 cursor-grab touch-none text-slate-700 transition-colors hover:text-slate-400 active:cursor-grabbing"
       >
         <FaGripVertical size={14} />
       </div>
 
       {/* Thumbnail */}
-      <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-white/5">
+      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-white/5 dark:bg-slate-800">
         {thumb ? (
-          <div className="relative w-full h-full">
-            <Image
-              src={thumb}
-              alt={project.title}
-              fill
-              className="object-cover"
-            />
+          <div className="relative h-full w-full">
+            <Image src={thumb} alt={project.title} fill className="object-cover" />
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-700">
+          <div className="flex h-full w-full items-center justify-center text-slate-700">
             <FaImage size={20} />
           </div>
         )}
       </div>
 
       {/* Info */}
-      <div className="flex-1 min-w-0 space-y-1.5">
+      <div className="min-w-0 flex-1 space-y-1.5">
         <div className="flex items-center gap-2">
-          {project.featured && (
-            <FaStar className="text-amber-400 shrink-0" size={11} />
-          )}
-          <h3 className="font-bold text-slate-900 dark:text-white text-sm truncate">
+          {project.featured && <FaStar className="shrink-0 text-amber-400" size={11} />}
+          <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
             {project.title}
           </h3>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           {Array.isArray(project.category)
             ? project.category.map((cat) => (
                 <Badge
                   key={cat}
-                  className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 text-[10px] font-black rounded-lg px-2 py-0.5 shadow-sm dark:shadow-none"
+                  className="rounded-lg border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-black text-emerald-600 shadow-sm dark:text-emerald-400 dark:shadow-none"
                 >
                   {cat}
                 </Badge>
               ))
             : project.category && (
-                <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 text-[10px] font-black rounded-lg px-2 py-0.5 shadow-sm dark:shadow-none">
+                <Badge className="rounded-lg border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-black text-emerald-600 shadow-sm dark:text-emerald-400 dark:shadow-none">
                   {project.category}
                 </Badge>
               )}
           {(project.techNames ?? []).slice(0, 3).map((t) => (
             <span
               key={t}
-              className="text-[10px] text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/50 border border-slate-200/60 dark:border-white/5 px-1.5 py-0.5 rounded-md font-medium"
+              className="rounded-md border border-slate-200/60 bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:border-white/5 dark:bg-slate-800/50 dark:text-slate-400"
             >
               {t}
             </span>
           ))}
           {(project.techNames?.length ?? 0) > 3 && (
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
               +{(project.techNames?.length ?? 0) - 3}
             </span>
           )}
@@ -185,12 +172,12 @@ function SortableProjectCard({
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 transition-opacity shrink-0">
+      <div className="flex shrink-0 items-center gap-2 transition-opacity">
         <Button
           onClick={onEdit}
           size="icon"
           variant="ghost"
-          className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-500/10 dark:hover:bg-emerald-500/15 transition-all"
+          className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-100 text-slate-600 transition-all hover:bg-emerald-500/10 hover:text-emerald-600 dark:border-white/5 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-emerald-500/15 dark:hover:text-emerald-400"
         >
           <FaEdit size={12} />
         </Button>
@@ -199,7 +186,7 @@ function SortableProjectCard({
           disabled={deleting}
           size="icon"
           variant="ghost"
-          className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10 dark:hover:bg-red-500/15 disabled:opacity-40 transition-all"
+          className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-100 text-slate-600 transition-all hover:bg-red-500/10 hover:text-red-600 disabled:opacity-40 dark:border-white/5 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-red-500/15 dark:hover:text-red-400"
         >
           <FaTrash size={12} />
         </Button>
@@ -217,32 +204,25 @@ function DragOverlayCard({ project }: { project: Project }) {
   const vidCount = project.media?.filter((m) => m.type === "video").length ?? 0;
 
   return (
-    <div className="flex items-center gap-4 bg-white dark:bg-slate-800 border border-emerald-500/30 rounded-2xl p-4 shadow-2xl ring-1 ring-emerald-500/20 scale-105">
-      <div className="cursor-grabbing text-emerald-400 shrink-0">
+    <div className="flex scale-105 items-center gap-4 rounded-2xl border border-emerald-500/30 bg-white p-4 shadow-2xl ring-1 ring-emerald-500/20 dark:bg-slate-800">
+      <div className="shrink-0 cursor-grabbing text-emerald-400">
         <FaGripVertical size={14} />
       </div>
-      <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-white/10">
+      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-slate-800">
         {thumb ? (
-          <div className="relative w-full h-full">
-            <Image
-              src={thumb}
-              alt={project.title}
-              fill
-              className="object-cover"
-            />
+          <div className="relative h-full w-full">
+            <Image src={thumb} alt={project.title} fill className="object-cover" />
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-700">
+          <div className="flex h-full w-full items-center justify-center text-slate-700">
             <FaImage size={20} />
           </div>
         )}
       </div>
-      <div className="flex-1 min-w-0 space-y-1.5">
+      <div className="min-w-0 flex-1 space-y-1.5">
         <div className="flex items-center gap-2">
-          {project.featured && (
-            <FaStar className="text-amber-400 shrink-0" size={11} />
-          )}
-          <h3 className="font-bold text-slate-900 dark:text-white text-sm truncate">
+          {project.featured && <FaStar className="shrink-0 text-amber-400" size={11} />}
+          <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
             {project.title}
           </h3>
         </div>
@@ -251,13 +231,13 @@ function DragOverlayCard({ project }: { project: Project }) {
             ? project.category.map((cat) => (
                 <Badge
                   key={cat}
-                  className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 text-[10px] font-black rounded-lg px-2 py-0.5 shadow-sm dark:shadow-none"
+                  className="rounded-lg border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-black text-emerald-600 shadow-sm dark:text-emerald-400 dark:shadow-none"
                 >
                   {cat}
                 </Badge>
               ))
             : project.category && (
-                <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 text-[10px] font-black rounded-lg px-2 py-0.5 shadow-sm dark:shadow-none">
+                <Badge className="rounded-lg border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-black text-emerald-600 shadow-sm dark:text-emerald-400 dark:shadow-none">
                   {project.category}
                 </Badge>
               )}
@@ -301,7 +281,7 @@ export default function AdminProjectsListPage() {
   } | null>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } })
   );
 
   function showToast(msg: string, type: "success" | "error" = "success") {
@@ -409,7 +389,6 @@ export default function AdminProjectsListPage() {
   });
 
   async function handleDelete(id: string) {
-
     setDeletingId(id);
     deleteMutation.mutate(id);
   }
@@ -433,7 +412,7 @@ export default function AdminProjectsListPage() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="p-4 md:p-8 space-y-6">
+      <div className="space-y-6 p-4 md:p-8">
         {/* Toast */}
         <AnimatePresence>
           {toast && (
@@ -442,42 +421,34 @@ export default function AdminProjectsListPage() {
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: -20, x: "-50%" }}
               className={cn(
-                "fixed top-8 left-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl",
+                "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
                 toast.type === "success"
-                  ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                  : "bg-red-500/20 border-red-500/50 text-red-400",
+                  ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
+                  : "border-red-500/50 bg-red-500/20 text-red-400"
               )}
             >
               <div
                 className={cn(
-                  "p-1.5 rounded-full",
-                  toast.type === "success"
-                    ? "bg-emerald-500/20"
-                    : "bg-red-500/20",
+                  "rounded-full p-1.5",
+                  toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
                 )}
               >
-                {toast.type === "success" ? (
-                  <FaCheck size={10} />
-                ) : (
-                  <FaTimes size={10} />
-                )}
+                {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
               </div>
-              <span className="font-bold text-sm tracking-tight">
-                {toast.msg}
-              </span>
+              <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 shadow-sm dark:shadow-none">
-          <div className="flex items-center gap-4 flex-wrap flex-1">
-            <div className="relative flex-1 min-w-45 max-w-xs">
+        <div className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm backdrop-blur-xl md:flex-row md:items-center dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">
+          <div className="flex flex-1 flex-wrap items-center gap-4">
+            <div className="relative max-w-xs min-w-45 flex-1">
               <FaSearch
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600"
+                className="absolute top-1/2 left-3.5 -translate-y-1/2 text-slate-600"
                 size={12}
               />
               <Input
-                className="bg-white dark:bg-slate-950 border-slate-200 dark:border-white/5 rounded-xl pl-9 h-10 text-xs focus-visible:ring-emerald-500/30 text-slate-900 dark:text-white shadow-sm dark:shadow-none"
+                className="h-10 rounded-xl border-slate-200 bg-white pl-9 text-xs text-slate-900 shadow-sm focus-visible:ring-emerald-500/30 dark:border-white/5 dark:bg-slate-950 dark:text-white dark:shadow-none"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search projects..."
@@ -488,11 +459,11 @@ export default function AdminProjectsListPage() {
               value={filterCategory}
               onValueChange={(v: string | null) => setFilterCategory(v || "All")}
             >
-              <SelectTrigger className="bg-white dark:bg-slate-950 border-slate-200 dark:border-white/5 rounded-xl py-5 w-37.5 text-xs text-slate-900 dark:text-white shadow-sm dark:shadow-none">
+              <SelectTrigger className="w-37.5 rounded-xl border-slate-200 bg-white py-5 text-xs text-slate-900 shadow-sm dark:border-white/5 dark:bg-slate-950 dark:text-white dark:shadow-none">
                 <FaFilter className="mr-2 text-slate-600" size={10} />
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-xl shadow-2xl">
+              <SelectContent className="rounded-xl border-slate-200 bg-white text-slate-900 shadow-2xl dark:border-white/10 dark:bg-slate-900 dark:text-white">
                 <SelectItem value="All">All Categories</SelectItem>
                 {categories.map((c) => (
                   <SelectItem key={c.name} value={c.name}>
@@ -505,7 +476,7 @@ export default function AdminProjectsListPage() {
             <CategoryManagerDialog onUpdate={refreshCategories} />
             <Badge
               variant="outline"
-              className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1 rounded-full font-bold uppercase tracking-widest text-[10px]"
+              className="rounded-full border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400"
             >
               {data.length} {data.length === 1 ? "Project" : "Projects"}
             </Badge>
@@ -514,7 +485,7 @@ export default function AdminProjectsListPage() {
           <div className="flex items-center gap-3">
             <Button
               onClick={openNew}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl h-10 px-6 font-black shadow-lg shadow-emerald-600/20 text-xs"
+              className="h-10 rounded-xl bg-emerald-600 px-6 text-xs font-black text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-500"
             >
               <FaPlus className="mr-2" size={12} /> Add Project
             </Button>
@@ -528,22 +499,20 @@ export default function AdminProjectsListPage() {
               {Array.from({ length: 4 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-24 bg-slate-900/30 rounded-2xl animate-pulse border border-white/5"
+                  className="h-24 animate-pulse rounded-2xl border border-white/5 bg-slate-900/30"
                 />
               ))}
             </div>
           ) : data.length === 0 ? (
-            <div className="py-32 text-center border-2 border-dashed border-white/5 rounded-[3rem]">
-              <FaCode size={48} className="mx-auto text-slate-800 mb-4" />
-              <h3 className="text-xl font-bold text-slate-400 mb-2">
-                No projects yet
-              </h3>
-              <p className="text-slate-600 text-sm mb-8">
+            <div className="rounded-[3rem] border-2 border-dashed border-white/5 py-32 text-center">
+              <FaCode size={48} className="mx-auto mb-4 text-slate-800" />
+              <h3 className="mb-2 text-xl font-bold text-slate-400">No projects yet</h3>
+              <p className="mb-8 text-sm text-slate-600">
                 Start building your portfolio by adding your first project.
               </p>
               <Button
                 onClick={openNew}
-                className="bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600/20 border border-emerald-500/20 px-8 h-12 rounded-xl font-bold"
+                className="h-12 rounded-xl border border-emerald-500/20 bg-emerald-600/10 px-8 font-bold text-emerald-400 hover:bg-emerald-600/20"
               >
                 <FaPlus className="mr-2" /> Add First Project
               </Button>
@@ -588,7 +557,7 @@ export default function AdminProjectsListPage() {
                 </>
               )}
 
-              <p className="text-center text-[10px] text-slate-700 mt-8 font-bold uppercase tracking-widest">
+              <p className="mt-8 text-center text-[10px] font-bold tracking-widest text-slate-700 uppercase">
                 {isFiltered
                   ? `Showing ${filtered.length} of ${data.length} projects`
                   : "Drag rows to reorder • Changes save automatically"}

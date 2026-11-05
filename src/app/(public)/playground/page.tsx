@@ -9,14 +9,14 @@ import Technology from "@/models/Technology";
 
 export const metadata: Metadata = {
   title: "Technical Playground | Shahid Hasan Shuvo",
-  description:
-    "A lab for experimental code, prototypes, and technical explorations.",
+  description: "A lab for experimental code, prototypes, and technical explorations.",
 };
 
 async function getDemos(): Promise<Demo[]> {
   await connectDB();
   const _modelRef = [Technology];
-  if (_modelRef.length > 0) {}
+  if (_modelRef.length > 0) {
+  }
 
   const raw = await DemoModel.find()
     .populate("technologyIds")
@@ -25,7 +25,9 @@ async function getDemos(): Promise<Demo[]> {
 
   const mapped = raw.map((d: any) => ({
     ...d,
-    tech: Array.isArray(d.technologyIds) ? d.technologyIds.map((t: any) => t.name || t.toString()) : [],
+    tech: Array.isArray(d.technologyIds)
+      ? d.technologyIds.map((t: any) => t.name || t.toString())
+      : [],
   }));
 
   return JSON.parse(JSON.stringify(mapped));

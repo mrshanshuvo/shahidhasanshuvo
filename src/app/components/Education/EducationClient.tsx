@@ -28,7 +28,7 @@ export default function EducationClient({ education }: Props) {
 
   const toggleExpand = (index: number) => {
     setExpandedIndices((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
   };
 
@@ -41,31 +41,31 @@ export default function EducationClient({ education }: Props) {
     <section
       id="education"
       ref={ref}
-      className="scroll-mt-28 relative py-16 bg-white dark:bg-slate-950 overflow-hidden"
+      className="relative scroll-mt-28 overflow-hidden bg-white py-16 dark:bg-slate-950"
     >
-      <div className="absolute top-20 left-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl" />
+      <div className="absolute top-20 left-0 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
+      <div className="absolute right-0 bottom-20 h-96 w-96 rounded-full bg-indigo-500/5 blur-3xl" />
 
-      <div className="relative max-w-350 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-350 px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10"
+          className="mb-10 flex flex-col justify-between gap-8 md:flex-row md:items-end"
         >
           <div className="text-left">
             <motion.h2
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="flex items-center gap-3 text-emerald-500 font-black uppercase tracking-[0.2em] text-sm md:text-lg mb-4"
+              className="mb-4 flex items-center gap-3 text-sm font-black tracking-[0.2em] text-emerald-500 uppercase md:text-lg"
             >
               <FaGraduationCap /> Academic Background
             </motion.h2>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
           {education.map((edu, index) => (
             <motion.div
               key={index}
@@ -74,12 +74,12 @@ export default function EducationClient({ education }: Props) {
               animate={isInView ? "visible" : "hidden"}
               className=""
             >
-              <Card className="group relative bg-white/50 dark:bg-slate-900/40 backdrop-blur-2xl rounded-2xl p-1 border border-slate-200/50 dark:border-white/5 shadow-2xl hover:shadow-[0_20px_50px_rgba(59,130,246,0.15)] transition-all duration-700 overflow-hidden flex flex-col">
+              <Card className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200/50 bg-white/50 p-1 shadow-2xl backdrop-blur-2xl transition-all duration-700 hover:shadow-[0_20px_50px_rgba(59,130,246,0.15)] dark:border-white/5 dark:bg-slate-900/40">
                 {/* Decorative Accent */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-blue-500/10 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute top-0 right-0 h-32 w-32 bg-linear-to-br from-blue-500/10 to-transparent opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100" />
 
-                <div className="relative p-6 flex-1 flex flex-col">
-                  <CardHeader className="p-0 mb-6">
+                <div className="relative flex flex-1 flex-col p-6">
+                  <CardHeader className="mb-6 p-0">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 space-y-2">
                         {/* Institution Badge */}
@@ -88,32 +88,32 @@ export default function EducationClient({ education }: Props) {
                             href={edu.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group/inst inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-500/5 dark:bg-blue-500/10 hover:bg-blue-500/10 dark:hover:bg-blue-500/20 border border-blue-500/10 hover:border-blue-500/30 rounded-full transition-all duration-300 cursor-pointer"
+                            className="group/inst inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-blue-500/10 bg-blue-500/5 px-2.5 py-1 transition-all duration-300 hover:border-blue-500/30 hover:bg-blue-500/10 dark:bg-blue-500/10 dark:hover:bg-blue-500/20"
                           >
-                            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-blue-600 dark:text-blue-400 group-hover/inst:text-blue-500 dark:group-hover/inst:text-blue-300 flex items-center gap-1 transition-colors duration-300">
+                            <span className="flex items-center gap-1 text-[10px] font-black tracking-[0.15em] text-blue-600 uppercase transition-colors duration-300 group-hover/inst:text-blue-500 dark:text-blue-400 dark:group-hover/inst:text-blue-300">
                               {edu.institution}
                               <FaExternalLinkAlt
                                 size={8}
-                                className="group-hover/inst:translate-x-0.5 group-hover/inst:-translate-y-0.5 transition-transform"
+                                className="transition-transform group-hover/inst:translate-x-0.5 group-hover/inst:-translate-y-0.5"
                               />
                             </span>
                           </a>
                         ) : (
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/10 rounded-full">
-                            <div className="w-1 h-1 bg-blue-500 rounded-full animate-pulse" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-blue-600 dark:text-blue-400">
+                          <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/10 bg-blue-500/5 px-2.5 py-1 dark:bg-blue-500/10">
+                            <div className="h-1 w-1 animate-pulse rounded-full bg-blue-500" />
+                            <span className="text-[10px] font-black tracking-[0.15em] text-blue-600 uppercase dark:text-blue-400">
                               {edu.institution}
                             </span>
                           </div>
                         )}
 
-                        <h3 className="font-display text-lg md:text-xl font-semibold text-slate-900 dark:text-white leading-[1.2] tracking-tight group-hover:text-blue-500 transition-colors duration-300">
+                        <h3 className="font-display text-lg leading-[1.2] font-semibold tracking-tight text-slate-900 transition-colors duration-300 group-hover:text-blue-500 md:text-xl dark:text-white">
                           {edu.degree}
                         </h3>
                       </div>
 
                       {/* Logo Container */}
-                      <div className="relative w-20 h-20 shrink-0 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-100 dark:border-slate-700 shadow-lg group-hover:scale-105 transition-all duration-500">
+                      <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-lg transition-all duration-500 group-hover:scale-105 dark:border-slate-700 dark:bg-slate-800">
                         {edu.logo ? (
                           <Image
                             src={edu.logo}
@@ -122,49 +122,46 @@ export default function EducationClient({ education }: Props) {
                             className="object-contain p-2 transition-transform duration-700 group-hover:scale-110"
                           />
                         ) : (
-                          <div className="text-slate-200 dark:text-slate-600 text-3xl font-black uppercase">
+                          <div className="text-3xl font-black text-slate-200 uppercase dark:text-slate-600">
                             {edu.institution.charAt(0)}
                           </div>
                         )}
-                        <div className="absolute inset-0 bg-linear-to-tr from-blue-500/5 to-transparent pointer-events-none" />
+                        <div className="pointer-events-none absolute inset-0 bg-linear-to-tr from-blue-500/5 to-transparent" />
                       </div>
                     </div>
 
                     {/* Meta Info Bar */}
-                    <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
-                      <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase tracking-wider">
+                    <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-4 dark:border-white/5">
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
                         <FaCalendarAlt className="text-blue-500/50" size={10} />
                         {edu.period}
                       </div>
                       {edu.location && (
-                        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase tracking-wider">
-                          <FaMapMarkerAlt
-                            className="text-blue-500/50"
-                            size={10}
-                          />
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                          <FaMapMarkerAlt className="text-blue-500/50" size={10} />
                           {edu.location}
                         </div>
                       )}
                       {edu.gpa && (
-                        <Badge className="bg-blue-500 text-white border-none font-black px-1.5 py-0.5 text-[10px] rounded shadow-md shadow-blue-500/10">
+                        <Badge className="rounded border-none bg-blue-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow-md shadow-blue-500/10">
                           CGPA {edu.gpa}
                         </Badge>
                       )}
                     </div>
                   </CardHeader>
 
-                  <CardContent className="p-0 flex-1 flex flex-col">
+                  <CardContent className="flex flex-1 flex-col p-0">
                     <div className="flex-1">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                      <div className="mb-3 flex items-center justify-between">
+                        <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase dark:text-slate-500">
                           Academic Details
                         </span>
                         <button
                           onClick={() => toggleExpand(index)}
-                          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-500 shadow-md ${
+                          className={`flex h-9 w-9 items-center justify-center rounded-xl shadow-md transition-all duration-500 ${
                             isExpanded(index)
                               ? "bg-blue-500 text-white shadow-blue-500/30"
-                              : "bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-blue-500 hover:text-white hover:shadow-blue-500/10"
+                              : "bg-slate-100 text-slate-500 hover:bg-blue-500 hover:text-white hover:shadow-blue-500/10 dark:bg-slate-800"
                           }`}
                         >
                           {isExpanded(index) ? (
@@ -187,7 +184,7 @@ export default function EducationClient({ education }: Props) {
                             }}
                             className="overflow-hidden"
                           >
-                            <div className="space-y-3 pt-3 pb-5 border-l border-blue-500/20 pl-4">
+                            <div className="space-y-3 border-l border-blue-500/20 pt-3 pb-5 pl-4">
                               {Array.isArray(edu.details) ? (
                                 edu.details.map((detail, dIdx) => (
                                   <motion.p
@@ -195,14 +192,14 @@ export default function EducationClient({ education }: Props) {
                                     initial={{ x: -10, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
                                     transition={{ delay: dIdx * 0.05 }}
-                                    className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-medium flex gap-2.5 items-start"
+                                    className="flex items-start gap-2.5 text-sm leading-relaxed font-medium text-slate-600 dark:text-slate-300"
                                   >
-                                    <span className="w-1 h-1 bg-blue-500 rounded-full mt-2 shrink-0" />
+                                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-blue-500" />
                                     {detail}
                                   </motion.p>
                                 ))
                               ) : (
-                                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-medium">
+                                <p className="text-sm leading-relaxed font-medium text-slate-600 dark:text-slate-300">
                                   {edu.details}
                                 </p>
                               )}

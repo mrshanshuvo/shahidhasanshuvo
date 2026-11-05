@@ -31,7 +31,7 @@ const SettingSchema = new Schema<ISetting>(
     maintenanceMode: { type: Boolean, default: false },
     accentColor: { type: String, default: "emerald" },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Enforce singleton behavior by forcing a fixed _id

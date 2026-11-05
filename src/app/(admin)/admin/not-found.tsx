@@ -8,33 +8,33 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function AdminNotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] p-4">
+    <div className="flex min-h-[70vh] flex-col items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         className="w-full max-w-xl"
       >
-        <Card className="bg-slate-900/40 border-white/5 backdrop-blur-2xl rounded-2xl overflow-hidden shadow-2xl">
-          <CardContent className="p-10 md:p-14 text-center">
-            <div className="relative inline-block mb-8">
-              <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full scale-150" />
-              <div className="relative w-20 h-20 bg-slate-950 border border-white/10 rounded-3xl flex items-center justify-center text-blue-400">
+        <Card className="overflow-hidden rounded-2xl border-white/5 bg-slate-900/40 shadow-2xl backdrop-blur-2xl">
+          <CardContent className="p-10 text-center md:p-14">
+            <div className="relative mb-8 inline-block">
+              <div className="absolute inset-0 scale-150 rounded-full bg-blue-500/20 blur-2xl" />
+              <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-slate-950 text-blue-400">
                 <FaSearch size={32} />
               </div>
             </div>
 
-            <h2 className="text-3xl font-black text-white mb-4 tracking-tight">
+            <h2 className="mb-4 text-3xl font-black tracking-tight text-white">
               Route <span className="text-blue-400">Not Found</span>
             </h2>
 
-            <p className="text-slate-400 text-lg font-medium mb-10 leading-relaxed">
-              The administrative module you are looking for does not exist or
-              has been relocated within the system.
+            <p className="mb-10 text-lg leading-relaxed font-medium text-slate-400">
+              The administrative module you are looking for does not exist or has been
+              relocated within the system.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/admin" className="w-full sm:w-auto">
-                <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold py-6 px-8 shadow-lg shadow-blue-600/20 transition-all hover:scale-105">
+                <Button className="w-full rounded-2xl bg-blue-600 px-8 py-6 font-bold text-white shadow-lg shadow-blue-600/20 transition-all hover:scale-105 hover:bg-blue-500">
                   <FaHome className="mr-2 text-xs" />
                   Admin Overview
                 </Button>
@@ -43,7 +43,7 @@ export default function AdminNotFound() {
               <Button
                 variant="ghost"
                 onClick={() => window.history.back()}
-                className="w-full sm:w-auto text-slate-500 hover:text-white hover:bg-white/5 rounded-2xl py-6 px-8"
+                className="w-full rounded-2xl px-8 py-6 text-slate-500 hover:bg-white/5 hover:text-white sm:w-auto"
               >
                 Go Back
                 <FaArrowRight className="ml-2 text-xs" />

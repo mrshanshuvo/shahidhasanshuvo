@@ -63,14 +63,8 @@ function SortableCertRow({
   onDelete: () => void;
   isDeleting: boolean;
 }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: item._id! });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: item._id! });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -83,22 +77,22 @@ function SortableCertRow({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "group flex items-center gap-4 bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 rounded-2xl p-2 transition-all duration-300 shadow-sm dark:shadow-none",
-        isDragging && "z-50 border-amber-500/50 shadow-2xl shadow-amber-500/10",
+        "group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm backdrop-blur-xl transition-all duration-300 hover:border-slate-300 dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none dark:hover:border-white/10",
+        isDragging && "z-50 border-amber-500/50 shadow-2xl shadow-amber-500/10"
       )}
     >
       <div
         {...attributes}
         {...listeners}
-        className="cursor-grab active:cursor-grabbing text-slate-300 dark:text-slate-600 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+        className="cursor-grab text-slate-300 transition-colors hover:text-amber-500 active:cursor-grabbing dark:text-slate-600 dark:hover:text-amber-400"
       >
         <FaGripVertical size={14} />
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <div className="flex items-center gap-3">
           {item.badgeLogo ? (
-            <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-white/5 shrink-0">
+            <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-white/5">
               <Image
                 src={item.badgeLogo}
                 alt={item.title}
@@ -107,15 +101,15 @@ function SortableCertRow({
               />
             </div>
           ) : (
-            <div className="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg">
+            <div className="rounded-lg bg-yellow-500/10 p-2 text-yellow-400">
               <FaAward size={14} />
             </div>
           )}
           <div className="min-w-0">
-            <h3 className="font-bold text-slate-900 dark:text-white truncate text-sm">
+            <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
               {item.title}
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+            <p className="truncate text-xs text-slate-500 dark:text-slate-400">
               {item.issuer}
             </p>
           </div>
@@ -123,7 +117,7 @@ function SortableCertRow({
       </div>
 
       <div className="flex items-center gap-6 pr-2">
-        <div className="hidden md:flex items-center gap-2 text-slate-500">
+        <div className="hidden items-center gap-2 text-slate-500 md:flex">
           <FaCalendarAlt size={10} />
           <span className="text-[10px] font-medium">{item.date}</span>
         </div>
@@ -133,7 +127,7 @@ function SortableCertRow({
             variant="ghost"
             size="icon"
             onClick={onEdit}
-            className="h-8 w-8 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-yellow-400/10"
+            className="h-8 w-8 rounded-lg text-slate-400 hover:bg-yellow-400/10 hover:text-yellow-400"
           >
             <FaEdit size={12} />
           </Button>
@@ -142,10 +136,10 @@ function SortableCertRow({
             size="icon"
             onClick={onDelete}
             disabled={isDeleting}
-            className="h-8 w-8 rounded-lg text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10"
+            className="h-8 w-8 rounded-lg text-slate-400 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400"
           >
             {isDeleting ? (
-              <div className="h-3 w-3 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
+              <div className="h-3 w-3 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
             ) : (
               <FaTrash size={12} />
             )}
@@ -158,14 +152,14 @@ function SortableCertRow({
 
 function CertOverlay({ item }: { item: Certification }) {
   return (
-    <div className="flex items-center gap-4 bg-white dark:bg-slate-800 border border-amber-500/30 rounded-2xl p-4 shadow-2xl scale-105 min-w-[320px]">
-      <div className="cursor-grabbing text-amber-500 shrink-0">
+    <div className="flex min-w-[320px] scale-105 items-center gap-4 rounded-2xl border border-amber-500/30 bg-white p-4 shadow-2xl dark:bg-slate-800">
+      <div className="shrink-0 cursor-grabbing text-amber-500">
         <FaGripVertical size={14} />
       </div>
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <div className="flex items-center gap-3">
           {item.badgeLogo ? (
-            <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-white/5 shrink-0">
+            <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-white/5">
               <Image
                 src={item.badgeLogo}
                 alt={item.title}
@@ -174,22 +168,22 @@ function CertOverlay({ item }: { item: Certification }) {
               />
             </div>
           ) : (
-            <div className="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg shrink-0">
+            <div className="shrink-0 rounded-lg bg-yellow-500/10 p-2 text-yellow-400">
               <FaAward size={14} />
             </div>
           )}
           <div className="min-w-0">
-            <h3 className="font-bold text-slate-900 dark:text-white truncate text-sm">
+            <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
               {item.title}
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+            <p className="truncate text-xs text-slate-500 dark:text-slate-400">
               {item.issuer}
             </p>
           </div>
         </div>
       </div>
       <div className="flex items-center gap-6 pr-2">
-        <div className="hidden md:flex items-center gap-2 text-slate-500">
+        <div className="hidden items-center gap-2 text-slate-500 md:flex">
           <FaCalendarAlt size={10} />
           <span className="text-[10px] font-medium">{item.date}</span>
         </div>
@@ -216,7 +210,7 @@ export default function AdminCertificationsPage() {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    }),
+    })
   );
 
   function showToast(msg: string, type: "success" | "error" = "success") {
@@ -328,9 +322,7 @@ export default function AdminCertificationsPage() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newData),
-      }).then(() =>
-        queryClient.invalidateQueries({ queryKey: ["certifications"] }),
-      );
+      }).then(() => queryClient.invalidateQueries({ queryKey: ["certifications"] }));
     }
     setActiveId(null);
   }
@@ -342,7 +334,7 @@ export default function AdminCertificationsPage() {
       onDragStart={(e) => setActiveId(e.active.id as string)}
       onDragEnd={handleDragEnd}
     >
-      <div className="p-4 md:p-8 space-y-6 font-sans">
+      <div className="space-y-6 p-4 font-sans md:p-8">
         <AnimatePresence>
           {toast && (
             <motion.div
@@ -350,55 +342,47 @@ export default function AdminCertificationsPage() {
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: -20, x: "-50%" }}
               className={cn(
-                "fixed top-8 left-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl",
+                "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
                 toast.type === "success"
-                  ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                  : "bg-red-500/20 border-red-500/50 text-red-400",
+                  ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
+                  : "border-red-500/50 bg-red-500/20 text-red-400"
               )}
             >
               <div
                 className={cn(
-                  "p-1.5 rounded-full",
-                  toast.type === "success"
-                    ? "bg-emerald-500/20"
-                    : "bg-red-500/20",
+                  "rounded-full p-1.5",
+                  toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
                 )}
               >
-                {toast.type === "success" ? (
-                  <FaCheck size={10} />
-                ) : (
-                  <FaTimes size={10} />
-                )}
+                {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
               </div>
-              <span className="font-bold text-sm tracking-tight">
-                {toast.msg}
-              </span>
+              <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="flex items-center justify-between bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 shadow-sm dark:shadow-none">
+        <div className="mx-auto max-w-4xl space-y-6">
+          <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">
             <div className="flex items-center gap-3">
               <Badge
                 variant="outline"
-                className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 px-3 py-1 rounded-full font-bold uppercase tracking-widest text-[10px]"
+                className="rounded-full border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-amber-600 uppercase dark:text-amber-400"
               >
                 {data.length} Certifications
               </Badge>
             </div>
             <Button
               onClick={openNew}
-              className="bg-yellow-600 hover:bg-yellow-500 text-white rounded-xl font-bold px-6 h-10 shadow-lg shadow-yellow-600/20 active:scale-95 transition-all group text-xs"
+              className="group h-10 rounded-xl bg-yellow-600 px-6 text-xs font-bold text-white shadow-lg shadow-yellow-600/20 transition-all hover:bg-yellow-500 active:scale-95"
             >
-              <FaPlus className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+              <FaPlus className="mr-2 transition-transform duration-300 group-hover:rotate-90" />
               Add Certification
             </Button>
           </div>
 
-          <Card className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/40 backdrop-blur-xl overflow-hidden shadow-sm dark:shadow-none">
+          <Card className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/40 dark:shadow-none">
             <CardHeader className="p-4 pb-1">
-              <CardTitle className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+              <CardTitle className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
                 Professional Credentials
               </CardTitle>
             </CardHeader>
@@ -408,17 +392,17 @@ export default function AdminCertificationsPage() {
                   {Array.from({ length: 3 }).map((_, i) => (
                     <div
                       key={i}
-                      className="h-16 bg-slate-100 dark:bg-slate-800/20 rounded-2xl animate-pulse"
+                      className="h-16 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800/20"
                     />
                   ))}
                 </div>
               ) : data.length === 0 ? (
-                <div className="text-center py-16 bg-white dark:bg-slate-950/20 rounded-3xl border border-dashed border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none">
+                <div className="rounded-3xl border border-dashed border-slate-200 bg-white py-16 text-center shadow-sm dark:border-white/5 dark:bg-slate-950/20 dark:shadow-none">
                   <FaAward
-                    className="mx-auto text-slate-200 dark:text-slate-800 mb-4"
+                    className="mx-auto mb-4 text-slate-200 dark:text-slate-800"
                     size={40}
                   />
-                  <p className="text-slate-400 dark:text-slate-500 font-medium">
+                  <p className="font-medium text-slate-400 dark:text-slate-500">
                     No certifications found. Add your achievements above.
                   </p>
                 </div>
@@ -444,7 +428,7 @@ export default function AdminCertificationsPage() {
               )}
 
               {!loading && data.length > 0 && (
-                <p className="text-center text-[10px] text-slate-400 dark:text-slate-700 mt-8 font-bold uppercase tracking-widest">
+                <p className="mt-8 text-center text-[10px] font-bold tracking-widest text-slate-400 uppercase dark:text-slate-700">
                   Drag rows to reorder • Changes save automatically
                 </p>
               )}
@@ -455,9 +439,7 @@ export default function AdminCertificationsPage() {
         <AdminDialogShell
           open={isDialogOpen}
           onOpenChange={setIsDialogOpen}
-          title={
-            currentCert?._id ? "Refine Credential" : "New Professional Honor"
-          }
+          title={currentCert?._id ? "Refine Credential" : "New Professional Honor"}
           subtitle="Validate your expertise with verified certifications"
           icon={FaAward}
           iconColor="text-yellow-400"
@@ -470,7 +452,7 @@ export default function AdminCertificationsPage() {
         >
           {currentCert && (
             <div className="px-1">
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-10">
+              <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr]">
                 {/* Left Column: Certificate Files */}
                 <AdminField label="Certificate File (PDF/Image)">
                   <ImageUpload
@@ -483,9 +465,9 @@ export default function AdminCertificationsPage() {
 
                 {/* Right Column: Information Fields */}
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
                     <AdminField label="Badge Logo">
-                      <div className="w-24 h-24">
+                      <div className="h-24 w-24">
                         <ImageUpload
                           value={currentCert.badgeLogo || ""}
                           onChange={(url) =>
@@ -551,10 +533,7 @@ export default function AdminCertificationsPage() {
                               if (skillInput.trim()) {
                                 setCurrentCert({
                                   ...currentCert,
-                                  details: [
-                                    ...currentCert.details,
-                                    skillInput.trim(),
-                                  ],
+                                  details: [...currentCert.details, skillInput.trim()],
                                 });
                                 setSkillInput("");
                               }
@@ -569,15 +548,12 @@ export default function AdminCertificationsPage() {
                             if (skillInput.trim()) {
                               setCurrentCert({
                                 ...currentCert,
-                                details: [
-                                  ...currentCert.details,
-                                  skillInput.trim(),
-                                ],
+                                details: [...currentCert.details, skillInput.trim()],
                               });
                               setSkillInput("");
                             }
                           }}
-                          className="h-12 px-4 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white rounded-xl font-bold border border-slate-200 dark:border-white/5 shadow-inner shadow-black/5 dark:shadow-black/20"
+                          className="h-12 rounded-xl border border-slate-200 bg-slate-900 px-4 font-bold text-white shadow-inner shadow-black/5 hover:bg-slate-800 dark:border-white/5 dark:bg-slate-800 dark:shadow-black/20 dark:hover:bg-slate-700"
                         >
                           <FaPlus size={12} />
                         </Button>
@@ -587,7 +563,7 @@ export default function AdminCertificationsPage() {
                           <Badge
                             key={i}
                             variant="secondary"
-                            className="bg-yellow-50 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-200 dark:border-yellow-500/20 px-3 py-1.5 gap-2 rounded-xl group transition-all shadow-sm dark:shadow-none"
+                            className="group gap-2 rounded-xl border-yellow-200 bg-yellow-50 px-3 py-1.5 text-yellow-600 shadow-sm transition-all dark:border-yellow-500/20 dark:bg-yellow-500/10 dark:text-yellow-400 dark:shadow-none"
                           >
                             <span className="text-xs">{detail}</span>
                             <button
@@ -595,11 +571,11 @@ export default function AdminCertificationsPage() {
                                 setCurrentCert({
                                   ...currentCert,
                                   details: currentCert.details.filter(
-                                    (_, idx) => idx !== i,
+                                    (_, idx) => idx !== i
                                   ),
                                 })
                               }
-                              className="hover:text-red-400 transition-colors"
+                              className="transition-colors hover:text-red-400"
                             >
                               <FaTimes size={10} />
                             </button>
@@ -615,9 +591,7 @@ export default function AdminCertificationsPage() {
         </AdminDialogShell>
 
         <DragOverlay dropAnimation={null}>
-          {activeId ? (
-            <CertOverlay item={data.find((s) => s._id === activeId)!} />
-          ) : null}
+          {activeId ? <CertOverlay item={data.find((s) => s._id === activeId)!} /> : null}
         </DragOverlay>
       </div>
     </DndContext>

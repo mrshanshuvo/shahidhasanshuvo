@@ -8,7 +8,8 @@ async function getDemos(): Promise<any[]> {
   await connectDB();
   // Ensure target schemas are registered before populate is called
   const _modelRef = [Technology];
-  if (_modelRef.length > 0) {}
+  if (_modelRef.length > 0) {
+  }
 
   const raw = await DemoModel.find()
     .populate("technologyIds")
@@ -18,7 +19,9 @@ async function getDemos(): Promise<any[]> {
 
   const mapped = raw.map((d: any) => ({
     ...d,
-    tech: Array.isArray(d.technologyIds) ? d.technologyIds.map((t: any) => t.name || t.toString()) : [],
+    tech: Array.isArray(d.technologyIds)
+      ? d.technologyIds.map((t: any) => t.name || t.toString())
+      : [],
   }));
 
   return JSON.parse(JSON.stringify(mapped));

@@ -13,20 +13,15 @@ interface AdminFieldProps {
   className?: string;
 }
 
-export function AdminField({
-  label,
-  error,
-  children,
-  className,
-}: AdminFieldProps) {
+export function AdminField({ label, error, children, className }: AdminFieldProps) {
   return (
     <div className={cn("space-y-1.5", className)}>
-      <label className="text-[11px] font-black text-slate-500 dark:text-slate-400/80 uppercase tracking-[0.2em] ml-1.5 group-focus-within:text-emerald-600 dark:group-focus-within:text-emerald-400 transition-all duration-300">
+      <label className="ml-1.5 text-[11px] font-black tracking-[0.2em] text-slate-500 uppercase transition-all duration-300 group-focus-within:text-emerald-600 dark:text-slate-400/80 dark:group-focus-within:text-emerald-400">
         {label}
       </label>
-      <div className="relative group mt-2">{children}</div>
+      <div className="group relative mt-2">{children}</div>
       {error && (
-        <p className="text-[10px] text-red-500 font-bold ml-1 animate-in slide-in-from-top-1">
+        <p className="animate-in slide-in-from-top-1 ml-1 text-[10px] font-bold text-red-500">
           {error}
         </p>
       )}
@@ -38,23 +33,19 @@ interface AdminInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: IconType;
 }
 
-export function AdminInput({
-  icon: Icon,
-  className,
-  ...props
-}: AdminInputProps) {
+export function AdminInput({ icon: Icon, className, ...props }: AdminInputProps) {
   return (
-    <div className="relative group/input w-full">
+    <div className="group/input relative w-full">
       {Icon && (
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-slate-600 dark:text-slate-500 group-focus-within/input:text-slate-900 dark:group-focus-within/input:text-white transition-colors z-10 pointer-events-none">
+        <div className="pointer-events-none absolute top-1/2 left-4 z-10 flex -translate-y-1/2 items-center justify-center text-slate-600 transition-colors group-focus-within/input:text-slate-900 dark:text-slate-500 dark:group-focus-within/input:text-white">
           <Icon size={16} />
         </div>
       )}
       <Input
         className={cn(
-          "bg-white dark:bg-slate-950/40 border-slate-200 dark:border-white/5 rounded-xl h-12 focus:border-emerald-500/30 focus:ring-4 focus:ring-emerald-500/5 transition-all duration-300 font-bold text-sm text-slate-900 dark:text-slate-200 placeholder:text-slate-500 dark:placeholder:text-slate-600 shadow-inner dark:shadow-black/20",
+          "h-12 rounded-xl border-slate-200 bg-white text-sm font-bold text-slate-900 shadow-inner transition-all duration-300 placeholder:text-slate-500 focus:border-emerald-500/30 focus:ring-4 focus:ring-emerald-500/5 dark:border-white/5 dark:bg-slate-950/40 dark:text-slate-200 dark:shadow-black/20 dark:placeholder:text-slate-600",
           Icon && "pl-11",
-          className,
+          className
         )}
         {...props}
       />
@@ -66,23 +57,19 @@ interface AdminTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEl
   icon?: IconType;
 }
 
-export function AdminTextarea({
-  icon: Icon,
-  className,
-  ...props
-}: AdminTextareaProps) {
+export function AdminTextarea({ icon: Icon, className, ...props }: AdminTextareaProps) {
   return (
-    <div className="relative group/input w-full">
+    <div className="group/input relative w-full">
       {Icon && (
-        <div className="absolute left-4 top-5 text-slate-600 dark:text-slate-500 group-focus-within/input:text-slate-900 dark:group-focus-within/input:text-white transition-colors z-10 pointer-events-none">
+        <div className="pointer-events-none absolute top-5 left-4 z-10 text-slate-600 transition-colors group-focus-within/input:text-slate-900 dark:text-slate-500 dark:group-focus-within/input:text-white">
           <Icon size={16} />
         </div>
       )}
       <Textarea
         className={cn(
-          "bg-white dark:bg-slate-950/40 border-slate-200 dark:border-white/5 rounded-xl min-h-25 focus:border-emerald-500/30 focus:ring-4 focus:ring-emerald-500/5 transition-all duration-300 p-4 leading-relaxed text-sm text-slate-900 dark:text-slate-200 placeholder:text-slate-500 dark:placeholder:text-slate-600 shadow-inner dark:shadow-black/20",
+          "min-h-25 rounded-xl border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-900 shadow-inner transition-all duration-300 placeholder:text-slate-500 focus:border-emerald-500/30 focus:ring-4 focus:ring-emerald-500/5 dark:border-white/5 dark:bg-slate-950/40 dark:text-slate-200 dark:shadow-black/20 dark:placeholder:text-slate-600",
           Icon && "pl-11",
-          className,
+          className
         )}
         {...props}
       />
@@ -116,20 +103,17 @@ export function AdminSelect({
   triggerClassName,
 }: AdminSelectProps) {
   return (
-    <div className={cn("relative group/input w-full", className)}>
-      <Select
-        value={value}
-        onValueChange={(val) => onValueChange(val as string)}
-      >
+    <div className={cn("group/input relative w-full", className)}>
+      <Select value={value} onValueChange={(val) => onValueChange(val as string)}>
         <SelectTrigger
           className={cn(
-            "bg-white dark:bg-slate-950/40 border-slate-200 dark:border-white/5 rounded-xl h-12 font-bold text-sm text-slate-900 dark:text-slate-200 shadow-inner dark:shadow-black/20 focus:ring-4 focus:ring-emerald-500/5 transition-all w-full px-4",
-            triggerClassName,
+            "h-12 w-full rounded-xl border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 shadow-inner transition-all focus:ring-4 focus:ring-emerald-500/5 dark:border-white/5 dark:bg-slate-950/40 dark:text-slate-200 dark:shadow-black/20",
+            triggerClassName
           )}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-xl shadow-2xl backdrop-blur-xl">
+        <SelectContent className="rounded-xl border-slate-200 bg-white text-slate-900 shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-slate-900 dark:text-white">
           {options.map((opt) => (
             <SelectItem
               key={opt.value}
@@ -138,7 +122,7 @@ export function AdminSelect({
             >
               <div className="flex items-center gap-3">
                 {opt.icon && (
-                  <div className="w-5 h-5 rounded bg-slate-100 dark:bg-white/5 flex items-center justify-center shrink-0">
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-slate-100 dark:bg-white/5">
                     {opt.icon}
                   </div>
                 )}

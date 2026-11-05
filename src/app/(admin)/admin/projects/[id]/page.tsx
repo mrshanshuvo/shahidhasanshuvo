@@ -18,11 +18,7 @@ import MultiLinkManager from "../../components/MultiLinkManager";
 import CategoryCombobox from "../../components/CategoryCombobox";
 import TechCombobox from "../../components/TechCombobox";
 import { Button } from "@/components/ui/button";
-import {
-  AdminField,
-  AdminInput,
-  AdminTextarea,
-} from "../../components/AdminFields";
+import { AdminField, AdminInput, AdminTextarea } from "../../components/AdminFields";
 import { cn } from "@/lib/utils";
 import type {
   Project,
@@ -110,9 +106,7 @@ export default function ProjectEditPage() {
           techNames: Array.isArray(project.techNames) ? project.techNames : [],
           github: Array.isArray(project.github) ? project.github : [],
           live: Array.isArray(project.live) ? project.live : [],
-          improvements: Array.isArray(project.improvements)
-            ? project.improvements
-            : [],
+          improvements: Array.isArray(project.improvements) ? project.improvements : [],
           media: Array.isArray(project.media) ? project.media : [],
           featured: !!project.featured,
         });
@@ -162,14 +156,14 @@ export default function ProjectEditPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="p-4 md:p-8 space-y-6">
+    <div className="space-y-6 p-4 md:p-8">
       {/* Toast */}
       <AnimatePresence>
         {toast && (
@@ -178,34 +172,28 @@ export default function ProjectEditPage() {
             animate={{ opacity: 1, y: 0, x: "-50%" }}
             exit={{ opacity: 0, y: -20, x: "-50%" }}
             className={cn(
-              "fixed top-8 left-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl",
+              "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
               toast.type === "success"
-                ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                : "bg-red-500/20 border-red-500/50 text-red-400",
+                ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
+                : "border-red-500/50 bg-red-500/20 text-red-400"
             )}
           >
             <div
               className={cn(
-                "p-1.5 rounded-full",
-                toast.type === "success"
-                  ? "bg-emerald-500/20"
-                  : "bg-red-500/20",
+                "rounded-full p-1.5",
+                toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
               )}
             >
-              {toast.type === "success" ? (
-                <FaCheck size={10} />
-              ) : (
-                <FaTimes size={10} />
-              )}
+              {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
             </div>
-            <span className="font-bold text-sm">{toast.msg}</span>
+            <span className="text-sm font-bold">{toast.msg}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Form */}
-      <main className="px-6 md:px-12 max-w-400 mx-auto">
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.5fr] gap-12 items-start">
+      <main className="mx-auto max-w-400 px-6 md:px-12">
+        <div className="grid grid-cols-1 items-start gap-12 xl:grid-cols-[1fr_1.5fr]">
           {/* Left Column: Assets & Links */}
           <div className="space-y-6 xl:sticky xl:top-32">
             <MediaGalleryManager
@@ -215,16 +203,13 @@ export default function ProjectEditPage() {
             />
 
             <AdminField label="Thumbnail / Cover">
-              <ImageUpload
-                value={form.image}
-                onChange={(v) => update("image", v)}
-              />
+              <ImageUpload value={form.image} onChange={(v) => update("image", v)} />
             </AdminField>
           </div>
 
           {/* Right Column: Content & Metadata */}
           <div className="space-y-6">
-            <div className="flex gap-4 items-end">
+            <div className="flex items-end gap-4">
               <AdminField label="Project Title" className="flex-1">
                 <AdminInput
                   className="h-14"
@@ -254,10 +239,10 @@ export default function ProjectEditPage() {
                   variant="ghost"
                   onClick={() => update("featured", !form.featured)}
                   className={cn(
-                    "rounded-2xl border transition-all py-7 px-5",
+                    "rounded-2xl border px-5 py-7 transition-all",
                     form.featured
-                      ? "bg-amber-500/10 border-amber-500/30 text-amber-500 dark:text-amber-400"
-                      : "bg-white dark:bg-slate-950/50 border-slate-200 dark:border-white/5 text-slate-400 dark:text-slate-600 hover:text-amber-500 dark:hover:text-amber-400",
+                      ? "border-amber-500/30 bg-amber-500/10 text-amber-500 dark:text-amber-400"
+                      : "border-slate-200 bg-white text-slate-400 hover:text-amber-500 dark:border-white/5 dark:bg-slate-950/50 dark:text-slate-600 dark:hover:text-amber-400"
                   )}
                 >
                   {form.featured ? (
@@ -286,8 +271,8 @@ export default function ProjectEditPage() {
               />
             </AdminField>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="p-4 bg-white dark:bg-slate-950/40 rounded-lg border border-slate-200 dark:border-white/5 space-y-2">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="space-y-2 rounded-lg border border-slate-200 bg-white p-4 dark:border-white/5 dark:bg-slate-950/40">
                 <MultiLinkManager
                   label="Github Repositories"
                   iconType="github"
@@ -295,7 +280,7 @@ export default function ProjectEditPage() {
                   onChange={(l) => update("github", l as any)}
                 />
               </div>
-              <div className="p-4 bg-white dark:bg-slate-950/40 rounded-lg border border-slate-200 dark:border-white/5 space-y-2">
+              <div className="space-y-2 rounded-lg border border-slate-200 bg-white p-4 dark:border-white/5 dark:bg-slate-950/40">
                 <MultiLinkManager
                   label="Live Deployments"
                   iconType="live"
@@ -313,14 +298,13 @@ export default function ProjectEditPage() {
                     value={impInput}
                     onChange={(e) => setImpInput(e.target.value)}
                     onKeyDown={(e) =>
-                      e.key === "Enter" &&
-                      (e.preventDefault(), addImprovement())
+                      e.key === "Enter" && (e.preventDefault(), addImprovement())
                     }
                     placeholder="What was the key outcome or technical hurdle you solved?"
                   />
                   <Button
                     onClick={addImprovement}
-                    className="bg-slate-800 hover:bg-slate-700 text-white rounded-xl h-12 w-12 shrink-0 border border-white/5 flex items-center justify-center animate-in fade-in duration-300"
+                    className="animate-in fade-in flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/5 bg-slate-800 text-white duration-300 hover:bg-slate-700"
                   >
                     <FaPlus size={14} />
                   </Button>
@@ -333,22 +317,20 @@ export default function ProjectEditPage() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 10 }}
-                        className="flex items-center gap-4 bg-white dark:bg-slate-950/50 border border-slate-200 dark:border-white/5 rounded-2xl px-5 py-2 group/imp shadow-sm dark:shadow-none"
+                        className="group/imp flex items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-2 shadow-sm dark:border-white/5 dark:bg-slate-950/50 dark:shadow-none"
                       >
-                        <div className="w-2 h-2 rounded-full bg-emerald-500/40 shrink-0" />
-                        <span className="text-sm text-slate-600 dark:text-slate-300 flex-1 font-medium leading-relaxed">
+                        <div className="h-2 w-2 shrink-0 rounded-full bg-emerald-500/40" />
+                        <span className="flex-1 text-sm leading-relaxed font-medium text-slate-600 dark:text-slate-300">
                           {imp}
                         </span>
                         <button
                           onClick={() =>
                             update(
                               "improvements",
-                              (form.improvements ?? []).filter(
-                                (_, idx) => idx !== i,
-                              ),
+                              (form.improvements ?? []).filter((_, idx) => idx !== i)
                             )
                           }
-                          className="text-slate-600 hover:text-red-400 transition-colors p-2 hover:bg-red-400/10 rounded-lg"
+                          className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-red-400/10 hover:text-red-400"
                         >
                           <FaTrash size={12} />
                         </button>
@@ -363,16 +345,16 @@ export default function ProjectEditPage() {
       </main>
 
       {/* Floating Save Button */}
-      <div className="fixed bottom-10 right-10 z-50">
+      <div className="fixed right-10 bottom-10 z-50">
         <Button
           onClick={handleSave}
           disabled={saving}
-          className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl p-6 font-black shadow-[0_20px_50px_rgba(16,185,129,0.3)] text-base active:scale-95 transition-all group"
+          className="group rounded-xl bg-emerald-600 p-6 text-base font-black text-white shadow-[0_20px_50px_rgba(16,185,129,0.3)] transition-all hover:bg-emerald-500 active:scale-95"
         >
           <FaSave
             className={cn(
               "mr-1 transition-transform duration-500",
-              saving ? "animate-spin" : "group-hover:rotate-12",
+              saving ? "animate-spin" : "group-hover:rotate-12"
             )}
             size={20}
           />

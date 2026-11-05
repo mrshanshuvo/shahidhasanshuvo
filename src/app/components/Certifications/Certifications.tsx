@@ -4,9 +4,7 @@ import CertificationsView from "./CertificationsView";
 
 async function getCertifications() {
   await connectDB();
-  const certifications = await CertificationModel.find()
-    .sort({ order: 1 })
-    .lean();
+  const certifications = await CertificationModel.find().sort({ order: 1 }).lean();
   // Ensure we're passing clean serializable data
   return JSON.parse(JSON.stringify(certifications));
 }

@@ -13,12 +13,9 @@ interface Props {
 
 export default function ProjectsClient({ projects, iconRegistry }: Props) {
   return (
-    <section
-      id="projects"
-      className="scroll-mt-28 py-16 bg-white dark:bg-slate-950"
-    >
-      <div className="max-w-350 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
+    <section id="projects" className="scroll-mt-28 bg-white py-16 dark:bg-slate-950">
+      <div className="mx-auto max-w-350 px-4 sm:px-6 lg:px-8">
+        <div className="mb-16 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           {/* Heading */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -31,7 +28,7 @@ export default function ProjectsClient({ projects, iconRegistry }: Props) {
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="flex items-center gap-3 text-emerald-500 font-black uppercase tracking-[0.2em] text-sm md:text-lg"
+              className="flex items-center gap-3 text-sm font-black tracking-[0.2em] text-emerald-500 uppercase md:text-lg"
             >
               <FaCode /> Featured Projects
             </motion.h2>
@@ -46,11 +43,11 @@ export default function ProjectsClient({ projects, iconRegistry }: Props) {
           >
             <Link
               href="/projects"
-              className="group px-5 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 rounded-xl text-sm font-bold transition-all hover:scale-105 shadow-md flex items-center gap-2 cursor-pointer"
+              className="group flex cursor-pointer items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:scale-105 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100"
             >
               View All Projects
               <FaExternalLinkAlt
-                className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 size={12}
               />
             </Link>
@@ -58,7 +55,7 @@ export default function ProjectsClient({ projects, iconRegistry }: Props) {
         </div>
 
         {/* Featured grid */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid gap-8 md:grid-cols-2">
           {projects.map((project, i) => (
             <ProjectCard
               key={project._id ?? project.slug}
@@ -70,9 +67,7 @@ export default function ProjectsClient({ projects, iconRegistry }: Props) {
         </div>
 
         {projects.length === 0 && (
-          <p className="text-center text-slate-400 py-20">
-            No featured projects yet.
-          </p>
+          <p className="py-20 text-center text-slate-400">No featured projects yet.</p>
         )}
       </div>
     </section>

@@ -9,11 +9,7 @@ export const metadata: Metadata = {
 import AdminShell from "./components/AdminShell";
 import QueryProvider from "./components/QueryProvider";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <QueryProvider>

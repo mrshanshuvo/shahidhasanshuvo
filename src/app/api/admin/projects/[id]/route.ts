@@ -22,29 +22,42 @@ async function sanitizeProject(it: any) {
   const categoryNames = Array.isArray(it.category)
     ? it.category
     : it.category
-    ? [it.category]
-    : ["Full Stack"];
+      ? [it.category]
+      : ["Full Stack"];
   const categories = await Category.find({
     $or: [
       { name: { $in: categoryNames } },
-      { slug: { $in: categoryNames.map((c: string) => c.toLowerCase().replace(/ /g, "-")) } },
+      {
+        slug: {
+          $in: categoryNames.map((c: string) => c.toLowerCase().replace(/ /g, "-")),
+        },
+      },
     ],
   });
   const categoryIds = categories.map((c: any) => c._id);
 
   return {
     title: it.title,
-    slug: it.slug || it.title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, ""),
+    slug:
+      it.slug ||
+      it.title
+        .toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^\w-]+/g, ""),
     description: it.description,
     image: it.image || (media[0]?.type === "image" ? media[0].url : ""),
     technologyIds,
     categoryIds,
     github: Array.isArray(it.github)
       ? it.github.map((g: any) => ({ label: g.label || "Repository", url: g.url || "" }))
-      : it.github ? [{ label: "Repository", url: it.github }] : [],
+      : it.github
+        ? [{ label: "Repository", url: it.github }]
+        : [],
     live: Array.isArray(it.live)
       ? it.live.map((l: any) => ({ label: l.label || "Live Demo", url: l.url || "" }))
-      : it.live ? [{ label: "Live Demo", url: it.live }] : [],
+      : it.live
+        ? [{ label: "Live Demo", url: it.live }]
+        : [],
     featured: !!it.featured,
     improvements: Array.isArray(it.improvements) ? it.improvements : [],
     media: media.map((m: any) => ({
@@ -74,10 +87,22 @@ export async function GET(_req: Request, { params }: Params) {
     // Map backend relation ObjectIds back to string arrays for admin frontend compatibility
     return NextResponse.json({
       ...p,
-      techNames: Array.isArray(p.technologyIds) ? p.technologyIds.map((t: any) => t.name || t.toString()) : [],
-      category: Array.isArray(p.categoryIds) ? p.categoryIds.map((c: any) => c.name || c.toString()) : [],
-      github: Array.isArray(p.github) ? p.github : p.github ? [{ label: "Repository", url: p.github }] : [],
-      live: Array.isArray(p.live) ? p.live : p.live ? [{ label: "Live Demo", url: p.live }] : [],
+      techNames: Array.isArray(p.technologyIds)
+        ? p.technologyIds.map((t: any) => t.name || t.toString())
+        : [],
+      category: Array.isArray(p.categoryIds)
+        ? p.categoryIds.map((c: any) => c.name || c.toString())
+        : [],
+      github: Array.isArray(p.github)
+        ? p.github
+        : p.github
+          ? [{ label: "Repository", url: p.github }]
+          : [],
+      live: Array.isArray(p.live)
+        ? p.live
+        : p.live
+          ? [{ label: "Live Demo", url: p.live }]
+          : [],
       media: Array.isArray(p.media) ? p.media : [],
     });
   } catch (error) {
@@ -95,7 +120,9 @@ export async function PATCH(req: Request, { params }: Params) {
     const body = await req.json();
     const sanitized = await sanitizeProject(body);
 
-    const updated = await Project.findByIdAndUpdate(id, sanitized, { returnDocument: "after" })
+    const updated = await Project.findByIdAndUpdate(id, sanitized, {
+      returnDocument: "after",
+    })
       .populate("technologyIds")
       .populate("categoryIds")
       .lean();
@@ -104,11 +131,18 @@ export async function PATCH(req: Request, { params }: Params) {
     const u = updated as any;
     return NextResponse.json({
       ...u,
-      techNames: Array.isArray(u.technologyIds) ? u.technologyIds.map((t: any) => t.name || t.toString()) : [],
-      category: Array.isArray(u.categoryIds) ? u.categoryIds.map((c: any) => c.name || c.toString()) : [],
+      techNames: Array.isArray(u.technologyIds)
+        ? u.technologyIds.map((t: any) => t.name || t.toString())
+        : [],
+      category: Array.isArray(u.categoryIds)
+        ? u.categoryIds.map((c: any) => c.name || c.toString())
+        : [],
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || "Failed to update" }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || "Failed to update" },
+      { status: 500 }
+    );
   }
 }
 

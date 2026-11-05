@@ -61,7 +61,7 @@ export default function MultiLinkManager({
             }
             size={14}
           />
-          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pl-1">
+          <label className="pl-1 text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
             {label}
           </label>
         </div>
@@ -71,7 +71,7 @@ export default function MultiLinkManager({
             variant="ghost"
             size="icon"
             onClick={() => setIsAdding(true)}
-            className="h-7 w-7 rounded-lg text-slate-500 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-500/5 transition-all flex items-center justify-center cursor-pointer"
+            className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-slate-500 transition-all hover:bg-emerald-500/5 hover:text-emerald-600 dark:hover:text-emerald-400"
           >
             <FaPlus size={10} />
           </Button>
@@ -86,11 +86,11 @@ export default function MultiLinkManager({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="group relative bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 p-4 rounded-sm space-y-3 hover:border-slate-300 dark:hover:border-white/10 hover:shadow-md transition-all shadow-sm dark:shadow-none"
+              className="group relative space-y-3 rounded-sm border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-slate-300 hover:shadow-md dark:border-white/5 dark:bg-slate-900/50 dark:shadow-none dark:hover:border-white/10"
             >
               <div className="flex items-center gap-2">
                 <Input
-                  className="bg-white font-medium dark:bg-slate-950/40 border border-slate-200 dark:border-white/5 rounded-sm h-9 px-3 text-xs text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-655 focus-visible:ring-emerald-500/20 shadow-inner dark:shadow-none"
+                  className="dark:placeholder:text-slate-655 h-9 rounded-sm border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 shadow-inner placeholder:text-slate-400 focus-visible:ring-emerald-500/20 dark:border-white/5 dark:bg-slate-950/40 dark:text-slate-300 dark:shadow-none"
                   value={link.label}
                   onChange={(e) => updateLink(i, "label", e.target.value)}
                   placeholder="Label"
@@ -99,13 +99,13 @@ export default function MultiLinkManager({
                   variant="ghost"
                   size="icon"
                   onClick={() => removeLink(i)}
-                  className="h-6 w-6 text-slate-400 dark:text-slate-650 hover:text-red-500 dark:hover:text-red-400 transition-opacity"
+                  className="dark:text-slate-650 h-6 w-6 text-slate-400 transition-opacity hover:text-red-500 dark:hover:text-red-400"
                 >
                   <FaTrash size={10} />
                 </Button>
               </div>
               <Input
-                className="bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/5 h-9 text-xs text-slate-700 dark:text-slate-350 rounded-sm px-3 focus-visible:ring-emerald-500/20 shadow-inner dark:shadow-none"
+                className="dark:text-slate-350 h-9 rounded-sm border border-slate-200 bg-slate-50 px-3 text-xs text-slate-700 shadow-inner focus-visible:ring-emerald-500/20 dark:border-white/5 dark:bg-slate-950/40 dark:shadow-none"
                 value={link.url}
                 onChange={(e) => updateLink(i, "url", e.target.value)}
                 placeholder="URL"
@@ -120,15 +120,15 @@ export default function MultiLinkManager({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="p-4 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 rounded-2xl space-y-3 overflow-hidden"
+              className="space-y-3 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/5 dark:bg-slate-900/30"
             >
               <div className="space-y-2">
-                <label className="text-[9px] font-black uppercase tracking-wider text-slate-500 pl-1">
+                <label className="pl-1 text-[9px] font-black tracking-wider text-slate-500 uppercase">
                   Link Details
                 </label>
                 <div className="relative">
                   <Input
-                    className="bg-white dark:bg-slate-950/40 border border-slate-200 dark:border-white/5 rounded-sm h-10 px-3 text-xs font-bold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-655 focus-visible:ring-emerald-500/20 shadow-inner dark:shadow-none"
+                    className="dark:placeholder:text-slate-655 h-10 rounded-sm border border-slate-200 bg-white px-3 text-xs font-bold text-slate-900 shadow-inner placeholder:text-slate-400 focus-visible:ring-emerald-500/20 dark:border-white/5 dark:bg-slate-950/40 dark:text-white dark:shadow-none"
                     value={newLabel}
                     onChange={(e) => setNewLabel(e.target.value)}
                     placeholder="Title (e.g. Frontend Repo)"
@@ -136,7 +136,7 @@ export default function MultiLinkManager({
                 </div>
                 <div className="relative">
                   <Input
-                    className="bg-white dark:bg-slate-950/40 border border-slate-200 dark:border-white/5 rounded-sm h-10 px-3 text-xs text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-655 focus-visible:ring-emerald-500/20 shadow-inner dark:shadow-none"
+                    className="dark:placeholder:text-slate-655 h-10 rounded-sm border border-slate-200 bg-white px-3 text-xs text-slate-700 shadow-inner placeholder:text-slate-400 focus-visible:ring-emerald-500/20 dark:border-white/5 dark:bg-slate-950/40 dark:text-slate-300 dark:shadow-none"
                     value={newUrl}
                     onChange={(e) => setNewUrl(e.target.value)}
                     placeholder="URL (https://...)"
@@ -153,7 +153,7 @@ export default function MultiLinkManager({
                     setNewLabel("");
                     setNewUrl("");
                   }}
-                  className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 h-8 rounded-lg"
+                  className="h-8 rounded-lg text-[10px] font-black tracking-widest text-slate-500 uppercase hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
                 >
                   Cancel
                 </Button>
@@ -166,7 +166,7 @@ export default function MultiLinkManager({
                       setIsAdding(false);
                     }
                   }}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest h-8 px-4 rounded-lg shadow-sm"
+                  className="h-8 rounded-lg bg-emerald-600 px-4 text-[10px] font-black tracking-widest text-white uppercase shadow-sm hover:bg-emerald-500"
                 >
                   Add Link
                 </Button>

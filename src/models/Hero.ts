@@ -36,7 +36,7 @@ const HeroSchema = new Schema<IHero>(
       },
     ],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Enforce singleton behavior by forcing a fixed _id

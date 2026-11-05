@@ -66,25 +66,25 @@ export function AdminSheetShell({
         side="right"
         showCloseButton={false}
         className={cn(
-          "bg-slate-900/98 border-l border-white/10 text-white p-0 gap-0 flex flex-col backdrop-blur-3xl shadow-[-20px_0_80px_rgba(0,0,0,0.6)]",
-          widthClasses[maxWidth] || widthClasses["2xl"],
+          "flex flex-col gap-0 border-l border-white/10 bg-slate-900/98 p-0 text-white shadow-[-20px_0_80px_rgba(0,0,0,0.6)] backdrop-blur-3xl",
+          widthClasses[maxWidth] || widthClasses["2xl"]
         )}
       >
         <div
           className={cn(
-            "absolute inset-0 bg-linear-to-br pointer-events-none",
-            accentColor,
+            "pointer-events-none absolute inset-0 bg-linear-to-br",
+            accentColor
           )}
         />
 
-        <SheetHeader className="p-6 pb-4 relative z-10 border-b border-white/5 shrink-0">
+        <SheetHeader className="relative z-10 shrink-0 border-b border-white/5 p-6 pb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-5">
               {Icon && (
                 <div
                   className={cn(
-                    "w-12 h-12 rounded-[1rem] bg-white/5 flex items-center justify-center border border-white/10 shadow-xl",
-                    iconColor,
+                    "flex h-12 w-12 items-center justify-center rounded-[1rem] border border-white/10 bg-white/5 shadow-xl",
+                    iconColor
                   )}
                 >
                   <Icon size={24} />
@@ -95,7 +95,7 @@ export function AdminSheetShell({
                   {title}
                 </SheetTitle>
                 {subtitle && (
-                  <SheetDescription className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mt-1">
+                  <SheetDescription className="mt-1 text-[10px] font-bold tracking-[0.2em] text-slate-500 uppercase">
                     {subtitle}
                   </SheetDescription>
                 )}
@@ -105,7 +105,7 @@ export function AdminSheetShell({
               <Button
                 variant="ghost"
                 onClick={() => onOpenChange(false)}
-                className="rounded-xl h-10 px-4 font-bold text-slate-500 hover:text-white hover:bg-white/5 transition-all text-[10px] uppercase tracking-[0.15em] border border-transparent hover:border-white/10"
+                className="h-10 rounded-xl border border-transparent px-4 text-[10px] font-bold tracking-[0.15em] text-slate-500 uppercase transition-all hover:border-white/10 hover:bg-white/5 hover:text-white"
               >
                 {cancelLabel}
               </Button>
@@ -113,11 +113,11 @@ export function AdminSheetShell({
                 <Button
                   onClick={onSave}
                   disabled={saving}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl px-6 h-10 font-black shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] active:scale-[0.98] transition-all text-[10px] uppercase tracking-[0.15em] border border-emerald-400/20 min-w-30"
+                  className="h-10 min-w-30 rounded-xl border border-emerald-400/20 bg-emerald-600 px-6 text-[10px] font-black tracking-[0.15em] text-white uppercase shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all hover:bg-emerald-500 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] active:scale-[0.98]"
                 >
                   {saving ? (
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                      <div className="h-3 w-3 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                       <span>{savingLabel}</span>
                     </div>
                   ) : (
@@ -132,7 +132,7 @@ export function AdminSheetShell({
           </div>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 relative z-10">
+        <div className="custom-scrollbar relative z-10 flex-1 overflow-y-auto p-6">
           {children}
         </div>
       </SheetContent>

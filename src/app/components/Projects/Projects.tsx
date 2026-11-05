@@ -9,7 +9,8 @@ async function getProjects() {
   await connectDB();
   // Ensure target schemas are registered before populate is called
   const _modelRef = [Technology, Category];
-  if (_modelRef.length > 0) {}
+  if (_modelRef.length > 0) {
+  }
 
   const raw = await ProjectModel.find({ featured: true })
     .populate("technologyIds")
@@ -19,8 +20,12 @@ async function getProjects() {
 
   const mapped = raw.map((p: any) => ({
     ...p,
-    techNames: Array.isArray(p.technologyIds) ? p.technologyIds.map((t: any) => t.name || t.toString()) : [],
-    category: Array.isArray(p.categoryIds) ? p.categoryIds.map((c: any) => c.name || c.toString()) : [],
+    techNames: Array.isArray(p.technologyIds)
+      ? p.technologyIds.map((t: any) => t.name || t.toString())
+      : [],
+    category: Array.isArray(p.categoryIds)
+      ? p.categoryIds.map((c: any) => c.name || c.toString())
+      : [],
   }));
 
   // Ensure deep serialization of subdocuments (github/live links)

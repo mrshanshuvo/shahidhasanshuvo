@@ -15,7 +15,7 @@ export default function AdminThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return <div className="w-9 h-9" />;
+    return <div className="h-9 w-9" />;
   }
 
   const themes = [
@@ -25,7 +25,7 @@ export default function AdminThemeToggle() {
   ];
 
   return (
-    <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-full p-1 shadow-sm">
+    <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 shadow-sm dark:border-white/10 dark:bg-slate-900">
       {themes.map((t) => {
         const Icon = t.icon;
         const isActive = theme === t.name;
@@ -34,16 +34,16 @@ export default function AdminThemeToggle() {
             key={t.name}
             onClick={() => setTheme(t.name)}
             className={cn(
-              "relative p-1.5 rounded-full transition-all duration-300 group",
+              "group relative rounded-full p-1.5 transition-all duration-300",
               isActive
-                ? "bg-white dark:bg-slate-800 text-emerald-500 shadow-sm"
-                : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-200",
+                ? "bg-white text-emerald-500 shadow-sm dark:bg-slate-800"
+                : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
             )}
             title={`Switch to ${t.label} mode`}
           >
             <Icon size={13} className="relative z-10" />
             {!isActive && (
-              <span className="absolute inset-0 bg-slate-200 dark:bg-white/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300" />
+              <span className="absolute inset-0 scale-0 rounded-full bg-slate-200 transition-transform duration-300 group-hover:scale-100 dark:bg-white/5" />
             )}
           </button>
         );

@@ -26,7 +26,7 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   try {
     const res = await fetch(
       `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
-      { method: "POST" },
+      { method: "POST" }
     );
     const data = (await res.json()) as RecaptchaResponse;
 
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           success: false,
           error: "reCAPTCHA token is missing.",
         }),
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           success: false,
           error: "reCAPTCHA verification failed.",
         }),
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ success: false, error: "All fields are required." }),
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     if (!emailPattern.test(email)) {
       return new Response(
         JSON.stringify({ success: false, error: "Invalid email address." }),
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -154,7 +154,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     console.error("Contact API Error:", error);
     return new Response(
       JSON.stringify({ success: false, error: "Internal server error." }),
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

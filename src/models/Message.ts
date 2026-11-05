@@ -34,7 +34,7 @@ const MessageSchema = new Schema<IMessage>(
       ref: "User",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Force delete the model from mongoose.models in development to pick up schema changes

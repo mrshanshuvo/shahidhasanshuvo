@@ -19,20 +19,21 @@ export default function BlogArchiveClient({ blogs }: Props) {
 
   const filteredBlogs = blogs.filter((blog) => {
     const matchesTag = activeTag === "All" || blog.tags.includes(activeTag);
-    const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         blog.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      blog.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesTag && matchesSearch;
   });
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 pt-32 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white pt-32 pb-24 dark:bg-slate-950">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="mb-16 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight"
+            className="mb-6 text-5xl font-black tracking-tight text-slate-900 md:text-7xl dark:text-white"
           >
             Technical <span className="text-blue-500">Writing</span>
           </motion.h1>
@@ -40,26 +41,26 @@ export default function BlogArchiveClient({ blogs }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium"
+            className="mx-auto max-w-2xl text-lg font-medium text-slate-600 dark:text-slate-400"
           >
             Exploring the intersection of code, design, and artificial intelligence.
           </motion.p>
         </div>
 
         {/* Search and Filters */}
-        <div className="flex flex-col md:flex-row gap-6 items-center justify-between mb-12">
+        <div className="mb-12 flex flex-col items-center justify-between gap-6 md:flex-row">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="relative w-full md:w-96"
           >
-            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+            <FaSearch className="absolute top-1/2 left-4 -translate-y-1/2 text-slate-500" />
             <Input
               type="text"
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 bg-white dark:bg-slate-900/50 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-full h-12 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400"
+              className="h-12 rounded-full border-slate-200 bg-white pl-12 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500 dark:border-white/10 dark:bg-slate-900/50 dark:text-white"
             />
           </motion.div>
 
@@ -76,7 +77,7 @@ export default function BlogArchiveClient({ blogs }: Props) {
                 className={`rounded-full px-4 py-1 text-xs font-black transition-all ${
                   activeTag === tag
                     ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
-                    : "text-slate-600 dark:text-slate-400 hover:border-blue-500 border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/5"
+                    : "border-slate-200 bg-slate-100 text-slate-600 hover:border-blue-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400"
                 }`}
               >
                 {tag}
@@ -86,10 +87,7 @@ export default function BlogArchiveClient({ blogs }: Props) {
         </div>
 
         {/* Grid */}
-        <motion.div
-          layout
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+        <motion.div layout className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filteredBlogs.map((blog, i) => (
               <motion.div
@@ -110,9 +108,11 @@ export default function BlogArchiveClient({ blogs }: Props) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-20"
+            className="py-20 text-center"
           >
-            <p className="text-slate-500 text-xl font-medium">No articles found matching your criteria.</p>
+            <p className="text-xl font-medium text-slate-500">
+              No articles found matching your criteria.
+            </p>
           </motion.div>
         )}
       </div>

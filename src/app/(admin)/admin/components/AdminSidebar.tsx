@@ -146,23 +146,23 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm lg:hidden"
           />
         )}
       </AnimatePresence>
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-70 pl-2 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-white/5 flex flex-col h-screen transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto lg:z-auto",
-          isOpen ? "translate-x-0" : "-translate-x-full",
+          "fixed inset-y-0 left-0 z-50 flex h-screen w-70 flex-col border-r border-slate-200 bg-white pl-2 transition-transform duration-300 ease-in-out lg:static lg:inset-auto lg:z-auto lg:translate-x-0 dark:border-white/5 dark:bg-slate-950",
+          isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {/* Brand */}
         <div className="p-8">
           <div className="flex items-center gap-4">
-            <div className="relative group">
-              <div className="absolute -inset-1.5 bg-linear-to-tr from-emerald-600 to-blue-600 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative w-11 h-11 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl flex items-center justify-center overflow-hidden">
+            <div className="group relative">
+              <div className="absolute -inset-1.5 rounded-xl bg-linear-to-tr from-emerald-600 to-blue-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
+              <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-slate-900">
                 <Image
                   src="/favicons/light-mode-1.svg"
                   alt="Logo"
@@ -182,10 +182,10 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
               </div>
             </div>
             <div>
-              <p className="text-slate-900 dark:text-white font-bold text-base tracking-tight">
+              <p className="text-base font-bold tracking-tight text-slate-900 dark:text-white">
                 Admin <span className="text-emerald-400">Panel</span>
               </p>
-              <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+              <p className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
                 Portfolio v0.2.0
               </p>
             </div>
@@ -194,11 +194,11 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
 
         {/* Nav */}
         <nav
-          className="flex-1 px-4 py-2 space-y-1.5 overflow-y-auto custom-scrollbar min-h-0"
+          className="custom-scrollbar min-h-0 flex-1 space-y-1.5 overflow-y-auto px-4 py-2"
           data-lenis-prevent
         >
-          <div className="px-4 mb-4">
-            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em]">
+          <div className="mb-4 px-4">
+            <p className="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase dark:text-slate-600">
               Management
             </p>
           </div>
@@ -206,8 +206,8 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
             if (item.type === "label") {
               return (
                 <div key={`label-${idx}`} className="px-4 pt-6 pb-2">
-                  <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
+                  <p className="flex items-center gap-2 text-[10px] font-black tracking-[0.2em] text-slate-600 uppercase">
+                    <span className="h-1.5 w-1.5 rounded-full bg-slate-800" />
                     {item.label}
                   </p>
                 </div>
@@ -222,40 +222,38 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                 href={item.href!}
                 onClick={onClose}
                 className={cn(
-                  "group relative flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-300",
+                  "group relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300",
                   isActive
-                    ? "bg-slate-100 dark:bg-white/5 text-emerald-600 dark:text-white shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.02)] border border-slate-200 dark:border-white/10"
-                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5",
+                    ? "border border-slate-200 bg-slate-100 text-emerald-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-[0_0_20px_rgba(255,255,255,0.02)]"
+                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-200"
                 )}
               >
                 {isActive && (
                   <motion.div
                     layoutId="active-pill"
-                    className="absolute left-0 w-1 h-5 bg-emerald-500 rounded-r-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                    className="absolute left-0 h-5 w-1 rounded-r-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                   />
                 )}
                 <Icon
                   className={cn(
                     "text-lg transition-colors",
-                    isActive ? item.color : "group-hover:text-slate-300",
+                    isActive ? item.color : "group-hover:text-slate-300"
                   )}
                 />
                 <span className="flex-1">{item.label}</span>
-                {isActive && (
-                  <FaChevronRight size={10} className="text-slate-600" />
-                )}
+                {isActive && <FaChevronRight size={10} className="text-slate-600" />}
               </Link>
             );
           })}
         </nav>
 
         {/* Footer */}
-        <div className="p-2 border-t border-white/5 space-y-3">
+        <div className="space-y-3 border-t border-white/5 p-2">
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="w-full flex items-center gap-3 px-4 py-2 rounded-2xl text-normal font-semibold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/10 transition-all group"
+            className="text-normal group flex w-full items-center gap-3 rounded-2xl border border-transparent px-4 py-2 font-semibold text-slate-700 transition-all hover:border-red-500/10 hover:bg-red-500/10 hover:text-red-600 dark:text-slate-300 dark:hover:text-red-400"
           >
-            <div className="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 group-hover:bg-red-500/20 transition-colors text-slate-500 dark:text-slate-400 group-hover:text-red-600 dark:group-hover:text-red-400">
+            <div className="rounded-lg bg-slate-200 p-2 text-slate-500 transition-colors group-hover:bg-red-500/20 group-hover:text-red-600 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:text-red-400">
               <FaSignOutAlt size={16} />
             </div>
             <span>Sign Out</span>

@@ -40,7 +40,7 @@ const DemoSchema = new Schema<IDemo>(
     ],
     order: { type: Number, default: 0 },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Force delete the model from mongoose.models in development to pick up schema changes

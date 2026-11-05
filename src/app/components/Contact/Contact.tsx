@@ -86,10 +86,7 @@ export default function Contact({
     setStatus({ message: "Sending your message...", type: "loading" });
 
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries()) as Record<
-      string,
-      string
-    >;
+    const data = Object.fromEntries(formData.entries()) as Record<string, string>;
 
     if (!data.name || !data.email || !data.message) {
       setStatus({
@@ -153,28 +150,28 @@ export default function Contact({
     <section
       id="contact"
       ref={ref}
-      className="scroll-mt-28 py-16 bg-slate-50 dark:bg-slate-900"
+      className="scroll-mt-28 bg-slate-50 py-16 dark:bg-slate-900"
     >
-      <div className="max-w-350 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-350 px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16"
+          className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end"
         >
           <div className="text-left">
             <motion.h2
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="flex items-center gap-3 text-emerald-500 font-black uppercase tracking-[0.2em] text-sm md:text-lg mb-4"
+              className="mb-4 flex items-center gap-3 text-sm font-black tracking-[0.2em] text-emerald-500 uppercase md:text-lg"
             >
               <FaPaperPlane /> Get In Touch
             </motion.h2>
           </div>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid gap-12 lg:grid-cols-2">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -182,29 +179,29 @@ export default function Contact({
           >
             <motion.h3
               variants={itemVariants}
-              className="text-2xl font-semibold text-slate-900 dark:text-white mb-6"
+              className="mb-6 text-2xl font-semibold text-slate-900 dark:text-white"
             >
               Let&apos;s talk!
             </motion.h3>
-            <motion.div variants={itemVariants} className="space-y-6 mb-10">
+            <motion.div variants={itemVariants} className="mb-10 space-y-6">
               {contactInfo.map((item, idx) => (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center shrink-0">
-                    <item.icon className="text-emerald-600 dark:text-emerald-400 text-xl" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-900/20">
+                    <item.icon className="text-xl text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900 dark:text-white mb-1">
+                    <p className="mb-1 font-medium text-slate-900 dark:text-white">
                       {item.label}
                     </p>
                     {item.link ? (
                       <a
                         href={item.link}
-                        className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                        className="text-slate-600 transition-colors hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400"
                       >
                         {item.value}
                       </a>
                     ) : (
-                      <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                      <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                         {item.value}
                       </p>
                     )}
@@ -213,17 +210,17 @@ export default function Contact({
               ))}
             </motion.div>
             <motion.div variants={itemVariants}>
-              <p className="font-medium text-slate-900 dark:text-white mb-4">
+              <p className="mb-4 font-medium text-slate-900 dark:text-white">
                 Follow me on
               </p>
               <div className="flex gap-3">
                 {socialLinks.map((social, idx) => (
-                  <div key={idx} className="relative group/tooltip">
+                  <div key={idx} className="group/tooltip relative">
                     <a
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`w-11 h-11 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-400 transition-all duration-300 hover:border-emerald-500 dark:hover:border-emerald-400 ${social.color} hover:scale-110 hover:shadow-lg`}
+                      className={`flex h-11 w-11 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-all duration-300 hover:border-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-emerald-400 ${social.color} hover:scale-110 hover:shadow-lg`}
                       aria-label={social.label}
                     >
                       {social.iconUrl ? (
@@ -238,9 +235,9 @@ export default function Contact({
                         <social.icon className="text-lg" />
                       )}
                     </a>
-                    <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 scale-75 opacity-0 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/tooltip:scale-100 group-hover/tooltip:opacity-100 bg-slate-900 dark:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-md whitespace-nowrap border border-slate-700/50 dark:border-slate-600/50 z-20">
+                    <span className="pointer-events-none absolute -bottom-10 left-1/2 z-20 -translate-x-1/2 scale-75 rounded-lg border border-slate-700/50 bg-slate-900 px-2.5 py-1.5 text-xs font-bold whitespace-nowrap text-white opacity-0 shadow-md transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/tooltip:scale-100 group-hover/tooltip:opacity-100 dark:border-slate-600/50 dark:bg-slate-800">
                       {social.label}
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-1 border-4 border-transparent border-b-slate-900 dark:border-b-slate-800" />
+                      <span className="absolute bottom-full left-1/2 -mb-1 -translate-x-1/2 border-4 border-transparent border-b-slate-900 dark:border-b-slate-800" />
                     </span>
                   </div>
                 ))}
@@ -255,12 +252,12 @@ export default function Contact({
           >
             <form
               onSubmit={handleSubmit}
-              className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 space-y-6"
+              className="space-y-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
             >
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                  className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
                 >
                   Full Name *
                 </label>
@@ -270,13 +267,13 @@ export default function Contact({
                   name="name"
                   required
                   placeholder="Shahid Hasan Shovu"
-                  className="w-full px-4 py-6 border border-slate-300 dark:border-slate-700 rounded-lg focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 transition-all"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-6 text-slate-900 transition-all placeholder:text-slate-400 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 />
               </div>
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                  className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
                 >
                   Email Address *
                 </label>
@@ -286,13 +283,13 @@ export default function Contact({
                   name="email"
                   required
                   placeholder="shahid@example.com"
-                  className="w-full px-4 py-6 border border-slate-300 dark:border-slate-700 rounded-lg focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 transition-all"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-6 text-slate-900 transition-all placeholder:text-slate-400 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 />
               </div>
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                  className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
                 >
                   Your Message *
                 </label>
@@ -302,7 +299,7 @@ export default function Contact({
                   required
                   rows={5}
                   placeholder="Hello! I'd like to discuss a project collaboration or a web development task."
-                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 resize-none transition-all"
+                  className="w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 transition-all placeholder:text-slate-400 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 />
               </div>
 
@@ -311,10 +308,10 @@ export default function Contact({
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-6 rounded-lg font-medium flex items-center justify-center gap-2 text-white shadow-lg transition-all hover:scale-[1.02] active:scale-95 ${isSubmitting ? "bg-slate-400 cursor-not-allowed" : "bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 shadow-emerald-600/20"}`}
+                className={`flex w-full items-center justify-center gap-2 rounded-lg py-6 font-medium text-white shadow-lg transition-all hover:scale-[1.02] active:scale-95 ${isSubmitting ? "cursor-not-allowed bg-slate-400" : "bg-emerald-600 shadow-emerald-600/20 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600"}`}
               >
                 {isSubmitting ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                 ) : (
                   <>
                     <FaPaperPlane /> Send Message
@@ -326,15 +323,15 @@ export default function Contact({
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`p-4 rounded-lg ${status.type === "success" ? "bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800" : status.type === "error" ? "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800" : "bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800"}`}
+                  className={`rounded-lg p-4 ${status.type === "success" ? "border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/20" : status.type === "error" ? "border border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20" : "border border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20"}`}
                 >
                   <div className="flex items-center gap-3">
                     {status.type === "success" ? (
-                      <FaCheckCircle className="text-emerald-600 dark:text-emerald-400 text-lg" />
+                      <FaCheckCircle className="text-lg text-emerald-600 dark:text-emerald-400" />
                     ) : status.type === "error" ? (
-                      <FaExclamationTriangle className="text-red-600 dark:text-red-400 text-lg" />
+                      <FaExclamationTriangle className="text-lg text-red-600 dark:text-red-400" />
                     ) : (
-                      <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
                     )}
                     <p
                       className={`text-sm font-medium ${status.type === "success" ? "text-emerald-800 dark:text-emerald-300" : status.type === "error" ? "text-red-800 dark:text-red-300" : "text-blue-800 dark:text-blue-300"}`}

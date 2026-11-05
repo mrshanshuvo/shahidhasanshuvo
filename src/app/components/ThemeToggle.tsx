@@ -17,7 +17,7 @@ export default function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return <div className="w-10 h-10" />; // Placeholder to avoid layout shift
+    return <div className="h-10 w-10" />; // Placeholder to avoid layout shift
   }
 
   return (
@@ -25,14 +25,9 @@ export default function ThemeToggle() {
       <Button
         variant="ghost"
         size="icon"
-        render={
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          />
-        }
+        render={<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} />}
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="rounded-full bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors shadow-sm"
+        className="rounded-full bg-slate-200 text-slate-800 shadow-sm transition-colors hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
         aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >
         <motion.div

@@ -27,13 +27,10 @@ export default function ProjectCard({
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="relative h-100 sm:h-112.5 w-full"
+      className="relative h-100 w-full sm:h-112.5"
     >
-      <div className="group relative bg-slate-900 rounded-xl border border-white/10 overflow-hidden flex flex-col h-full w-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_20px_50px_rgba(16,185,129,0.15)]">
-        <Link
-          href={`/projects/${project.slug}`}
-          className="absolute inset-0 z-20"
-        >
+      <div className="group relative flex h-full w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-slate-900 shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_20px_50px_rgba(16,185,129,0.15)]">
+        <Link href={`/projects/${project.slug}`} className="absolute inset-0 z-20">
           <span className="sr-only">View Project Details</span>
         </Link>
 
@@ -52,12 +49,12 @@ export default function ProjectCard({
         </div>
 
         {/* Top Section: Badges & Live Button */}
-        <div className="absolute top-5 left-5 right-5 flex justify-between items-start z-30 pointer-events-none">
+        <div className="pointer-events-none absolute top-5 right-5 left-5 z-30 flex items-start justify-between">
           {/* Left: Featured Icon & Categories */}
-          <div className="flex flex-wrap gap-2 max-w-[calc(100%-60px)] pointer-events-auto">
+          <div className="pointer-events-auto flex max-w-[calc(100%-60px)] flex-wrap gap-2">
             {project.featured && (
               <div
-                className="flex items-center justify-center px-3 py-1.5 bg-linear-to-r from-amber-500 to-orange-500 text-white text-xs font-bold tracking-widest uppercase rounded-full shadow-lg shrink-0"
+                className="flex shrink-0 items-center justify-center rounded-full bg-linear-to-r from-amber-500 to-orange-500 px-3 py-1.5 text-xs font-bold tracking-widest text-white uppercase shadow-lg"
                 title="Featured Project"
               >
                 <FaStar className="text-xs" />
@@ -67,19 +64,19 @@ export default function ProjectCard({
               ? project.category.map((cat) => (
                   <div
                     key={cat}
-                    className="px-3 py-1.5 bg-white/10 dark:bg-black/40 text-white font-bold text-[10px] rounded-full backdrop-blur-md tracking-widest uppercase border border-white/20 shadow-lg whitespace-nowrap"
+                    className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-widest whitespace-nowrap text-white uppercase shadow-lg backdrop-blur-md dark:bg-black/40"
                   >
                     {cat}
                   </div>
                 ))
               : project.category && (
-                  <div className="px-3 py-1.5 bg-white/10 dark:bg-black/40 text-white font-bold text-[10px] rounded-full backdrop-blur-md tracking-widest uppercase border border-white/20 shadow-lg whitespace-nowrap">
+                  <div className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-widest whitespace-nowrap text-white uppercase shadow-lg backdrop-blur-md dark:bg-black/40">
                     {project.category}
                   </div>
                 )}
           </div>
 
-          <div className="shrink-0 pointer-events-auto">
+          <div className="pointer-events-auto shrink-0">
             {project.live && project.live.length > 0 && (
               <Button
                 variant="outline"
@@ -92,7 +89,7 @@ export default function ProjectCard({
                     rel="noopener noreferrer"
                   />
                 }
-                className="rounded-full p-7 text-white bg-white/10 border border-white/20 backdrop-blur-md hover:text-emerald-400 hover:bg-white/10 hover:border-emerald-400/50 transition-colors shadow-lg"
+                className="rounded-full border border-white/20 bg-white/10 p-7 text-white shadow-lg backdrop-blur-md transition-colors hover:border-emerald-400/50 hover:bg-white/10 hover:text-emerald-400"
                 title="Live Demo"
               >
                 <FaExternalLinkAlt className="size-6 drop-shadow-sm" />
@@ -102,15 +99,15 @@ export default function ProjectCard({
         </div>
 
         {/* Floating Content at Bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col z-30 pointer-events-none">
+        <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-30 flex flex-col p-6">
           <div className="mb-3">
-            <h3 className="font-display text-2xl font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors duration-300 line-clamp-1 drop-shadow-md flex items-center gap-1.5">
+            <h3 className="font-display line-clamp-1 flex items-center gap-1.5 text-2xl font-bold text-emerald-400 drop-shadow-md transition-colors duration-300 group-hover:text-emerald-300">
               <span>{project.title}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="inline-block h-5 w-5 shrink-0 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 motion-reduce:transition-none opacity-60 group-hover:opacity-100"
+                className="inline-block h-5 w-5 shrink-0 opacity-60 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100 motion-reduce:transition-none"
                 aria-hidden="true"
               >
                 <path
@@ -122,19 +119,19 @@ export default function ProjectCard({
             </h3>
           </div>
 
-          <p className="text-slate-300 group-hover:text-slate-100 transition-colors duration-300 text-sm leading-relaxed mb-6 line-clamp-2 font-medium drop-shadow-sm">
+          <p className="mb-6 line-clamp-2 text-sm leading-relaxed font-medium text-slate-300 drop-shadow-sm transition-colors duration-300 group-hover:text-slate-100">
             {project.description}
           </p>
 
           {/* Tech stack */}
-          <div className="flex flex-wrap gap-2 pointer-events-auto">
+          <div className="pointer-events-auto flex flex-wrap gap-2">
             {(project.techNames || []).slice(0, 4).map((name) => {
               const iconUrl = iconRegistry?.[name];
               return (
                 <Badge
                   key={name}
                   variant="outline"
-                  className="flex items-center gap-1.5 px-2 py-1.5 bg-emerald-500/10 dark:bg-emerald-950/40 border border-emerald-500/20 text-emerald-300 rounded-xl text-[10px] font-bold shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-emerald-400/40 group-hover:bg-emerald-500/20 group-hover:text-emerald-200"
+                  className="flex items-center gap-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-2 py-1.5 text-[10px] font-bold text-emerald-300 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-emerald-400/40 group-hover:bg-emerald-500/20 group-hover:text-emerald-200 dark:bg-emerald-950/40"
                   title={name}
                 >
                   {iconUrl && (
@@ -143,7 +140,7 @@ export default function ProjectCard({
                       alt={name}
                       width={14}
                       height={14}
-                      className="object-contain shrink-0"
+                      className="shrink-0 object-contain"
                     />
                   )}
                   {name}
@@ -153,7 +150,7 @@ export default function ProjectCard({
             {(project.techNames || []).length > 4 && (
               <Badge
                 variant="outline"
-                className="flex items-center justify-center px-2 py-1.5 bg-emerald-500/10 dark:bg-emerald-950/40 border border-emerald-500/20 text-emerald-300 rounded-xl text-[10px] font-bold shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-emerald-400/40 group-hover:bg-emerald-500/20 group-hover:text-emerald-200"
+                className="flex items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-2 py-1.5 text-[10px] font-bold text-emerald-300 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-emerald-400/40 group-hover:bg-emerald-500/20 group-hover:text-emerald-200 dark:bg-emerald-950/40"
               >
                 +{(project.techNames?.length || 0) - 4}
               </Badge>

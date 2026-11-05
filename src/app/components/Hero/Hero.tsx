@@ -22,9 +22,7 @@ export default async function Hero() {
       ? raw.typeSequences
       : [{ text: "Full-Stack Web Developer", delay: 2000 }],
     tagline: raw.tagline ?? "Jr. Frontend Developer at Softvence Agency",
-    bio:
-      raw.bio ??
-      "I am a passionate Full-Stack Web Developer and Computer Engineer...",
+    bio: raw.bio ?? "I am a passionate Full-Stack Web Developer and Computer Engineer...",
     profileImage: raw.profileImage ?? "/PP1.jpeg",
     resumeUrl: raw.resumeUrl ?? "/Resume_of_Shahid_Hasan_Shuvo.pdf",
     socialLinks: socials,

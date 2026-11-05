@@ -51,11 +51,10 @@ export default async function PlaygroundDetailPage({ params }: Props) {
   const { slug } = await params;
 
   const _modelRef = [Technology];
-  if (_modelRef.length > 0) {}
+  if (_modelRef.length > 0) {
+  }
 
-  const raw = await DemoModel.findOne({ slug })
-    .populate("technologyIds")
-    .lean();
+  const raw = await DemoModel.findOne({ slug }).populate("technologyIds").lean();
   if (!raw) notFound();
 
   const heroDoc = await HeroModel.findOne().lean();
@@ -63,7 +62,9 @@ export default async function PlaygroundDetailPage({ params }: Props) {
 
   const mapped = {
     ...raw,
-    tech: Array.isArray(raw.technologyIds) ? raw.technologyIds.map((t: any) => t.name || t.toString()) : [],
+    tech: Array.isArray(raw.technologyIds)
+      ? raw.technologyIds.map((t: any) => t.name || t.toString())
+      : [],
   };
 
   const demo: Demo = JSON.parse(JSON.stringify(mapped));

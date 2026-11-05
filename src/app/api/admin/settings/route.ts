@@ -12,18 +12,14 @@ export async function GET() {
     }
     return NextResponse.json(settings);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch settings" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Failed to fetch settings" }, { status: 500 });
   }
 }
 
 export async function PATCH(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
     await connectDB();
@@ -31,14 +27,11 @@ export async function PATCH(req: Request) {
     const settings = await Setting.findOneAndUpdate(
       {},
       { $set: body },
-      { upsert: true, returnDocument: "after" },
+      { upsert: true, returnDocument: "after" }
     );
 
     return NextResponse.json(settings);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to update settings" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Failed to update settings" }, { status: 500 });
   }
 }

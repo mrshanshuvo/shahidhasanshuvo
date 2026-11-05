@@ -12,11 +12,7 @@ interface Props {
   techList: string[];
 }
 
-export default function SkillsClient({
-  expertises,
-  brandTechs,
-  techList,
-}: Props) {
+export default function SkillsClient({ expertises, brandTechs, techList }: Props) {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -39,23 +35,23 @@ export default function SkillsClient({
     <section
       id="skills"
       ref={ref}
-      className="scroll-mt-28 relative py-16 bg-white dark:bg-slate-950 overflow-hidden"
+      className="relative scroll-mt-28 overflow-hidden bg-white py-16 dark:bg-slate-950"
     >
-      <div className="absolute top-20 left-0 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl" />
+      <div className="absolute top-20 left-0 h-72 w-72 rounded-full bg-emerald-500/5 blur-3xl" />
 
-      <div className="relative max-w-350 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-350 px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10"
+          className="mb-10 flex flex-col justify-between gap-8 md:flex-row md:items-end"
         >
           <div className="text-left">
             <motion.h2
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="flex items-center gap-3 text-emerald-500 font-black uppercase tracking-[0.2em] text-sm md:text-lg mb-4"
+              className="mb-4 flex items-center gap-3 text-sm font-black tracking-[0.2em] text-emerald-500 uppercase md:text-lg"
             >
               <FaLayerGroup /> Technical Mastery
             </motion.h2>
@@ -69,14 +65,14 @@ export default function SkillsClient({
           >
             <motion.div
               variants={itemVariants}
-              className="backdrop-blur-xl rounded-[1rem] p-10 border border-slate-200/50 dark:border-white/10 shadow-xl"
+              className="rounded-[1rem] border border-slate-200/50 p-10 shadow-xl backdrop-blur-xl dark:border-white/10"
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
+              <div className="grid grid-cols-1 gap-x-12 gap-y-8 sm:grid-cols-2">
                 {expertises.map((skill) => {
                   return (
                     <motion.div key={skill.name} variants={itemVariants}>
                       <div className="flex items-start gap-5">
-                        <div className="rounded-2xl flex items-center justify-center transition-transform">
+                        <div className="flex items-center justify-center rounded-2xl transition-transform">
                           {skill.iconUrl ? (
                             <Image
                               src={skill.iconUrl}
@@ -86,16 +82,16 @@ export default function SkillsClient({
                               className="object-contain"
                             />
                           ) : (
-                            <FaCode className="text-emerald-500 text-3xl" />
+                            <FaCode className="text-3xl text-emerald-500" />
                           )}
                         </div>
                         <div className="flex-1">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="font-bold text-lg text-slate-900 dark:text-white">
+                          <div className="mb-2 flex items-center justify-between">
+                            <span className="text-lg font-bold text-slate-900 dark:text-white">
                               {skill.name}
                             </span>
                           </div>
-                          <div className="text-sm text-slate-500 dark:text-slate-400 mb-3 font-medium">
+                          <div className="mb-3 text-sm font-medium text-slate-500 dark:text-slate-400">
                             {skill.tech}
                           </div>
                         </div>
@@ -113,18 +109,18 @@ export default function SkillsClient({
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <div className="text-center mb-8">
+            <div className="mb-8 text-center">
               <h4 className="font-display text-2xl font-bold text-slate-900 dark:text-white">
                 Technologies I Work With
               </h4>
             </div>
-            <div className="overflow-hidden relative py-6">
+            <div className="relative overflow-hidden py-6">
               {/* Premium Gradient Edge Fade Overlays */}
-              <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-linear-to-r from-white dark:from-slate-950 to-transparent z-10 pointer-events-none" />
-              <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-linear-to-l from-white dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-white to-transparent md:w-32 dark:from-slate-950" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-white to-transparent md:w-32 dark:from-slate-950" />
 
               <motion.div
-                className="flex flex-nowrap w-max"
+                className="flex w-max flex-nowrap"
                 animate={{ x: ["0%", "-33.3333%"] }}
                 transition={{
                   x: {
@@ -137,13 +133,13 @@ export default function SkillsClient({
               >
                 {/* Triple the list inside identical tracks to guarantee mathematically perfect seamless looping on any screen size */}
                 {[0, 1, 2].map((trackIndex) => (
-                  <div key={trackIndex} className="flex gap-12 shrink-0 pr-12">
+                  <div key={trackIndex} className="flex shrink-0 gap-12 pr-12">
                     {marqueeItems.map((tech, techIndex) => {
                       return (
                         <Badge
                           key={`${trackIndex}-${techIndex}`}
                           variant="outline"
-                          className="flex items-center gap-3 px-5 py-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium whitespace-nowrap shadow-sm hover:border-emerald-500/30 dark:hover:border-emerald-400/30 hover:text-emerald-500 dark:hover:text-emerald-400 hover:scale-102 transition-all cursor-default"
+                          className="flex cursor-default items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-5 py-4 font-medium whitespace-nowrap text-slate-700 shadow-sm transition-all hover:scale-102 hover:border-emerald-500/30 hover:text-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-emerald-400/30 dark:hover:text-emerald-400"
                         >
                           {tech.iconUrl ? (
                             <Image

@@ -39,7 +39,7 @@ export default function TechCombobox({
   }, []);
 
   const filtered = technologies.filter((t) =>
-    t.name.toLowerCase().includes(search.toLowerCase()),
+    t.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const toggleTech = (name: string) => {
@@ -59,14 +59,14 @@ export default function TechCombobox({
       <div
         onClick={() => setOpen(!open)}
         className={cn(
-          "w-full flex flex-wrap gap-2.5 p-2.5 min-h-14 bg-white dark:bg-slate-950/50 border border-slate-200 dark:border-white/5 rounded-2xl transition-all cursor-pointer outline-none",
+          "flex min-h-14 w-full cursor-pointer flex-wrap gap-2.5 rounded-2xl border border-slate-200 bg-white p-2.5 transition-all outline-none dark:border-white/5 dark:bg-slate-950/50",
           open
             ? "border-emerald-500/50 ring-2 ring-emerald-500/20"
-            : "border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10",
+            : "border-slate-200 hover:border-slate-300 dark:border-white/5 dark:hover:border-white/10"
         )}
       >
         {value.length === 0 && (
-          <div className="flex items-center h-10 px-3 text-slate-500 text-sm font-bold">
+          <div className="flex h-10 items-center px-3 text-sm font-bold text-slate-500">
             Select Technologies
           </div>
         )}
@@ -79,7 +79,7 @@ export default function TechCombobox({
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="flex items-center gap-1.5 pl-3.5 pr-2 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 shadow-sm"
+                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 py-1.5 pr-2 pl-3.5 text-xs font-bold text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
               >
                 {iconUrl && (
                   <Image
@@ -96,7 +96,7 @@ export default function TechCombobox({
                     e.stopPropagation();
                     toggleTech(val);
                   }}
-                  className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-md transition-colors cursor-pointer"
+                  className="cursor-pointer rounded-md p-1 transition-colors hover:bg-slate-200 dark:hover:bg-slate-800"
                 >
                   <FaTimes size={10} />
                 </button>
@@ -108,27 +108,27 @@ export default function TechCombobox({
         <div className="flex items-center px-3">
           <FaChevronDown
             className={cn(
-              "text-slate-500 text-xs transition-transform",
-              open && "rotate-180",
+              "text-xs text-slate-500 transition-transform",
+              open && "rotate-180"
             )}
           />
         </div>
       </div>
 
       {open && (
-        <div className="absolute top-full left-0 mt-2 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col p-2 animate-in fade-in zoom-in-95 duration-200">
-          <div className="flex items-center bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-white/5 rounded-xl px-3 py-2.5 mb-2 focus-within:border-emerald-500/50 transition-colors">
-            <FaSearch className="text-slate-500 mr-2 shrink-0" size={12} />
+        <div className="animate-in fade-in zoom-in-95 absolute top-full left-0 z-50 mt-2 flex w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl duration-200 dark:border-white/10 dark:bg-slate-900">
+          <div className="mb-2 flex items-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 transition-colors focus-within:border-emerald-500/50 dark:border-white/5 dark:bg-slate-950/50">
+            <FaSearch className="mr-2 shrink-0 text-slate-500" size={12} />
             <input
               autoFocus
-              className="bg-transparent border-none focus:ring-0 text-sm text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-600 w-full outline-none font-medium h-9"
+              className="h-9 w-full border-none bg-transparent text-sm font-medium text-slate-900 outline-none placeholder:text-slate-500 focus:ring-0 dark:text-white dark:placeholder:text-slate-600"
               placeholder="Search technologies..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
-          <div className="max-h-60 overflow-y-auto custom-scrollbar flex flex-col gap-1 pr-1">
+          <div className="custom-scrollbar flex max-h-60 flex-col gap-1 overflow-y-auto pr-1">
             {filtered.length > 0 ? (
               filtered.map((t) => {
                 const isActive = value.includes(t.name);
@@ -138,10 +138,10 @@ export default function TechCombobox({
                     type="button"
                     onClick={() => toggleTech(t.name)}
                     className={cn(
-                      "flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-colors text-left w-full cursor-pointer",
+                      "flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition-colors",
                       isActive
-                        ? "bg-slate-50 dark:bg-white/5 text-emerald-400 font-bold"
-                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white",
+                        ? "bg-slate-50 font-bold text-emerald-400 dark:bg-white/5"
+                        : "text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white"
                     )}
                   >
                     <div className="flex items-center gap-2.5">
@@ -151,24 +151,21 @@ export default function TechCombobox({
                           alt={t.name}
                           width={14}
                           height={14}
-                          className="object-contain shrink-0"
+                          className="shrink-0 object-contain"
                         />
                       ) : (
-                        <div className="w-3.5 h-3.5 rounded-full shrink-0 bg-slate-200 dark:bg-slate-800" />
+                        <div className="h-3.5 w-3.5 shrink-0 rounded-full bg-slate-200 dark:bg-slate-800" />
                       )}
                       <span className="truncate">{t.name}</span>
                     </div>
                     {isActive && (
-                      <FaCheck
-                        size={10}
-                        className="shrink-0 ml-2 text-emerald-500"
-                      />
+                      <FaCheck size={10} className="ml-2 shrink-0 text-emerald-500" />
                     )}
                   </button>
                 );
               })
             ) : (
-              <div className="px-3 py-6 text-center text-xs font-bold uppercase tracking-widest text-slate-600">
+              <div className="px-3 py-6 text-center text-xs font-bold tracking-widest text-slate-600 uppercase">
                 No tools found. Add them in Skill section first.
               </div>
             )}

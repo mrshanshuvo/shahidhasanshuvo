@@ -11,23 +11,16 @@ import Demo from "@/models/Demo";
 export async function GET() {
   await connectDB();
 
-  const [
-    hero,
-    socialLinks,
-    skills,
-    technologies,
-    certifications,
-    blogs,
-    demos,
-  ] = await Promise.all([
-    Hero.findOne().lean(),
-    SocialLink.find().sort({ order: 1 }).lean(),
-    Skill.find().sort({ order: 1 }).lean(),
-    Technology.find().sort({ order: 1 }).lean(),
-    Certification.find().sort({ order: 1 }).lean(),
-    Blog.find().sort({ order: 1 }).lean(),
-    Demo.find().sort({ order: 1 }).lean(),
-  ]);
+  const [hero, socialLinks, skills, technologies, certifications, blogs, demos] =
+    await Promise.all([
+      Hero.findOne().lean(),
+      SocialLink.find().sort({ order: 1 }).lean(),
+      Skill.find().sort({ order: 1 }).lean(),
+      Technology.find().sort({ order: 1 }).lean(),
+      Certification.find().sort({ order: 1 }).lean(),
+      Blog.find().sort({ order: 1 }).lean(),
+      Demo.find().sort({ order: 1 }).lean(),
+    ]);
 
   const profile = {
     ...(hero || {}),

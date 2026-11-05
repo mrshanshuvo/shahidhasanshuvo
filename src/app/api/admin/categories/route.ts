@@ -26,7 +26,7 @@ export async function PUT(req: Request) {
 
     // Clean slate synchronization
     await Category.deleteMany({});
-    
+
     if (items.length > 0) {
       const sanitized = items.map((it, idx) => {
         const name = (it.name || "Uncategorized").trim();

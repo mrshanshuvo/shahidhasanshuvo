@@ -7,8 +7,7 @@ import Technology from "@/models/Technology";
 export async function GET(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
@@ -16,19 +15,22 @@ export async function GET(req: Request) {
 
     if (id) {
       const item = await Demo.findById(id).populate("technologyIds").lean();
-      if (!item)
-        return NextResponse.json({ error: "Not found" }, { status: 404 });
+      if (!item) return NextResponse.json({ error: "Not found" }, { status: 404 });
       const it = item as any;
       return NextResponse.json({
         ...it,
-        tech: Array.isArray(it.technologyIds) ? it.technologyIds.map((t: any) => t.name || t.toString()) : []
+        tech: Array.isArray(it.technologyIds)
+          ? it.technologyIds.map((t: any) => t.name || t.toString())
+          : [],
       });
     }
 
     const data = await Demo.find().populate("technologyIds").sort({ order: 1 }).lean();
     const sanitized = data.map((d: any) => ({
       ...d,
-      tech: Array.isArray(d.technologyIds) ? d.technologyIds.map((t: any) => t.name || t.toString()) : []
+      tech: Array.isArray(d.technologyIds)
+        ? d.technologyIds.map((t: any) => t.name || t.toString())
+        : [],
     }));
     return NextResponse.json(sanitized);
   } catch (error) {
@@ -39,8 +41,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const body = await req.json();
@@ -56,7 +57,7 @@ export async function POST(req: Request) {
     const newItem = await Demo.create({
       ...body,
       technologyIds,
-      order
+      order,
     });
     return NextResponse.json(newItem);
   } catch (error) {
@@ -67,8 +68,7 @@ export async function POST(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
@@ -84,24 +84,22 @@ export async function PATCH(req: Request) {
         updatePayload.technologyIds = techs.map((t) => t._id);
       }
 
-      const updated = await Demo.findByIdAndUpdate(id, updatePayload, { returnDocument: "after" });
-      if (!updated)
-        return NextResponse.json({ error: "Not found" }, { status: 404 });
+      const updated = await Demo.findByIdAndUpdate(id, updatePayload, {
+        returnDocument: "after",
+      });
+      if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
       return NextResponse.json(updated);
     }
 
     if (Array.isArray(body)) {
       const updates = body.map((item, idx) =>
-        Demo.findByIdAndUpdate(item._id, { order: idx }),
+        Demo.findByIdAndUpdate(item._id, { order: idx })
       );
       await Promise.all(updates);
       return NextResponse.json({ message: "Order updated" });
     }
 
-    return NextResponse.json(
-      { error: "ID or array required" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "ID or array required" }, { status: 400 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to update" }, { status: 500 });
   }
@@ -110,19 +108,16 @@ export async function PATCH(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
-    if (!id)
-      return NextResponse.json({ error: "ID required" }, { status: 400 });
+    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
 
     const deleted = await Demo.findByIdAndDelete(id);
-    if (!deleted)
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (!deleted) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {
@@ -133,26 +128,29 @@ export async function DELETE(req: Request) {
 export async function PUT(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const items = await req.json();
 
     if (Array.isArray(items)) {
       // Resolve all technologyIds in a batch
-      const allTechNames = Array.from(new Set(items.flatMap((it: any) => Array.isArray(it.tech) ? it.tech : [])));
+      const allTechNames = Array.from(
+        new Set(items.flatMap((it: any) => (Array.isArray(it.tech) ? it.tech : [])))
+      );
       const allTechs = await Technology.find({ name: { $in: allTechNames } });
-      const techsMap = new Map(allTechs.map(t => [t.name, t._id]));
+      const techsMap = new Map(allTechs.map((t) => [t.name, t._id]));
 
       const updates = items.map((item, idx) => {
         const techList = Array.isArray(item.tech) ? item.tech : [];
-        const technologyIds = techList.map((name: string) => techsMap.get(name)).filter(Boolean);
+        const technologyIds = techList
+          .map((name: string) => techsMap.get(name))
+          .filter(Boolean);
 
         return Demo.findByIdAndUpdate(
           item._id,
           { ...item, technologyIds, order: idx },
-          { upsert: true },
+          { upsert: true }
         );
       });
       await Promise.all(updates);

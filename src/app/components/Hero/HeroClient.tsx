@@ -30,7 +30,7 @@ export default function HeroClient({ hero }: Props) {
     // Links: [text](url) -> <a href="url" target="_blank" rel="noopener noreferrer">text</a>
     html = html.replace(
       /\[(.*?)\]\((.*?)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
     );
     return html;
   };
@@ -38,27 +38,27 @@ export default function HeroClient({ hero }: Props) {
   return (
     <section
       id="about"
-      className="min-h-screen pt-28 pb-16 md:pt-32 md:pb-20 flex items-center justify-center relative overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-500 scroll-mt-24"
+      className="relative flex min-h-screen scroll-mt-24 items-center justify-center overflow-hidden bg-slate-50 pt-28 pb-16 transition-colors duration-500 md:pt-32 md:pb-20 dark:bg-slate-950"
     >
       <div id="home" className="absolute top-0" />
       {/* High-end Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] mask-[radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] bg-size-[4rem_4rem]" />
 
       {/* Premium Aurora Mesh Gradient */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-5%] w-160 h-160 bg-emerald-500/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-50 animate-blob" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-160 h-160 bg-blue-500/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-50 animate-blob animation-delay-2000" />
-        <div className="absolute top-[20%] left-[20%] w-120 h-120 bg-purple-500/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-30 animate-blob animation-delay-4000" />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="animate-blob absolute top-[-10%] right-[-5%] h-160 w-160 rounded-full bg-emerald-500/20 opacity-50 mix-blend-multiply blur-[100px] filter dark:mix-blend-screen" />
+        <div className="animate-blob animation-delay-2000 absolute bottom-[-10%] left-[-5%] h-160 w-160 rounded-full bg-blue-500/20 opacity-50 mix-blend-multiply blur-[100px] filter dark:mix-blend-screen" />
+        <div className="animate-blob animation-delay-4000 absolute top-[20%] left-[20%] h-120 w-120 rounded-full bg-purple-500/20 opacity-30 mix-blend-multiply blur-[100px] filter dark:mix-blend-screen" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Left Column: Hero Details */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 text-center lg:text-left flex flex-col items-center lg:items-start"
+            className="flex flex-col items-center text-center lg:col-span-5 lg:items-start lg:text-left"
           >
             {/* Profile image with Glassmorphism ring */}
             <motion.div
@@ -69,17 +69,17 @@ export default function HeroClient({ hero }: Props) {
                 delay: 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="relative inline-block mb-6"
+              className="relative mb-6 inline-block"
             >
-              <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full p-1.5 bg-white/10 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/20 dark:border-white/10 shadow-2xl">
-                <div className="absolute inset-0 bg-linear-to-r from-emerald-500 to-blue-500 rounded-full animate-spin-slow opacity-50 dark:opacity-100 blur-sm" />
-                <div className="relative w-full h-full rounded-full overflow-hidden border border-white dark:border-slate-800 z-10 bg-slate-100 dark:bg-slate-900">
+              <div className="relative h-28 w-28 rounded-full border border-slate-200/20 bg-white/10 p-1.5 shadow-2xl backdrop-blur-md md:h-32 md:w-32 dark:border-white/10 dark:bg-slate-900/50">
+                <div className="animate-spin-slow absolute inset-0 rounded-full bg-linear-to-r from-emerald-500 to-blue-500 opacity-50 blur-sm dark:opacity-100" />
+                <div className="relative z-10 h-full w-full overflow-hidden rounded-full border border-white bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
                   <Image
                     src={hero.profileImage}
                     alt={`${hero.name} ${hero.lastName} - Full Stack Developer`}
                     width={128}
                     height={128}
-                    className="object-cover w-full h-full"
+                    className="h-full w-full object-cover"
                     sizes="8rem"
                     priority
                   />
@@ -97,7 +97,7 @@ export default function HeroClient({ hero }: Props) {
                 ease: [0.16, 1, 0.3, 1],
               }}
             >
-              <h1 className="font-display text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tighter leading-tight">
+              <h1 className="font-display mb-3 text-4xl leading-tight font-black tracking-tighter text-slate-900 sm:text-5xl dark:text-white">
                 {hero.name}{" "}
                 <span className="text-emerald-500 dark:text-emerald-400">
                   {hero.lastName}
@@ -110,7 +110,7 @@ export default function HeroClient({ hero }: Props) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="font-mono text-base md:text-lg text-emerald-600 dark:text-emerald-400 mb-4 h-6 flex items-center justify-center lg:justify-start uppercase tracking-widest overflow-hidden font-bold"
+              className="mb-4 flex h-6 items-center justify-center overflow-hidden font-mono text-base font-bold tracking-widest text-emerald-600 uppercase md:text-lg lg:justify-start dark:text-emerald-400"
             >
               {typeSequence.length > 0 && (
                 <TypeAnimation
@@ -128,7 +128,7 @@ export default function HeroClient({ hero }: Props) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-base md:text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed max-w-md font-medium"
+              className="mb-8 max-w-md text-base leading-relaxed font-medium text-slate-600 md:text-lg dark:text-slate-400"
             >
               {hero.tagline}
             </motion.p>
@@ -138,12 +138,12 @@ export default function HeroClient({ hero }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center mb-8 w-full sm:w-auto"
+              className="mb-8 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row lg:justify-start"
             >
               <MagneticButton strength={15}>
                 <Button
                   onClick={scrollToProjects}
-                  className="group relative px-6 py-2.5 h-auto bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-900 font-bold rounded-full overflow-hidden transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 cursor-pointer text-sm"
+                  className="group relative h-auto cursor-pointer overflow-hidden rounded-full bg-slate-900 px-6 py-2.5 text-sm font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:bg-slate-800 hover:shadow-2xl dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
                 >
                   Explore My Work
                 </Button>
@@ -154,13 +154,9 @@ export default function HeroClient({ hero }: Props) {
                   variant="outline"
                   nativeButton={false}
                   render={
-                    <a
-                      href={hero.resumeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
+                    <a href={hero.resumeUrl} target="_blank" rel="noopener noreferrer" />
                   }
-                  className="px-6 py-2.5 h-auto border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-full transition-all duration-300 hover:border-slate-900 dark:hover:border-white hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 text-sm"
+                  className="h-auto rounded-full border border-slate-300 px-6 py-2.5 text-sm font-bold text-slate-700 transition-all duration-300 hover:border-slate-900 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:border-white dark:hover:bg-white/5 dark:hover:text-white"
                 >
                   Download Resume
                 </Button>
@@ -172,7 +168,7 @@ export default function HeroClient({ hero }: Props) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="flex justify-center lg:justify-start gap-4"
+              className="flex justify-center gap-4 lg:justify-start"
             >
               {hero.socialLinks.map((social, index) => {
                 const isEmail = social.label?.toLowerCase() === "email";
@@ -193,7 +189,7 @@ export default function HeroClient({ hero }: Props) {
                         type: "spring",
                         stiffness: 200,
                       }}
-                      className={`relative flex items-center justify-center w-10 h-10 text-slate-600 dark:text-slate-400 hover:text-white transition-colors duration-300 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-900 dark:hover:bg-slate-800 hover:border-slate-900 dark:hover:border-slate-700 shadow-sm hover:shadow-md group ${social.brandColor || ""}`}
+                      className={`group relative flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-slate-600 shadow-sm transition-colors duration-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800 ${social.brandColor || ""}`}
                       aria-label={social.label}
                     >
                       {social.iconUrl ? (
@@ -202,17 +198,17 @@ export default function HeroClient({ hero }: Props) {
                           alt={social.label}
                           width={24}
                           height={24}
-                          className={`object-contain group-hover:scale-110 transition-transform duration-300 ${social.invertDark ? "dark:invert" : ""}`}
+                          className={`object-contain transition-transform duration-300 group-hover:scale-110 ${social.invertDark ? "dark:invert" : ""}`}
                         />
                       ) : (
                         <FaLink
                           size={24}
-                          className="group-hover:scale-110 transition-transform duration-300"
+                          className="transition-transform duration-300 group-hover:scale-110"
                         />
                       )}
-                      <span className="absolute -bottom-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 px-3 py-1.5 bg-slate-900 dark:bg-slate-800 text-white text-xs font-medium rounded-md pointer-events-none whitespace-nowrap shadow-xl z-50 -translate-y-2 group-hover:translate-y-0">
+                      <span className="pointer-events-none absolute -bottom-12 left-1/2 z-50 -translate-x-1/2 -translate-y-2 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-white opacity-0 shadow-xl transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 dark:bg-slate-800">
                         {social.label}
-                        <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-slate-900 dark:bg-slate-800 rotate-45" />
+                        <span className="absolute -top-1 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rotate-45 bg-slate-900 dark:bg-slate-800" />
                       </span>
                     </motion.a>
                   </MagneticButton>
@@ -226,14 +222,9 @@ export default function HeroClient({ hero }: Props) {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 w-full flex items-center"
+            className="flex w-full items-center lg:col-span-7"
           >
-            <div
-              className="space-y-6 text-slate-600 dark:text-slate-400 text-base md:text-lg leading-relaxed font-normal
-              [&_a]:font-semibold [&_a]:text-slate-900 [&_a]:dark:text-slate-100 [&_a]:hover:text-emerald-500 [&_a]:dark:hover:text-emerald-400 [&_a]:transition-colors [&_a]:duration-200 [&_a]:cursor-pointer
-              [&_strong]:font-semibold [&_strong]:text-slate-900 [&_strong]:dark:text-slate-100
-              [&_b]:font-semibold [&_b]:text-slate-900 [&_b]:dark:text-slate-100"
-            >
+            <div className="space-y-6 text-base leading-relaxed font-normal text-slate-600 md:text-lg dark:text-slate-400 [&_a]:cursor-pointer [&_a]:font-semibold [&_a]:text-slate-900 [&_a]:transition-colors [&_a]:duration-200 [&_a]:hover:text-emerald-500 [&_a]:dark:text-slate-100 [&_a]:dark:hover:text-emerald-400 [&_b]:font-semibold [&_b]:text-slate-900 [&_b]:dark:text-slate-100 [&_strong]:font-semibold [&_strong]:text-slate-900 [&_strong]:dark:text-slate-100">
               {(hero.bio || "").split("\n\n").map(
                 (para, i) =>
                   para.trim() && (
@@ -243,7 +234,7 @@ export default function HeroClient({ hero }: Props) {
                         __html: parseMarkdown(para),
                       }}
                     />
-                  ),
+                  )
               )}
             </div>
           </motion.div>

@@ -26,9 +26,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Signature error:", error);
-    return NextResponse.json(
-      { error: "Failed to generate signature" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to generate signature" }, { status: 500 });
   }
 }

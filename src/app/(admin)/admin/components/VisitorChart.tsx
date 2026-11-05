@@ -14,7 +14,7 @@ interface VisitorChartProps {
 export default function VisitorChart({ data }: VisitorChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className="h-24 w-full flex items-center justify-center mt-4 border border-dashed border-white/10 rounded-xl text-slate-500 text-sm">
+      <div className="mt-4 flex h-24 w-full items-center justify-center rounded-xl border border-dashed border-white/10 text-sm text-slate-500">
         No data available yet
       </div>
     );
@@ -60,8 +60,8 @@ export default function VisitorChart({ data }: VisitorChartProps) {
 
   return (
     <div className="mt-4">
-      <div className="flex justify-between items-end mb-2">
-        <span className="text-xs text-slate-400 font-medium">Last 7 Days</span>
+      <div className="mb-2 flex items-end justify-between">
+        <span className="text-xs font-medium text-slate-400">Last 7 Days</span>
         <div
           className={`flex items-center gap-1 text-xs font-bold ${isPositive ? "text-emerald-400" : "text-red-400"}`}
         >
@@ -69,10 +69,10 @@ export default function VisitorChart({ data }: VisitorChartProps) {
         </div>
       </div>
 
-      <div className="relative h-24 w-full bg-slate-950/30 rounded-xl overflow-hidden border border-white/5">
+      <div className="relative h-24 w-full overflow-hidden rounded-xl border border-white/5 bg-slate-950/30">
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          className="w-full h-full preserve-3d"
+          className="preserve-3d h-full w-full"
           preserveAspectRatio="none"
         >
           <defs>
@@ -117,7 +117,7 @@ export default function VisitorChart({ data }: VisitorChartProps) {
               fill="#10b981"
               stroke="#020617"
               strokeWidth="2"
-              className="cursor-pointer transition-transform hover:r-6"
+              className="hover:r-6 cursor-pointer transition-transform"
             >
               <title>{`${p.date}: ${p.count} visitors`}</title>
             </motion.circle>

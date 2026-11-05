@@ -30,13 +30,10 @@ export default function PlaygroundCard({
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="relative h-100 sm:h-112.5 w-full"
+      className="relative h-100 w-full sm:h-112.5"
     >
-      <div className="group relative bg-slate-900 rounded-xl border border-white/10 overflow-hidden flex flex-col h-full w-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:border-purple-500/30 hover:shadow-[0_20px_50px_rgba(168,85,247,0.15)]">
-        <Link
-          href={`/playground/${demo.slug}`}
-          className="absolute inset-0 z-20"
-        >
+      <div className="group relative flex h-full w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-slate-900 shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:border-purple-500/30 hover:shadow-[0_20px_50px_rgba(168,85,247,0.15)]">
+        <Link href={`/playground/${demo.slug}`} className="absolute inset-0 z-20">
           <span className="sr-only">View Lab Experiment Details</span>
         </Link>
 
@@ -59,16 +56,16 @@ export default function PlaygroundCard({
           <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-900/60 to-slate-900/10 opacity-90 transition-opacity duration-500 group-hover:opacity-85" />
 
           {/* Radial accent glow that highlights on hover */}
-          <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/10 rounded-full blur-[60px] group-hover:bg-purple-500/20 transition-all duration-500 pointer-events-none" />
+          <div className="pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-purple-500/10 blur-[60px] transition-all duration-500 group-hover:bg-purple-500/20" />
         </div>
 
         {/* Top Section: Badges & Buttons */}
-        <div className="absolute top-5 left-5 right-5 flex justify-between items-start z-30 pointer-events-none">
+        <div className="pointer-events-none absolute top-5 right-5 left-5 z-30 flex items-start justify-between">
           {/* Left: Code Icon & Featured Badge */}
-          <div className="flex items-center gap-2 pointer-events-auto">
+          <div className="pointer-events-auto flex items-center gap-2">
             {demo.featured && (
               <div
-                className="flex items-center justify-center px-3 py-1.5 bg-linear-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold tracking-widest uppercase rounded-full shadow-lg shrink-0"
+                className="flex shrink-0 items-center justify-center rounded-full bg-linear-to-r from-amber-500 to-orange-500 px-3 py-1.5 text-[10px] font-bold tracking-widest text-white uppercase shadow-lg"
                 title="Featured Experiment"
               >
                 <FaStar className="text-[10px]" />
@@ -77,15 +74,13 @@ export default function PlaygroundCard({
           </div>
 
           {/* Right: Live Demo Action Buttons */}
-          <div className="shrink-0 flex items-center gap-2 pointer-events-auto">
+          <div className="pointer-events-auto flex shrink-0 items-center gap-2">
             <Button
               variant="outline"
               size="icon"
               nativeButton={false}
-              render={
-                <a href={demo.url} target="_blank" rel="noopener noreferrer" />
-              }
-              className="rounded-full p-7 text-white bg-white/10 border border-white/20 backdrop-blur-md hover:text-purple-400 hover:bg-white/10 hover:border-purple-400/50 transition-colors shadow-lg"
+              render={<a href={demo.url} target="_blank" rel="noopener noreferrer" />}
+              className="rounded-full border border-white/20 bg-white/10 p-7 text-white shadow-lg backdrop-blur-md transition-colors hover:border-purple-400/50 hover:bg-white/10 hover:text-purple-400"
               title="Open Lab Experiment"
             >
               <FaExternalLinkAlt className="size-6 drop-shadow-sm" />
@@ -94,15 +89,15 @@ export default function PlaygroundCard({
         </div>
 
         {/* Floating Content at Bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col z-30 pointer-events-none">
+        <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-30 flex flex-col p-6">
           <div className="mb-3">
-            <h3 className="font-display text-2xl font-bold text-purple-400 group-hover:text-purple-300 transition-colors duration-300 line-clamp-1 drop-shadow-md flex items-center gap-1.5">
+            <h3 className="font-display line-clamp-1 flex items-center gap-1.5 text-2xl font-bold text-purple-400 drop-shadow-md transition-colors duration-300 group-hover:text-purple-300">
               <span>{demo.title}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="inline-block h-5 w-5 shrink-0 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 motion-reduce:transition-none opacity-60 group-hover:opacity-100"
+                className="inline-block h-5 w-5 shrink-0 opacity-60 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100 motion-reduce:transition-none"
                 aria-hidden="true"
               >
                 <path
@@ -114,19 +109,19 @@ export default function PlaygroundCard({
             </h3>
           </div>
 
-          <p className="text-slate-300 group-hover:text-slate-100 transition-colors duration-300 text-sm leading-relaxed mb-6 line-clamp-2 font-medium drop-shadow-sm">
+          <p className="mb-6 line-clamp-2 text-sm leading-relaxed font-medium text-slate-300 drop-shadow-sm transition-colors duration-300 group-hover:text-slate-100">
             {demo.description}
           </p>
 
           {/* Tech stack */}
-          <div className="flex flex-wrap gap-2 pointer-events-auto">
+          <div className="pointer-events-auto flex flex-wrap gap-2">
             {(demo.tech || []).slice(0, 4).map((name) => {
               const iconUrl = iconRegistry?.[name];
               return (
                 <Badge
                   key={name}
                   variant="outline"
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/10 dark:bg-purple-950/40 border border-purple-500/20 text-purple-300 rounded-xl text-[10px] font-bold shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-purple-400/40 group-hover:bg-purple-500/20 group-hover:text-purple-200"
+                  className="flex items-center gap-1.5 rounded-xl border border-purple-500/20 bg-purple-500/10 px-3 py-1.5 text-[10px] font-bold text-purple-300 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-purple-400/40 group-hover:bg-purple-500/20 group-hover:text-purple-200 dark:bg-purple-950/40"
                   title={name}
                 >
                   {iconUrl && (
@@ -135,7 +130,7 @@ export default function PlaygroundCard({
                       alt={name}
                       width={14}
                       height={14}
-                      className="object-contain shrink-0"
+                      className="shrink-0 object-contain"
                     />
                   )}
                   {name}
@@ -145,7 +140,7 @@ export default function PlaygroundCard({
             {(demo.tech || []).length > 4 && (
               <Badge
                 variant="outline"
-                className="flex items-center justify-center px-2 py-1.5 bg-purple-500/10 dark:bg-purple-950/40 border border-purple-500/20 text-purple-300 rounded-xl text-[10px] font-bold shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-purple-400/40 group-hover:bg-purple-500/20 group-hover:text-purple-200"
+                className="flex items-center justify-center rounded-xl border border-purple-500/20 bg-purple-500/10 px-2 py-1.5 text-[10px] font-bold text-purple-300 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-purple-400/40 group-hover:bg-purple-500/20 group-hover:text-purple-200 dark:bg-purple-950/40"
               >
                 +{(demo.tech?.length || 0) - 4}
               </Badge>

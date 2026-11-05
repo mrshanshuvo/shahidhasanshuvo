@@ -6,8 +6,7 @@ import Technology from "@/models/Technology";
 export async function GET(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
@@ -15,8 +14,7 @@ export async function GET(req: Request) {
 
     if (id) {
       const item = await Technology.findById(id).lean();
-      if (!item)
-        return NextResponse.json({ error: "Not found" }, { status: 404 });
+      if (!item) return NextResponse.json({ error: "Not found" }, { status: 404 });
       return NextResponse.json(item);
     }
 
@@ -30,8 +28,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const body = await req.json();
@@ -49,8 +46,7 @@ export async function POST(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
@@ -61,14 +57,13 @@ export async function PATCH(req: Request) {
       const updated = await Technology.findByIdAndUpdate(id, body, {
         returnDocument: "after",
       });
-      if (!updated)
-        return NextResponse.json({ error: "Not found" }, { status: 404 });
+      if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
       return NextResponse.json(updated);
     }
 
     if (Array.isArray(body)) {
       const updates = body.map((item, idx) =>
-        Technology.findByIdAndUpdate(item._id, { order: idx }),
+        Technology.findByIdAndUpdate(item._id, { order: idx })
       );
       await Promise.all(updates);
       return NextResponse.json({ message: "Order updated" });
@@ -83,19 +78,16 @@ export async function PATCH(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
-    if (!id)
-      return NextResponse.json({ error: "ID required" }, { status: 400 });
+    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
 
     const deleted = await Technology.findByIdAndDelete(id);
-    if (!deleted)
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (!deleted) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {

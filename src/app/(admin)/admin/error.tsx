@@ -18,32 +18,31 @@ export default function AdminError({
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] p-4">
+    <div className="flex min-h-[70vh] flex-col items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-lg"
       >
-        <Card className="bg-slate-900/40 border-red-500/20 backdrop-blur-2xl rounded-2xl overflow-hidden shadow-2xl shadow-red-500/5">
-          <CardContent className="p-8 md:p-12 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-500/10 rounded-2xl mb-6">
-              <FaExclamationCircle className="text-red-500 text-2xl" />
+        <Card className="overflow-hidden rounded-2xl border-red-500/20 bg-slate-900/40 shadow-2xl shadow-red-500/5 backdrop-blur-2xl">
+          <CardContent className="p-8 text-center md:p-12">
+            <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-red-500/10">
+              <FaExclamationCircle className="text-2xl text-red-500" />
             </div>
 
-            <h2 className="text-2xl font-black text-white mb-3 tracking-tight">
+            <h2 className="mb-3 text-2xl font-black tracking-tight text-white">
               Module <span className="text-red-500">Failed</span> to Load
             </h2>
 
-            <p className="text-slate-400 text-sm font-medium mb-8 leading-relaxed">
-              We encountered a runtime error while synchronizing this module.
-              This is usually temporary and can be resolved by re-attempting the
-              data fetch.
+            <p className="mb-8 text-sm leading-relaxed font-medium text-slate-400">
+              We encountered a runtime error while synchronizing this module. This is
+              usually temporary and can be resolved by re-attempting the data fetch.
             </p>
 
             <div className="space-y-4">
               <Button
                 onClick={() => reset()}
-                className="w-full bg-red-600 hover:bg-red-500 text-white rounded-2xl font-bold py-6 shadow-lg shadow-red-600/20"
+                className="w-full rounded-2xl bg-red-600 py-6 font-bold text-white shadow-lg shadow-red-600/20 hover:bg-red-500"
               >
                 <FaSyncAlt className="mr-2 text-xs" />
                 Retry Module Initialization
@@ -52,7 +51,7 @@ export default function AdminError({
               <Button
                 variant="ghost"
                 onClick={() => window.history.back()}
-                className="w-full text-slate-500 hover:text-white hover:bg-white/5 rounded-2xl py-6"
+                className="w-full rounded-2xl py-6 text-slate-500 hover:bg-white/5 hover:text-white"
               >
                 <FaArrowLeft className="mr-2 text-xs" />
                 Return to Previous Section
@@ -60,7 +59,7 @@ export default function AdminError({
             </div>
 
             {error.digest && (
-              <p className="mt-8 text-[10px] font-mono text-slate-700 uppercase tracking-widest">
+              <p className="mt-8 font-mono text-[10px] tracking-widest text-slate-700 uppercase">
                 ID: {error.digest}
               </p>
             )}

@@ -27,7 +27,7 @@ export async function connectDB(): Promise<mongoose.Connection> {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
     throw new Error(
-      "Please define the MONGODB_URI environment variable in your Vercel project settings (or .env.local for local dev).",
+      "Please define the MONGODB_URI environment variable in your Vercel project settings (or .env.local for local dev)."
     );
   }
 

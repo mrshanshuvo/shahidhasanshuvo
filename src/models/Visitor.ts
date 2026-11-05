@@ -10,7 +10,7 @@ const VisitorSchema = new Schema<IVisitor>(
     date: { type: Date, required: true, unique: true },
     count: { type: Number, default: 0 },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Force delete the model from mongoose.models in development to pick up schema changes

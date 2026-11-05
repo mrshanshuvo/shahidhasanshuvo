@@ -42,11 +42,7 @@ import { cn, formatRelativeTime } from "@/lib/utils";
 import ImageUpload from "../components/ImageUpload";
 import DateTimePicker from "../components/DateTimePicker";
 import { AdminDialogShell } from "../components/AdminDialogShell";
-import {
-  AdminField,
-  AdminInput,
-  AdminTextarea,
-} from "../components/AdminFields";
+import { AdminField, AdminInput, AdminTextarea } from "../components/AdminFields";
 
 interface Blog {
   _id?: string;
@@ -70,14 +66,8 @@ function SortableBlogRow({
   onDelete: () => void;
   isDeleting: boolean;
 }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: item._id! });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: item._id! });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -89,53 +79,48 @@ function SortableBlogRow({
     <div
       ref={setNodeRef}
       style={style}
-      className="group relative flex items-center gap-4 bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 rounded-[1.5rem] p-2 transition-all duration-300 shadow-sm dark:shadow-none"
+      className="group relative flex items-center gap-4 rounded-[1.5rem] border border-slate-200 bg-white p-2 shadow-sm backdrop-blur-xl transition-all duration-300 hover:border-slate-300 dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none dark:hover:border-white/10"
     >
       {/* Drag handle */}
       <div
         {...attributes}
         {...listeners}
-        className="cursor-grab active:cursor-grabbing text-slate-700 hover:text-slate-400 transition-colors shrink-0 touch-none"
+        className="shrink-0 cursor-grab touch-none text-slate-700 transition-colors hover:text-slate-400 active:cursor-grabbing"
       >
         <FaGripVertical size={14} />
       </div>
 
       {/* Thumbnail */}
-      <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-white/5">
+      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-white/5 dark:bg-slate-800">
         {item.image ? (
-          <div className="relative w-full h-full">
-            <Image
-              src={item.image}
-              alt={item.title}
-              fill
-              className="object-cover"
-            />
+          <div className="relative h-full w-full">
+            <Image src={item.image} alt={item.title} fill className="object-cover" />
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-700 dark:text-slate-400">
+          <div className="flex h-full w-full items-center justify-center text-slate-700 dark:text-slate-400">
             <FaNewspaper size={20} />
           </div>
         )}
       </div>
 
       {/* Info */}
-      <div className="flex-1 min-w-0 space-y-1.5">
+      <div className="min-w-0 flex-1 space-y-1.5">
         <div className="flex items-center gap-2">
-          <h3 className="font-bold text-slate-900 dark:text-white text-sm truncate">
+          <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
             {item.title}
           </h3>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           {item.tags.slice(0, 3).map((t, i) => (
             <span
               key={i}
-              className="text-[10px] text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/50 border border-slate-200/60 dark:border-white/5 px-1.5 py-0.5 rounded-md font-medium"
+              className="rounded-md border border-slate-200/60 bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:border-white/5 dark:bg-slate-800/50 dark:text-slate-400"
             >
               {t}
             </span>
           ))}
           {item.tags.length > 3 && (
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
               +{item.tags.length - 3}
             </span>
           )}
@@ -153,12 +138,12 @@ function SortableBlogRow({
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 transition-opacity shrink-0">
+      <div className="flex shrink-0 items-center gap-2 transition-opacity">
         <Button
           variant="ghost"
           size="icon"
           onClick={onEdit}
-          className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-500/10 dark:hover:bg-orange-500/15 transition-all"
+          className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-100 text-slate-600 transition-all hover:bg-orange-500/10 hover:text-orange-600 dark:border-white/5 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-orange-500/15 dark:hover:text-orange-400"
         >
           <FaEdit size={12} />
         </Button>
@@ -167,10 +152,10 @@ function SortableBlogRow({
           size="icon"
           onClick={onDelete}
           disabled={isDeleting}
-          className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10 dark:hover:bg-red-500/15 disabled:opacity-40 transition-all"
+          className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-100 text-slate-600 transition-all hover:bg-red-500/10 hover:text-red-600 disabled:opacity-40 dark:border-white/5 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-red-500/15 dark:hover:text-red-400"
         >
           {isDeleting ? (
-            <div className="h-3 w-3 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
+            <div className="h-3 w-3 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
           ) : (
             <FaTrash size={12} />
           )}
@@ -182,48 +167,43 @@ function SortableBlogRow({
 
 function BlogOverlay({ item }: { item: Blog }) {
   return (
-    <div className="flex items-center gap-4 bg-white dark:bg-slate-800 border border-orange-500/30 rounded-2xl p-4 shadow-2xl scale-105 min-w-[320px]">
-      <div className="cursor-grabbing text-orange-500 shrink-0">
+    <div className="flex min-w-[320px] scale-105 items-center gap-4 rounded-2xl border border-orange-500/30 bg-white p-4 shadow-2xl dark:bg-slate-800">
+      <div className="shrink-0 cursor-grabbing text-orange-500">
         <FaGripVertical size={14} />
       </div>
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <div className="flex items-center gap-3">
-          <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-white/5">
+          <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-white/5 dark:bg-slate-800">
             {item.image ? (
-              <div className="relative w-full h-full">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative h-full w-full">
+                <Image src={item.image} alt={item.title} fill className="object-cover" />
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-slate-700 dark:text-slate-400">
+              <div className="flex h-full w-full items-center justify-center text-slate-700 dark:text-slate-400">
                 <FaNewspaper size={20} />
               </div>
             )}
           </div>
           <div className="min-w-0">
-            <h3 className="font-bold text-slate-900 dark:text-white truncate text-sm">
+            <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
               {item.title}
             </h3>
-            <div className="flex gap-1 mt-0.5 flex-wrap">
+            <div className="mt-0.5 flex flex-wrap gap-1">
               {item.tags.slice(0, 3).map((t, i) => (
                 <span
                   key={i}
-                  className="text-[10px] text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/50 border border-slate-200/60 dark:border-white/5 px-1.5 py-0.5 rounded-md font-medium"
+                  className="rounded-md border border-slate-200/60 bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:border-white/5 dark:bg-slate-800/50 dark:text-slate-400"
                 >
                   {t}
                 </span>
               ))}
               {item.tags.length > 3 && (
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
                   +{item.tags.length - 3}
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-3 text-[10px] text-slate-600 dark:text-slate-400 mt-1">
+            <div className="mt-1 flex items-center gap-3 text-[10px] text-slate-600 dark:text-slate-400">
               <span className="flex items-center gap-1">
                 <FaCalendarAlt size={9} /> {formatRelativeTime(item.date)}
               </span>
@@ -259,7 +239,7 @@ export default function AdminBlogsPage() {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    }),
+    })
   );
 
   function showToast(msg: string, type: "success" | "error" = "success") {
@@ -304,7 +284,6 @@ export default function AdminBlogsPage() {
   });
 
   async function handleDelete(id: string) {
-
     setDeletingId(id);
     deleteMutation.mutate(id);
   }
@@ -312,9 +291,7 @@ export default function AdminBlogsPage() {
   const saveMutation = useMutation({
     mutationFn: async (blog: Blog) => {
       const isEdit = !!blog._id;
-      const url = isEdit
-        ? `/api/admin/blogs?id=${blog._id}`
-        : "/api/admin/blogs";
+      const url = isEdit ? `/api/admin/blogs?id=${blog._id}` : "/api/admin/blogs";
       const method = isEdit ? "PATCH" : "POST";
       const res = await fetch(url, {
         method,
@@ -378,9 +355,7 @@ export default function AdminBlogsPage() {
     const mSearch =
       d.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       d.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (d.tags ?? []).some((t) =>
-        t.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
+      (d.tags ?? []).some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
     return mSearch;
   });
 
@@ -393,7 +368,7 @@ export default function AdminBlogsPage() {
       onDragStart={(e) => setActiveId(e.active.id as string)}
       onDragEnd={handleDragEnd}
     >
-      <div className="p-4 md:p-8 space-y-6 font-sans">
+      <div className="space-y-6 p-4 font-sans md:p-8">
         <AnimatePresence>
           {toast && (
             <motion.div
@@ -401,42 +376,34 @@ export default function AdminBlogsPage() {
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: -20, x: "-50%" }}
               className={cn(
-                "fixed top-8 left-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl",
+                "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
                 toast.type === "success"
-                  ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                  : "bg-red-500/20 border-red-500/50 text-red-400",
+                  ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
+                  : "border-red-500/50 bg-red-500/20 text-red-400"
               )}
             >
               <div
                 className={cn(
-                  "p-1.5 rounded-full",
-                  toast.type === "success"
-                    ? "bg-emerald-500/20"
-                    : "bg-red-500/20",
+                  "rounded-full p-1.5",
+                  toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
                 )}
               >
-                {toast.type === "success" ? (
-                  <FaCheck size={10} />
-                ) : (
-                  <FaTimes size={10} />
-                )}
+                {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
               </div>
-              <span className="font-bold text-sm tracking-tight">
-                {toast.msg}
-              </span>
+              <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 shadow-sm dark:shadow-none">
-          <div className="flex items-center gap-4 flex-wrap flex-1">
-            <div className="relative flex-1 min-w-45 max-w-xs">
+        <div className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm backdrop-blur-xl md:flex-row md:items-center dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">
+          <div className="flex flex-1 flex-wrap items-center gap-4">
+            <div className="relative max-w-xs min-w-45 flex-1">
               <FaSearch
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600"
+                className="absolute top-1/2 left-3.5 -translate-y-1/2 text-slate-600"
                 size={12}
               />
               <Input
-                className="bg-white dark:bg-slate-950 border-slate-200 dark:border-white/5 rounded-xl pl-9 h-10 text-xs focus-visible:ring-orange-500/30 text-slate-900 dark:text-white shadow-sm dark:shadow-none"
+                className="h-10 rounded-xl border-slate-200 bg-white pl-9 text-xs text-slate-900 shadow-sm focus-visible:ring-orange-500/30 dark:border-white/5 dark:bg-slate-950 dark:text-white dark:shadow-none"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search blog posts..."
@@ -445,7 +412,7 @@ export default function AdminBlogsPage() {
 
             <Badge
               variant="outline"
-              className="bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20 px-3 py-1 rounded-full font-bold uppercase tracking-widest text-[10px]"
+              className="rounded-full border-orange-500/20 bg-orange-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-orange-600 uppercase dark:text-orange-400"
             >
               {data.length} {data.length === 1 ? "Blog Post" : "Blog Posts"}
             </Badge>
@@ -454,7 +421,7 @@ export default function AdminBlogsPage() {
           <div className="flex items-center gap-3">
             <Button
               onClick={openNew}
-              className="bg-orange-600 hover:bg-orange-500 text-white rounded-xl h-10 px-6 font-black shadow-lg shadow-orange-600/20 text-xs active:scale-95 transition-all"
+              className="h-10 rounded-xl bg-orange-600 px-6 text-xs font-black text-white shadow-lg shadow-orange-600/20 transition-all hover:bg-orange-500 active:scale-95"
             >
               <FaPlus className="mr-2" size={12} /> Add Post
             </Button>
@@ -467,25 +434,23 @@ export default function AdminBlogsPage() {
               {Array.from({ length: 4 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-24 bg-slate-900/30 rounded-[1.5rem] animate-pulse border border-white/5"
+                  className="h-24 animate-pulse rounded-[1.5rem] border border-white/5 bg-slate-900/30"
                 />
               ))}
             </div>
           ) : data.length === 0 ? (
-            <div className="py-32 text-center border-2 border-dashed border-slate-200 dark:border-white/5 rounded-[3rem]">
+            <div className="rounded-[3rem] border-2 border-dashed border-slate-200 py-32 text-center dark:border-white/5">
               <FaNewspaper
                 size={48}
-                className="mx-auto text-slate-800 mb-4 animate-pulse"
+                className="mx-auto mb-4 animate-pulse text-slate-800"
               />
-              <h3 className="text-xl font-bold text-slate-400 mb-2">
-                No blog posts yet
-              </h3>
-              <p className="text-slate-600 text-sm mb-8">
+              <h3 className="mb-2 text-xl font-bold text-slate-400">No blog posts yet</h3>
+              <p className="mb-8 text-sm text-slate-600">
                 Share your knowledge and technical insights with the world.
               </p>
               <Button
                 onClick={openNew}
-                className="bg-orange-600/10 text-orange-400 hover:bg-orange-600/20 border border-orange-500/20 px-8 h-12 rounded-xl font-bold"
+                className="h-12 rounded-xl border border-orange-500/20 bg-orange-600/10 px-8 font-bold text-orange-400 hover:bg-orange-600/20"
               >
                 <FaPlus className="mr-2" /> Add First Post
               </Button>
@@ -527,7 +492,7 @@ export default function AdminBlogsPage() {
                 </SortableContext>
               )}
 
-              <p className="text-center text-[10px] text-slate-700 mt-8 font-bold uppercase tracking-widest">
+              <p className="mt-8 text-center text-[10px] font-bold tracking-widest text-slate-700 uppercase">
                 {isFiltered
                   ? `Showing ${filtered.length} of ${data.length} blog posts`
                   : "Drag rows to reorder • Changes save automatically"}
@@ -552,31 +517,26 @@ export default function AdminBlogsPage() {
         >
           {currentBlog && (
             <div className="px-1">
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-10">
+              <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr]">
                 {/* Left Column: Visuals & Branding */}
                 <div className="space-y-6">
                   <AdminField label="Cover Narrative Image">
                     <ImageUpload
                       value={currentBlog.image}
-                      onChange={(url) =>
-                        setCurrentBlog({ ...currentBlog, image: url })
-                      }
+                      onChange={(url) => setCurrentBlog({ ...currentBlog, image: url })}
                     />
                   </AdminField>
 
-                  <div className="p-6 bg-orange-500/5 border border-orange-500/10 rounded-3xl flex items-start gap-4">
-                    <FaInfoCircle
-                      className="text-orange-400 shrink-0 mt-1"
-                      size={16}
-                    />
+                  <div className="flex items-start gap-4 rounded-3xl border border-orange-500/10 bg-orange-500/5 p-6">
+                    <FaInfoCircle className="mt-1 shrink-0 text-orange-400" size={16} />
                     <div className="space-y-1">
-                      <p className="text-[10px] font-black uppercase tracking-wider text-orange-400/90">
+                      <p className="text-[10px] font-black tracking-wider text-orange-400/90 uppercase">
                         Visual Engagement
                       </p>
-                      <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-                        A high-quality cover image significantly increases
-                        click-through rates. Choose an image that visually
-                        summarizes your article&apos;s core topic.
+                      <p className="text-[11px] leading-relaxed font-medium text-slate-400">
+                        A high-quality cover image significantly increases click-through
+                        rates. Choose an image that visually summarizes your
+                        article&apos;s core topic.
                       </p>
                     </div>
                   </div>
@@ -668,7 +628,7 @@ export default function AdminBlogsPage() {
                               setTagInput("");
                             }
                           }}
-                          className="h-12 px-6 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white rounded-xl font-bold border border-slate-200 dark:border-white/5 shadow-inner shadow-black/5 dark:shadow-black/20"
+                          className="h-12 rounded-xl border border-slate-200 bg-slate-900 px-6 font-bold text-white shadow-inner shadow-black/5 hover:bg-slate-800 dark:border-white/5 dark:bg-slate-800 dark:shadow-black/20 dark:hover:bg-slate-700"
                         >
                           <FaPlus size={14} />
                         </Button>
@@ -684,7 +644,7 @@ export default function AdminBlogsPage() {
                             >
                               <Badge
                                 variant="secondary"
-                                className="bg-slate-50 dark:bg-slate-950/40 text-orange-600 dark:text-orange-400 border-slate-200 dark:border-white/5 shadow-inner shadow-black/5 dark:shadow-black/10 px-3 py-2 gap-2 rounded-xl group transition-all"
+                                className="group gap-2 rounded-xl border-slate-200 bg-slate-50 px-3 py-2 text-orange-600 shadow-inner shadow-black/5 transition-all dark:border-white/5 dark:bg-slate-950/40 dark:text-orange-400 dark:shadow-black/10"
                               >
                                 <span className="text-xs font-bold">{tag}</span>
                                 <button
@@ -692,11 +652,11 @@ export default function AdminBlogsPage() {
                                     setCurrentBlog({
                                       ...currentBlog,
                                       tags: currentBlog.tags.filter(
-                                        (_, idx) => idx !== i,
+                                        (_, idx) => idx !== i
                                       ),
                                     })
                                   }
-                                  className="text-slate-500 hover:text-red-400 transition-colors p-1"
+                                  className="p-1 text-slate-500 transition-colors hover:text-red-400"
                                 >
                                   <FaTimes size={10} />
                                 </button>
@@ -714,9 +674,7 @@ export default function AdminBlogsPage() {
         </AdminDialogShell>
 
         <DragOverlay dropAnimation={null}>
-          {activeId ? (
-            <BlogOverlay item={data.find((s) => s._id === activeId)!} />
-          ) : null}
+          {activeId ? <BlogOverlay item={data.find((s) => s._id === activeId)!} /> : null}
         </DragOverlay>
       </div>
     </DndContext>

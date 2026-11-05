@@ -43,9 +43,15 @@
   --dynamic-accent: #10b981;
 }
 
-.text-dynamic-accent { color: var(--dynamic-accent); }
-.bg-dynamic-accent { background-color: var(--dynamic-accent); }
-.border-dynamic-accent { border-color: var(--dynamic-accent); }
+.text-dynamic-accent {
+  color: var(--dynamic-accent);
+}
+.bg-dynamic-accent {
+  background-color: var(--dynamic-accent);
+}
+.border-dynamic-accent {
+  border-color: var(--dynamic-accent);
+}
 
 ::selection {
   background: var(--dynamic-accent);
@@ -179,9 +185,15 @@ html {
 }
 
 @keyframes gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Custom styles for Projects section */
@@ -239,8 +251,13 @@ html {
 
 /* Loading animation */
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .animate-pulse {
@@ -257,9 +274,15 @@ html {
 }
 
 @keyframes gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @theme inline {

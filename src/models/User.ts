@@ -20,7 +20,7 @@ const UserSchema = new Schema<IUser>(
     resetPasswordOtp: { type: String, select: false },
     resetPasswordExpire: { type: Date, select: false },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Force delete the model from mongoose.models in development to pick up schema changes

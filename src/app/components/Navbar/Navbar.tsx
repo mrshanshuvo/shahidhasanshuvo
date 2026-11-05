@@ -73,7 +73,7 @@ export default function Navbar({ resumeUrl }: Props) {
           }
         });
       },
-      { threshold: 0.2, rootMargin: "-50px 0px -50px 0px" },
+      { threshold: 0.2, rootMargin: "-50px 0px -50px 0px" }
     );
 
     sections.forEach((section) => {
@@ -150,26 +150,24 @@ export default function Navbar({ resumeUrl }: Props) {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed w-full top-0 z-50"
+      className="fixed top-0 z-50 w-full"
     >
-      <div
-        className={`transition-all duration-300 ${scrolled ? "py-3" : "py-6"}`}
-      >
-        <div className="max-w-350 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={`transition-all duration-300 ${scrolled ? "py-3" : "py-6"}`}>
+        <div className="mx-auto max-w-350 px-4 sm:px-6 lg:px-8">
           <div
             className={`relative transition-all duration-300 ${
               scrolled
-                ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl shadow-lg shadow-black/5 dark:shadow-black/20 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl"
+                ? "rounded-2xl border border-slate-200/50 bg-white/80 shadow-lg shadow-black/5 backdrop-blur-2xl dark:border-slate-700/50 dark:bg-slate-900/80 dark:shadow-black/20"
                 : "bg-transparent"
             }`}
           >
-            <div className="flex justify-between items-center px-6 py-4">
+            <div className="flex items-center justify-between px-6 py-4">
               {/* Logo */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleNavClick("home")}
-                className="flex items-center gap-3 group relative z-10 cursor-pointer"
+                className="group relative z-10 flex cursor-pointer items-center gap-3"
                 aria-label="Scroll to home"
               >
                 <div className="relative">
@@ -186,33 +184,31 @@ export default function Navbar({ resumeUrl }: Props) {
                     alt="Logo"
                     width={40}
                     height={40}
-                    className="rounded-lg hidden dark:block"
+                    className="hidden rounded-lg dark:block"
                     priority
                   />
                 </div>
               </motion.button>
 
               {/* Desktop Navigation */}
-              <div className="hidden md:flex items-center gap-6">
-                <div className="flex items-center gap-1 mr-2">
+              <div className="hidden items-center gap-6 md:flex">
+                <div className="mr-2 flex items-center gap-1">
                   {mainNavItems.map((item) => (
                     <button
                       key={item.id}
                       onClick={() => handleNavClick(item.id)}
-                      className="relative px-3 lg:px-4 py-2 group"
-                      aria-current={
-                        mappedActive === item.id ? "page" : undefined
-                      }
+                      className="group relative px-3 py-2 lg:px-4"
+                      aria-current={mappedActive === item.id ? "page" : undefined}
                     >
                       <span
-                        className={`relative z-10 text-sm font-bold transition-colors cursor-pointer ${
+                        className={`relative z-10 cursor-pointer text-sm font-bold transition-colors ${
                           mappedActive === item.id
                             ? scrolled
                               ? "text-emerald-600 dark:text-emerald-400"
                               : "text-slate-900 dark:text-white"
                             : scrolled
-                              ? "text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200"
-                              : "text-slate-700/70 dark:text-white/70 group-hover:text-slate-900 dark:group-hover:text-white"
+                              ? "text-slate-600 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-200"
+                              : "text-slate-700/70 group-hover:text-slate-900 dark:text-white/70 dark:group-hover:text-white"
                         }`}
                       >
                         {item.label}
@@ -220,7 +216,7 @@ export default function Navbar({ resumeUrl }: Props) {
                       {mappedActive === item.id && (
                         <motion.div
                           layoutId="navIndicator"
-                          className={`absolute bottom-0 left-0 right-0 h-0.5 ${
+                          className={`absolute right-0 bottom-0 left-0 h-0.5 ${
                             scrolled
                               ? "bg-emerald-600 dark:bg-emerald-400"
                               : "bg-slate-900 dark:bg-white"
@@ -237,22 +233,20 @@ export default function Navbar({ resumeUrl }: Props) {
 
                   {/* More Dropdown */}
                   {moreNavItems.length > 0 && (
-                    <div className="relative group">
+                    <div className="group relative">
                       <button
-                        className="relative px-3 lg:px-4 py-2 group flex items-center gap-1"
-                        aria-current={
-                          mappedActive === "more" ? "page" : undefined
-                        }
+                        className="group relative flex items-center gap-1 px-3 py-2 lg:px-4"
+                        aria-current={mappedActive === "more" ? "page" : undefined}
                       >
                         <span
-                          className={`relative z-10 text-sm font-bold transition-colors cursor-pointer ${
+                          className={`relative z-10 cursor-pointer text-sm font-bold transition-colors ${
                             mappedActive === "more"
                               ? scrolled
                                 ? "text-emerald-600 dark:text-emerald-400"
                                 : "text-slate-900 dark:text-white"
                               : scrolled
-                                ? "text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200"
-                                : "text-slate-700/70 dark:text-white/70 group-hover:text-slate-900 dark:group-hover:text-white"
+                                ? "text-slate-600 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-200"
+                                : "text-slate-700/70 group-hover:text-slate-900 dark:text-white/70 dark:group-hover:text-white"
                           }`}
                         >
                           More ▾
@@ -260,7 +254,7 @@ export default function Navbar({ resumeUrl }: Props) {
                         {mappedActive === "more" && (
                           <motion.div
                             layoutId="navIndicator"
-                            className={`absolute bottom-0 left-0 right-0 h-0.5 ${
+                            className={`absolute right-0 bottom-0 left-0 h-0.5 ${
                               scrolled
                                 ? "bg-emerald-600 dark:bg-emerald-400"
                                 : "bg-slate-900 dark:bg-white"
@@ -273,13 +267,13 @@ export default function Navbar({ resumeUrl }: Props) {
                           />
                         )}
                       </button>
-                      <div className="absolute top-full left-0 mt-2 w-48 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                      <div className="invisible absolute top-full left-0 mt-2 w-48 translate-y-2 transform overflow-hidden rounded-xl border border-slate-200 bg-white/80 opacity-0 shadow-xl backdrop-blur-xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 dark:border-slate-800 dark:bg-slate-900/80">
                         <div className="py-2">
                           {moreNavItems.map((item) => (
                             <button
                               key={item.id}
                               onClick={() => handleNavClick(item.id)}
-                              className="w-full text-left px-4 py-2 text-sm font-medium transition-colors text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer"
+                              className="w-full cursor-pointer px-4 py-2 text-left text-sm font-medium text-slate-700 transition-colors hover:text-emerald-600 dark:text-slate-300 dark:hover:text-emerald-400"
                             >
                               {item.label}
                             </button>
@@ -292,20 +286,18 @@ export default function Navbar({ resumeUrl }: Props) {
                   {/* Contact */}
                   <button
                     onClick={() => handleNavClick("contact")}
-                    className="relative px-3 lg:px-4 py-2 group"
-                    aria-current={
-                      mappedActive === "contact" ? "page" : undefined
-                    }
+                    className="group relative px-3 py-2 lg:px-4"
+                    aria-current={mappedActive === "contact" ? "page" : undefined}
                   >
                     <span
-                      className={`relative z-10 text-sm font-bold transition-colors cursor-pointer ${
+                      className={`relative z-10 cursor-pointer text-sm font-bold transition-colors ${
                         mappedActive === "contact"
                           ? scrolled
                             ? "text-emerald-600 dark:text-emerald-400"
                             : "text-slate-900 dark:text-white"
                           : scrolled
-                            ? "text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200"
-                            : "text-slate-700/70 dark:text-white/70 group-hover:text-slate-900 dark:group-hover:text-white"
+                            ? "text-slate-600 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-200"
+                            : "text-slate-700/70 group-hover:text-slate-900 dark:text-white/70 dark:group-hover:text-white"
                       }`}
                     >
                       Contact
@@ -313,7 +305,7 @@ export default function Navbar({ resumeUrl }: Props) {
                     {mappedActive === "contact" && (
                       <motion.div
                         layoutId="navIndicator"
-                        className={`absolute bottom-0 left-0 right-0 h-0.5 ${
+                        className={`absolute right-0 bottom-0 left-0 h-0.5 ${
                           scrolled
                             ? "bg-emerald-600 dark:bg-emerald-400"
                             : "bg-slate-900 dark:bg-white"
@@ -333,16 +325,12 @@ export default function Navbar({ resumeUrl }: Props) {
                   <Button
                     nativeButton={false}
                     render={
-                      <a
-                        href={resumeUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      />
+                      <a href={resumeUrl} target="_blank" rel="noopener noreferrer" />
                     }
-                    className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md hover:-translate-y-px ${
+                    className={`rounded-xl px-5 py-2.5 text-sm font-bold shadow-md transition-all hover:-translate-y-px ${
                       scrolled
-                        ? "bg-emerald-600 dark:bg-emerald-500 text-white hover:bg-emerald-700 dark:hover:bg-emerald-600 hover:shadow-lg"
-                        : "bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 hover:shadow-lg border border-slate-700 dark:border-white/20"
+                        ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-lg dark:bg-emerald-500 dark:hover:bg-emerald-600"
+                        : "border border-slate-700 bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg dark:border-white/20 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
                     }`}
                   >
                     Resume
@@ -353,16 +341,16 @@ export default function Navbar({ resumeUrl }: Props) {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`md:hidden p-2 rounded-lg transition-colors ${
+                className={`rounded-lg p-2 transition-colors md:hidden ${
                   scrolled
-                    ? "text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    ? "text-slate-900 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
                     : "text-white hover:bg-white/10"
                 }`}
                 aria-label="Toggle menu"
                 aria-expanded={isOpen}
               >
                 <svg
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -394,10 +382,10 @@ export default function Navbar({ resumeUrl }: Props) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className={`md:hidden mt-3 rounded-2xl overflow-hidden ${
+                className={`mt-3 overflow-hidden rounded-2xl md:hidden ${
                   scrolled
-                    ? "bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-lg border border-slate-200/50 dark:border-slate-700/50"
-                    : "bg-slate-950/95 backdrop-blur-2xl border border-white/10"
+                    ? "border border-slate-200/50 bg-white/95 shadow-lg backdrop-blur-2xl dark:border-slate-700/50 dark:bg-slate-900/95"
+                    : "border border-white/10 bg-slate-950/95 backdrop-blur-2xl"
                 }`}
               >
                 <div className="p-3">
@@ -409,15 +397,15 @@ export default function Navbar({ resumeUrl }: Props) {
                     <button
                       key={item.id}
                       onClick={() => handleNavClick(item.id)}
-                      className={`w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                      className={`w-full rounded-lg px-4 py-3 text-left text-base font-medium transition-colors ${
                         mappedActive === item.id ||
                         (mappedActive === "more" &&
                           moreNavItems.some((m) => m.id === item.id))
                           ? scrolled
-                            ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400"
+                            ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400"
                             : "bg-white/10 text-white"
                           : scrolled
-                            ? "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                            ? "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50"
                             : "text-white/80 hover:bg-white/5"
                       }`}
                       aria-current={
@@ -435,9 +423,9 @@ export default function Navbar({ resumeUrl }: Props) {
                     href={resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`block mt-3 px-4 py-3 rounded-lg text-base font-medium text-center transition-colors ${
+                    className={`mt-3 block rounded-lg px-4 py-3 text-center text-base font-medium transition-colors ${
                       scrolled
-                        ? "bg-emerald-600 dark:bg-emerald-500 text-white hover:bg-emerald-700 dark:hover:bg-emerald-600"
+                        ? "bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600"
                         : "bg-white/90 text-slate-900"
                     }`}
                   >

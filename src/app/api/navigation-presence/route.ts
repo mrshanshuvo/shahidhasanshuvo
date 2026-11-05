@@ -12,19 +12,14 @@ export async function GET() {
   try {
     await connectDB();
 
-    const [
-      experienceCount,
-      projectCount,
-      educationCount,
-      certificationCount,
-      blogCount,
-    ] = await Promise.all([
-      Experience.countDocuments(),
-      Project.countDocuments(),
-      Education.countDocuments(),
-      Certification.countDocuments(),
-      Blog.countDocuments(),
-    ]);
+    const [experienceCount, projectCount, educationCount, certificationCount, blogCount] =
+      await Promise.all([
+        Experience.countDocuments(),
+        Project.countDocuments(),
+        Education.countDocuments(),
+        Certification.countDocuments(),
+        Blog.countDocuments(),
+      ]);
 
     return NextResponse.json({
       experience: experienceCount > 0,

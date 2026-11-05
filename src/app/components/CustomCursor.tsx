@@ -18,8 +18,7 @@ export default function CustomCursor() {
     if (isAdmin) return;
     const raf = requestAnimationFrame(() => {
       const hasTouch =
-        window.matchMedia("(pointer: coarse)").matches ||
-        navigator.maxTouchPoints > 0;
+        window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
       setIsTouchDevice(hasTouch);
     });
     return () => cancelAnimationFrame(raf);
@@ -44,7 +43,7 @@ export default function CustomCursor() {
     document.addEventListener("mouseenter", handleMouseEnter);
 
     const interactiveElements = document.querySelectorAll(
-      "a, button, input, textarea, select, [role='button']",
+      "a, button, input, textarea, select, [role='button']"
     );
 
     interactiveElements.forEach((el) => {
@@ -70,7 +69,7 @@ export default function CustomCursor() {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-emerald-500 rounded-full pointer-events-none z-100 mix-blend-difference"
+        className="pointer-events-none fixed top-0 left-0 z-100 h-4 w-4 rounded-full bg-emerald-500 mix-blend-difference"
         animate={{
           x: mousePosition.x - 8,
           y: mousePosition.y - 8,
@@ -85,7 +84,7 @@ export default function CustomCursor() {
         }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border border-emerald-500/50 rounded-full pointer-events-none z-99"
+        className="pointer-events-none fixed top-0 left-0 z-99 h-8 w-8 rounded-full border border-emerald-500/50"
         animate={{
           x: mousePosition.x - 16,
           y: mousePosition.y - 16,

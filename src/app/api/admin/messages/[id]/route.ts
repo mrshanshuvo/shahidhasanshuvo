@@ -14,7 +14,8 @@ export async function DELETE(
     const { id } = await params;
     await connectDB();
     const deleted = await Message.findByIdAndDelete(id);
-    if (!deleted) return NextResponse.json({ error: "Message not found" }, { status: 404 });
+    if (!deleted)
+      return NextResponse.json({ error: "Message not found" }, { status: 404 });
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete message" }, { status: 500 });
@@ -32,8 +33,13 @@ export async function PATCH(
     const { id } = await params;
     const { status } = await req.json();
     await connectDB();
-    const updated = await Message.findByIdAndUpdate(id, { status }, { returnDocument: "after" });
-    if (!updated) return NextResponse.json({ error: "Message not found" }, { status: 404 });
+    const updated = await Message.findByIdAndUpdate(
+      id,
+      { status },
+      { returnDocument: "after" }
+    );
+    if (!updated)
+      return NextResponse.json({ error: "Message not found" }, { status: 404 });
     return NextResponse.json(updated);
   } catch (error) {
     return NextResponse.json({ error: "Failed to update message" }, { status: 500 });

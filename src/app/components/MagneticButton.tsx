@@ -9,11 +9,11 @@ interface MagneticButtonProps extends HTMLMotionProps<"div"> {
   strength?: number;
 }
 
-export default function MagneticButton({ 
-  children, 
-  className = "", 
+export default function MagneticButton({
+  children,
+  className = "",
   strength = 30,
-  ...props 
+  ...props
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });

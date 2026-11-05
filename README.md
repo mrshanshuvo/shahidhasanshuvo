@@ -10,78 +10,78 @@ It highlights my experience building scalable web applications, responsive user 
 
 ## Features
 
-* Professional developer profile
-* Responsive and modern user interface
-* About section
-* Technical skills
-* Professional experience
-* Featured projects
-* Project details and technologies
-* Contact information
-* Responsive design for mobile, tablet, and desktop
-* Optimized performance and accessibility
+- Professional developer profile
+- Responsive and modern user interface
+- About section
+- Technical skills
+- Professional experience
+- Featured projects
+- Project details and technologies
+- Contact information
+- Responsive design for mobile, tablet, and desktop
+- Optimized performance and accessibility
 
 ## Tech Stack
 
 ### Frontend
 
-* Next.js
-* React.js
-* JavaScript
-* TypeScript
-* HTML5
-* CSS3
-* Tailwind CSS
-* Shadcn/UI
+- Next.js
+- React.js
+- JavaScript
+- TypeScript
+- HTML5
+- CSS3
+- Tailwind CSS
+- Shadcn/UI
 
 ### State Management & Data
 
-* Redux Toolkit
-* RTK Query
-* React Query
-* Zustand
+- Redux Toolkit
+- RTK Query
+- React Query
+- Zustand
 
 ### Backend
 
-* Node.js
-* Express.js
-* NestJS
-* REST APIs
-* JWT Authentication
-* Role-Based Access Control (RBAC)
-* Socket.IO
+- Node.js
+- Express.js
+- NestJS
+- REST APIs
+- JWT Authentication
+- Role-Based Access Control (RBAC)
+- Socket.IO
 
 ### Databases & ORM
 
-* PostgreSQL
-* MongoDB
-* Prisma
-* Mongoose
-* NeonDB
+- PostgreSQL
+- MongoDB
+- Prisma
+- Mongoose
+- NeonDB
 
 ### Tools & DevOps
 
-* Git
-* GitHub
-* Docker
-* GitHub Actions
-* Linux
-* VS Code
-* Vercel
+- Git
+- GitHub
+- Docker
+- GitHub Actions
+- Linux
+- VS Code
+- Vercel
 
 ## Featured Projects
 
 The portfolio includes selected projects demonstrating experience in:
 
-* Full-stack web application development
-* E-commerce platforms
-* Equipment rental systems
-* Authentication and authorization
-* REST API development
-* Database design
-* Admin dashboards
-* Payment integration
-* Responsive frontend development
+- Full-stack web application development
+- E-commerce platforms
+- Equipment rental systems
+- Authentication and authorization
+- REST API development
+- Database design
+- Admin dashboards
+- Payment integration
+- Responsive frontend development
 
 ## Project Structure
 
@@ -111,9 +111,9 @@ shuvo-portfolio/
 
 Make sure you have the following installed:
 
-* Node.js
-* npm or pnpm
-* Git
+- Node.js
+- npm or pnpm
+- Git
 
 ### Clone the Repository
 
@@ -184,14 +184,14 @@ Production deployment should be configured with the required environment variabl
 
 This project demonstrates my approach to:
 
-* Building modern and responsive web applications
-* Writing maintainable frontend code
-* Developing full-stack applications
-* Designing and integrating REST APIs
-* Working with relational and NoSQL databases
-* Implementing authentication and authorization
-* Integrating third-party services
-* Deploying applications to production
+- Building modern and responsive web applications
+- Writing maintainable frontend code
+- Developing full-stack applications
+- Designing and integrating REST APIs
+- Working with relational and NoSQL databases
+- Implementing authentication and authorization
+- Integrating third-party services
+- Deploying applications to production
 
 ## Author
 
@@ -199,8 +199,8 @@ This project demonstrates my approach to:
 
 Full Stack Developer
 
-* GitHub: `mrshanshuvo`
-* Portfolio: `shahidhasanshuvo.vercel.app`
+- GitHub: `mrshanshuvo`
+- Portfolio: `shahidhasanshuvo.vercel.app`
 
 ## License
 

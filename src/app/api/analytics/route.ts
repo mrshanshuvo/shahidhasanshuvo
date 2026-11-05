@@ -11,7 +11,7 @@ export async function POST() {
     await Visitor.findOneAndUpdate(
       { date: today },
       { $inc: { count: 1 } },
-      { upsert: true, returnDocument: "after" },
+      { upsert: true, returnDocument: "after" }
     );
 
     return NextResponse.json({ success: true });

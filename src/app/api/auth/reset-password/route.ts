@@ -11,7 +11,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Password is required" }, { status: 400 });
     }
     if (!token && (!otp || !email)) {
-      return NextResponse.json({ message: "Either a reset link token or an OTP and email are required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Either a reset link token or an OTP and email are required" },
+        { status: 400 }
+      );
     }
 
     await connectDB();
@@ -20,10 +23,7 @@ export async function POST(req: Request) {
 
     if (token) {
       // Flow A: Magic Link Token
-      const resetPasswordToken = crypto
-        .createHash("sha256")
-        .update(token)
-        .digest("hex");
+      const resetPasswordToken = crypto.createHash("sha256").update(token).digest("hex");
 
       user = await User.findOne({
         resetPasswordToken,
@@ -31,18 +31,30 @@ export async function POST(req: Request) {
       });
 
       if (!user) {
-        return NextResponse.json({ message: "Invalid or expired token" }, { status: 400 });
+        return NextResponse.json(
+          { message: "Invalid or expired token" },
+          { status: 400 }
+        );
       }
     } else {
       // Flow B: OTP + Email
-      user = await User.findOne({ email }).select("+resetPasswordOtp +resetPasswordExpire");
+      user = await User.findOne({ email }).select(
+        "+resetPasswordOtp +resetPasswordExpire"
+      );
 
-      if (!user || !user.resetPasswordExpire || user.resetPasswordExpire.getTime() < Date.now()) {
+      if (
+        !user ||
+        !user.resetPasswordExpire ||
+        user.resetPasswordExpire.getTime() < Date.now()
+      ) {
         return NextResponse.json({ message: "Invalid or expired OTP" }, { status: 400 });
       }
 
       if (!user.resetPasswordOtp) {
-        return NextResponse.json({ message: "No OTP was requested for this account" }, { status: 400 });
+        return NextResponse.json(
+          { message: "No OTP was requested for this account" },
+          { status: 400 }
+        );
       }
 
       const isMatch = await bcrypt.compare(otp, user.resetPasswordOtp);
@@ -61,12 +73,12 @@ export async function POST(req: Request) {
     user.resetPasswordExpire = undefined;
     await user.save();
 
-    return NextResponse.json({ message: "Password updated successfully" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Password updated successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Reset password error:", error);
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }

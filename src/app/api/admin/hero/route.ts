@@ -11,7 +11,7 @@ export async function GET() {
   await connectDB();
   const hero = await Hero.findOne().lean();
   const socialLinks = await SocialLink.find().sort({ order: 1 }).lean();
-  
+
   return NextResponse.json({
     ...(hero ?? {}),
     socialLinks: socialLinks || [],
@@ -24,10 +24,10 @@ export async function PUT(request: Request) {
 
   await connectDB();
   const body = await request.json();
-  
+
   const heroData = { ...body };
   const socialLinks = body.socialLinks;
-  
+
   delete heroData._id;
   delete heroData.socialLinks;
 

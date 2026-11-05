@@ -70,7 +70,7 @@ const ExpRow = forwardRef<HTMLDivElement, any>(
       style,
       ...props
     },
-    ref,
+    ref
   ) => {
     return (
       <div
@@ -78,37 +78,37 @@ const ExpRow = forwardRef<HTMLDivElement, any>(
         style={style}
         {...props}
         className={cn(
-          "group flex items-center gap-4 bg-white dark:bg-slate-900 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-2xl p-2 shadow-sm dark:shadow-none w-full",
+          "group flex w-full items-center gap-4 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-slate-900 dark:shadow-none",
           !isOverlay &&
-            "transition-colors duration-300 hover:border-slate-300 dark:hover:border-white/10 dark:bg-slate-900/40",
+            "transition-colors duration-300 hover:border-slate-300 dark:bg-slate-900/40 dark:hover:border-white/10",
           isDragging && !isOverlay && "opacity-50",
           isOverlay &&
-            "z-99999 border-emerald-500/50 shadow-2xl shadow-emerald-500/20 scale-[1.02] cursor-grabbing",
+            "z-99999 scale-[1.02] cursor-grabbing border-emerald-500/50 shadow-2xl shadow-emerald-500/20"
         )}
       >
         <div
           {...attributes}
           {...listeners}
           className={cn(
-            "text-slate-300 dark:text-slate-600 transition-colors",
+            "text-slate-300 transition-colors dark:text-slate-600",
             isOverlay
               ? "cursor-grabbing"
-              : "cursor-grab hover:text-emerald-500 dark:hover:text-emerald-400",
+              : "cursor-grab hover:text-emerald-500 dark:hover:text-emerald-400"
           )}
         >
           <FaGripVertical size={14} />
         </div>
 
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg shrink-0">
+            <div className="shrink-0 rounded-lg bg-emerald-500/10 p-2 text-emerald-400">
               <FaBriefcase size={14} />
             </div>
             <div className="min-w-0">
-              <h3 className="font-bold text-slate-900 dark:text-white truncate text-sm">
+              <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
                 {exp.title}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+              <p className="truncate text-xs text-slate-500 dark:text-slate-400">
                 {exp.org}
               </p>
             </div>
@@ -116,7 +116,7 @@ const ExpRow = forwardRef<HTMLDivElement, any>(
         </div>
 
         <div className="flex items-center gap-6 pr-2">
-          <div className="hidden md:flex items-center gap-2 text-slate-500">
+          <div className="hidden items-center gap-2 text-slate-500 md:flex">
             <FaCalendarAlt size={10} />
             <span className="text-[10px] font-medium">{exp.duration}</span>
           </div>
@@ -124,14 +124,14 @@ const ExpRow = forwardRef<HTMLDivElement, any>(
           <div
             className={cn(
               "flex items-center gap-2 transition-opacity",
-              isOverlay ? "opacity-0" : "",
+              isOverlay ? "opacity-0" : ""
             )}
           >
             <Button
               variant="ghost"
               size="icon"
               onClick={onEdit}
-              className="h-8 w-8 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-emerald-400/10"
+              className="h-8 w-8 rounded-lg text-slate-400 hover:bg-emerald-400/10 hover:text-emerald-400"
             >
               <FaEdit size={12} />
             </Button>
@@ -140,10 +140,10 @@ const ExpRow = forwardRef<HTMLDivElement, any>(
               size="icon"
               onClick={onDelete}
               disabled={isDeleting}
-              className="h-8 w-8 rounded-lg text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10"
+              className="h-8 w-8 rounded-lg text-slate-400 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400"
             >
               {isDeleting ? (
-                <div className="h-3 w-3 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
+                <div className="h-3 w-3 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
               ) : (
                 <FaTrash size={12} />
               )}
@@ -152,19 +152,13 @@ const ExpRow = forwardRef<HTMLDivElement, any>(
         </div>
       </div>
     );
-  },
+  }
 );
 ExpRow.displayName = "ExpRow";
 
 function SortableExpRow({ exp, onEdit, onDelete, isDeleting }: any) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: exp._id! });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: exp._id! });
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
@@ -206,7 +200,7 @@ export default function AdminExperiencePage() {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    }),
+    })
   );
 
   function showToast(msg: string, type: "success" | "error" = "success") {
@@ -251,7 +245,6 @@ export default function AdminExperiencePage() {
   });
 
   async function handleDelete(id: string) {
-
     setDeletingId(id);
     deleteMutation.mutate(id);
   }
@@ -324,9 +317,7 @@ export default function AdminExperiencePage() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newData),
-      }).then(() =>
-        queryClient.invalidateQueries({ queryKey: ["experience"] }),
-      );
+      }).then(() => queryClient.invalidateQueries({ queryKey: ["experience"] }));
     }
     setActiveId(null);
   }
@@ -338,7 +329,7 @@ export default function AdminExperiencePage() {
       onDragStart={(e) => setActiveId(e.active.id as string)}
       onDragEnd={handleDragEnd}
     >
-      <div className="p-4 md:p-8 space-y-6">
+      <div className="space-y-6 p-4 md:p-8">
         <AnimatePresence>
           {toast && (
             <motion.div
@@ -346,53 +337,45 @@ export default function AdminExperiencePage() {
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: -20, x: "-50%" }}
               className={cn(
-                "fixed top-8 left-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl",
+                "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
                 toast.type === "success"
-                  ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                  : "bg-red-500/20 border-red-500/50 text-red-400",
+                  ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
+                  : "border-red-500/50 bg-red-500/20 text-red-400"
               )}
             >
               <div
                 className={cn(
-                  "p-1.5 rounded-full",
-                  toast.type === "success"
-                    ? "bg-emerald-500/20"
-                    : "bg-red-500/20",
+                  "rounded-full p-1.5",
+                  toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
                 )}
               >
-                {toast.type === "success" ? (
-                  <FaCheck size={10} />
-                ) : (
-                  <FaTimes size={10} />
-                )}
+                {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
               </div>
-              <span className="font-bold text-sm tracking-tight">
-                {toast.msg}
-              </span>
+              <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="flex items-center justify-between bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 shadow-sm dark:shadow-none">
+        <div className="mx-auto max-w-4xl space-y-6">
+          <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">
             <div className="flex items-center gap-3">
               <Badge
                 variant="outline"
-                className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1 rounded-full font-bold uppercase tracking-widest text-[10px]"
+                className="rounded-full border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400"
               >
                 {data.length} Work Experience
               </Badge>
             </div>
             <Button
               onClick={openNew}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold px-6 h-10 shadow-lg shadow-emerald-600/20 active:scale-95 transition-all group text-xs"
+              className="group h-10 rounded-xl bg-emerald-600 px-6 text-xs font-bold text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-95"
             >
-              <FaPlus className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+              <FaPlus className="mr-2 transition-transform duration-300 group-hover:rotate-90" />
               Add Experience
             </Button>
           </div>
 
-          <Card className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/40 backdrop-blur-xl overflow-hidden shadow-sm dark:shadow-none">
+          <Card className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/40 dark:shadow-none">
             <CardHeader className="p-4 pb-1">
               <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
                 Professional Timeline
@@ -404,17 +387,17 @@ export default function AdminExperiencePage() {
                   {Array.from({ length: 3 }).map((_, i) => (
                     <div
                       key={i}
-                      className="h-20 bg-slate-100 dark:bg-slate-800/20 rounded-2xl animate-pulse"
+                      className="h-20 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800/20"
                     />
                   ))}
                 </div>
               ) : data.length === 0 ? (
-                <div className="text-center py-16 bg-white dark:bg-slate-950/20 rounded-3xl border border-dashed border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none">
+                <div className="rounded-3xl border border-dashed border-slate-200 bg-white py-16 text-center shadow-sm dark:border-white/5 dark:bg-slate-950/20 dark:shadow-none">
                   <FaBriefcase
-                    className="mx-auto text-slate-200 dark:text-slate-800 mb-4"
+                    className="mx-auto mb-4 text-slate-200 dark:text-slate-800"
                     size={40}
                   />
-                  <p className="text-slate-400 dark:text-slate-500 font-medium">
+                  <p className="font-medium text-slate-400 dark:text-slate-500">
                     No experience records found. Add your first job above.
                   </p>
                 </div>
@@ -440,7 +423,7 @@ export default function AdminExperiencePage() {
               )}
 
               {!loading && data.length > 0 && (
-                <p className="text-center text-[10px] text-slate-400 dark:text-slate-700 mt-8 font-bold uppercase tracking-widest">
+                <p className="mt-8 text-center text-[10px] font-bold tracking-widest text-slate-400 uppercase dark:text-slate-700">
                   Drag rows to reorder • Changes save automatically
                 </p>
               )}
@@ -451,9 +434,7 @@ export default function AdminExperiencePage() {
         <AdminDialogShell
           open={isDialogOpen}
           onOpenChange={setIsDialogOpen}
-          title={
-            currentExp?._id ? "Refine Work History" : "New Career Milestone"
-          }
+          title={currentExp?._id ? "Refine Work History" : "New Career Milestone"}
           subtitle="Document your professional evolution and impact"
           icon={FaBriefcase}
           iconColor="text-emerald-400"
@@ -465,9 +446,9 @@ export default function AdminExperiencePage() {
           maxWidth="5xl"
         >
           {currentExp && (
-            <div className="px-1 space-y-8">
+            <div className="space-y-8 px-1">
               {/* Top Info Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <AdminField label="Job Title">
                   <AdminInput
                     icon={FaBriefcase}
@@ -511,7 +492,7 @@ export default function AdminExperiencePage() {
               </div>
 
               {/* Arrays Section in Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                 {/* Previous Titles */}
                 <AdminField label="Previous Titles (Optional)">
                   <div className="space-y-4">
@@ -550,7 +531,7 @@ export default function AdminExperiencePage() {
                             setPrevTitleInput("");
                           }
                         }}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                        className="bg-emerald-600 text-white hover:bg-emerald-700"
                       >
                         Add
                       </Button>
@@ -560,16 +541,16 @@ export default function AdminExperiencePage() {
                         <Badge
                           key={i}
                           variant="secondary"
-                          className="pl-3 pr-2 py-1.5 gap-2"
+                          className="gap-2 py-1.5 pr-2 pl-3"
                         >
                           {t}
                           <button
                             onClick={() =>
                               setCurrentExp({
                                 ...currentExp,
-                                previousTitles: (
-                                  currentExp.previousTitles || []
-                                ).filter((_, idx) => idx !== i),
+                                previousTitles: (currentExp.previousTitles || []).filter(
+                                  (_, idx) => idx !== i
+                                ),
                               })
                             }
                             className="hover:text-red-500"
@@ -620,7 +601,7 @@ export default function AdminExperiencePage() {
                             setTechInput("");
                           }
                         }}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                        className="bg-emerald-600 text-white hover:bg-emerald-700"
                       >
                         Add
                       </Button>
@@ -630,16 +611,16 @@ export default function AdminExperiencePage() {
                         <Badge
                           key={i}
                           variant="outline"
-                          className="pl-3 pr-2 py-1.5 gap-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+                          className="gap-2 border-emerald-500/30 py-1.5 pr-2 pl-3 text-emerald-600 dark:text-emerald-400"
                         >
                           {t}
                           <button
                             onClick={() =>
                               setCurrentExp({
                                 ...currentExp,
-                                technologies: (
-                                  currentExp.technologies || []
-                                ).filter((_, idx) => idx !== i),
+                                technologies: (currentExp.technologies || []).filter(
+                                  (_, idx) => idx !== i
+                                ),
                               })
                             }
                             className="hover:text-red-500"
@@ -705,7 +686,7 @@ export default function AdminExperiencePage() {
                           setLinkUrlInput("");
                         }
                       }}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                      className="bg-emerald-600 text-white hover:bg-emerald-700"
                     >
                       Add
                     </Button>
@@ -719,17 +700,15 @@ export default function AdminExperiencePage() {
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, scale: 0.9 }}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-xl"
+                          className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-white/5 dark:bg-slate-900"
                         >
                           <div className="flex items-center gap-3">
                             <FaLink className="text-slate-400" />
                             <div>
-                              <span className="text-sm font-bold block">
+                              <span className="block text-sm font-bold">
                                 {link.label || "Link"}
                               </span>
-                              <span className="text-xs text-slate-500">
-                                {link.url}
-                              </span>
+                              <span className="text-xs text-slate-500">{link.url}</span>
                             </div>
                           </div>
                           <button
@@ -737,11 +716,11 @@ export default function AdminExperiencePage() {
                               setCurrentExp({
                                 ...currentExp,
                                 links: (currentExp.links || []).filter(
-                                  (_, idx) => idx !== i,
+                                  (_, idx) => idx !== i
                                 ),
                               })
                             }
-                            className="text-slate-400 hover:text-red-500 p-2"
+                            className="p-2 text-slate-400 hover:text-red-500"
                           >
                             <FaTimes />
                           </button>
@@ -766,10 +745,7 @@ export default function AdminExperiencePage() {
                           if (detailInput.trim()) {
                             setCurrentExp({
                               ...currentExp,
-                              details: [
-                                ...currentExp.details,
-                                detailInput.trim(),
-                              ],
+                              details: [...currentExp.details, detailInput.trim()],
                             });
                             setDetailInput("");
                           }
@@ -783,15 +759,12 @@ export default function AdminExperiencePage() {
                         if (detailInput.trim()) {
                           setCurrentExp({
                             ...currentExp,
-                            details: [
-                              ...currentExp.details,
-                              detailInput.trim(),
-                            ],
+                            details: [...currentExp.details, detailInput.trim()],
                           });
                           setDetailInput("");
                         }
                       }}
-                      className="bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white rounded-xl h-12 px-6"
+                      className="h-12 rounded-xl bg-slate-900 px-6 text-white hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700"
                     >
                       Add
                     </Button>
@@ -805,22 +778,20 @@ export default function AdminExperiencePage() {
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.9 }}
-                          className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/5 rounded-2xl group/item shadow-inner shadow-black/5 dark:shadow-black/10"
+                          className="group/item flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-inner shadow-black/5 dark:border-white/5 dark:bg-slate-950/40 dark:shadow-black/10"
                         >
-                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                          <span className="text-sm text-slate-700 dark:text-slate-300 flex-1 font-medium">
+                          <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+                          <span className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-300">
                             {detail}
                           </span>
                           <button
                             onClick={() =>
                               setCurrentExp({
                                 ...currentExp,
-                                details: currentExp.details.filter(
-                                  (_, idx) => idx !== i,
-                                ),
+                                details: currentExp.details.filter((_, idx) => idx !== i),
                               })
                             }
-                            className="text-slate-600 hover:text-red-400 transition-colors p-2 hover:bg-red-400/10 rounded-lg"
+                            className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-red-400/10 hover:text-red-400"
                           >
                             <FaTimes size={14} />
                           </button>

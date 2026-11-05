@@ -27,10 +27,6 @@ export default async function Skills() {
   )
     return null;
   return (
-    <SkillsClient
-      expertises={expertises}
-      brandTechs={brandTechs}
-      techList={techList}
-    />
+    <SkillsClient expertises={expertises} brandTechs={brandTechs} techList={techList} />
   );
 }

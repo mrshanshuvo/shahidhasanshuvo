@@ -58,7 +58,7 @@ export function formatRelativeTime(dateInput: string | Date): string {
 }
 
 export function formatToDatetimeLocal(
-  dateInput: string | Date | undefined | null,
+  dateInput: string | Date | undefined | null
 ): string {
   if (!dateInput) return "";
   const date = new Date(dateInput);

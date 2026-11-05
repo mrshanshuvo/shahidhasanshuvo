@@ -14,7 +14,7 @@ async function getSettings() {
 export default async function SettingsPage() {
   const settings = await getSettings();
   return (
-    <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6 p-4 md:p-8">
       {/* Title is already shown in the AdminTopbar breadcrumb */}
 
       <SettingsFormClient initialSettings={settings} />

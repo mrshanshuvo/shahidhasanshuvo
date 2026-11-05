@@ -36,16 +36,13 @@ export default function AdminTopbar() {
   const subRoute = pathname.replace(matched, "").split("/").filter(Boolean);
 
   return (
-    <div className="sticky top-0 z-30 w-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/5 h-14 flex items-center justify-between px-6 gap-3">
+    <div className="sticky top-0 z-30 flex h-14 w-full items-center justify-between gap-3 border-b border-slate-200 bg-white/80 px-6 backdrop-blur-xl dark:border-white/5 dark:bg-slate-950/80">
       {/* Left: Breadcrumb */}
-      <nav
-        aria-label="Breadcrumb"
-        className="flex items-center gap-1.5 text-sm min-w-0"
-      >
+      <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1.5 text-sm">
         {/* Admin root */}
         <Link
           href="/admin"
-          className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-slate-300 transition-colors shrink-0 font-medium"
+          className="flex shrink-0 items-center gap-1.5 font-medium text-slate-400 transition-colors hover:text-slate-900 dark:text-slate-500 dark:hover:text-slate-300"
         >
           <MdDashboard size={14} />
           <span className="hidden sm:inline">Admin</span>
@@ -55,14 +52,14 @@ export default function AdminTopbar() {
           <>
             <FaChevronRight
               size={9}
-              className="text-slate-400 dark:text-slate-700 shrink-0"
+              className="shrink-0 text-slate-400 dark:text-slate-700"
             />
             <Link
               href={matched}
-              className={`tracking-tight truncate ${
+              className={`truncate tracking-tight ${
                 subRoute.length > 0
-                  ? "text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-slate-300 font-medium transition-colors"
-                  : "text-slate-900 dark:text-white font-bold text-base"
+                  ? "font-medium text-slate-400 transition-colors hover:text-slate-900 dark:text-slate-500 dark:hover:text-slate-300"
+                  : "text-base font-bold text-slate-900 dark:text-white"
               }`}
             >
               {page?.label ?? "Page"}
@@ -74,9 +71,9 @@ export default function AdminTopbar() {
           <>
             <FaChevronRight
               size={9}
-              className="text-slate-400 dark:text-slate-700 shrink-0"
+              className="shrink-0 text-slate-400 dark:text-slate-700"
             />
-            <span className="text-slate-900 dark:text-white font-bold text-base tracking-tight truncate">
+            <span className="truncate text-base font-bold tracking-tight text-slate-900 dark:text-white">
               {subRoute[0] === "new" ? "New" : "Edit"}
             </span>
           </>

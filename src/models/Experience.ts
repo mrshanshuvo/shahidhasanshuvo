@@ -31,7 +31,7 @@ const ExperienceSchema = new Schema<IExperience>(
     ],
     skillIds: [{ type: Schema.Types.ObjectId, ref: "Skill" }],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Force delete the model from mongoose.models in development to pick up schema changes

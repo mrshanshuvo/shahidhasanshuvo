@@ -60,7 +60,6 @@ export default function AdminMessagesPage() {
   }
 
   async function handleDelete(id: string) {
-
     try {
       const res = await fetch(`/api/admin/messages/${id}`, {
         method: "DELETE",
@@ -85,9 +84,7 @@ export default function AdminMessagesPage() {
       });
       if (res.ok) {
         setMessages((prev) =>
-          prev.map((m) =>
-            m._id === message._id ? { ...m, status: "read" } : m,
-          ),
+          prev.map((m) => (m._id === message._id ? { ...m, status: "read" } : m))
         );
       }
     } catch (error) {
@@ -98,7 +95,7 @@ export default function AdminMessagesPage() {
   const unreadCount = messages.filter((m) => m.status === "unread").length;
 
   return (
-    <div className="p-4 md:p-8 space-y-6">
+    <div className="space-y-6 p-4 md:p-8">
       {/* Toast */}
       <AnimatePresence>
         {toast && (
@@ -107,70 +104,62 @@ export default function AdminMessagesPage() {
             animate={{ opacity: 1, y: 0, x: "-50%" }}
             exit={{ opacity: 0, y: -20, x: "-50%" }}
             className={cn(
-              "fixed top-8 left-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl",
+              "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
               toast.type === "success"
-                ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                : "bg-red-500/20 border-red-500/50 text-red-400",
+                ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
+                : "border-red-500/50 bg-red-500/20 text-red-400"
             )}
           >
             <div
               className={cn(
-                "p-1.5 rounded-full",
-                toast.type === "success"
-                  ? "bg-emerald-500/20"
-                  : "bg-red-500/20",
+                "rounded-full p-1.5",
+                toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
               )}
             >
-              {toast.type === "success" ? (
-                <FaCheck size={10} />
-              ) : (
-                <FaTimes size={10} />
-              )}
+              {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
             </div>
-            <span className="font-bold text-sm tracking-tight">
-              {toast.msg}
-            </span>
+            <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6">
         {/* Action bar — title is already shown in the AdminTopbar breadcrumb */}
         <div className="flex items-center justify-end gap-3">
           {unreadCount > 0 && (
-            <Badge className="bg-blue-600/10 text-blue-600 dark:text-blue-400 border-blue-500/20 rounded-lg px-3 py-1 text-xs font-bold animate-pulse">
+            <Badge className="animate-pulse rounded-lg border-blue-500/20 bg-blue-600/10 px-3 py-1 text-xs font-bold text-blue-600 dark:text-blue-400">
               {unreadCount} New Messages
             </Badge>
           )}
-          <Badge className="bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/5 rounded-lg px-3 py-1 text-xs font-bold shadow-sm dark:shadow-none">
+          <Badge className="rounded-lg border-slate-200 bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 shadow-sm dark:border-white/5 dark:bg-slate-800/50 dark:text-slate-400 dark:shadow-none">
             {messages.length} Total
           </Badge>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           {/* Message List */}
-          <div className="lg:col-span-5 space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="custom-scrollbar max-h-[70vh] space-y-4 overflow-y-auto pr-2 lg:col-span-5">
             {loading ? (
               /* Skeleton Loader List */
               Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={`skeleton-${i}`}
-                  className="p-5 bg-white dark:bg-slate-900/20 rounded-3xl border border-slate-200 dark:border-white/5 space-y-3 animate-pulse shadow-sm dark:shadow-none"
+                  className="animate-pulse space-y-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/5 dark:bg-slate-900/20 dark:shadow-none"
                 >
-                  <div className="flex justify-between items-start">
-                    <div className="h-4 w-24 bg-slate-100 dark:bg-slate-800/60 rounded" />
-                    <div className="h-3 w-12 bg-slate-100 dark:bg-slate-800/30 rounded" />
+                  <div className="flex items-start justify-between">
+                    <div className="h-4 w-24 rounded bg-slate-100 dark:bg-slate-800/60" />
+                    <div className="h-3 w-12 rounded bg-slate-100 dark:bg-slate-800/30" />
                   </div>
-                  <div className="h-3 w-full bg-slate-50 dark:bg-slate-800/20 rounded" />
+                  <div className="h-3 w-full rounded bg-slate-50 dark:bg-slate-800/20" />
                 </div>
               ))
             ) : messages.length === 0 ? (
-              <div className="text-center py-20 bg-white dark:bg-slate-900/20 rounded-3xl border border-dashed border-slate-300 dark:border-white/5 shadow-sm dark:shadow-none">
+              <div className="rounded-3xl border border-dashed border-slate-300 bg-white py-20 text-center shadow-sm dark:border-white/5 dark:bg-slate-900/20 dark:shadow-none">
                 <FaInbox
                   size={40}
-                  className="mx-auto text-slate-200 dark:text-slate-800 mb-4"
+                  className="mx-auto mb-4 text-slate-200 dark:text-slate-800"
                 />
-                <p className="text-slate-400 dark:text-slate-500 font-medium tracking-tight">
+                <p className="font-medium tracking-tight text-slate-400 dark:text-slate-500">
                   Your inbox is empty.
                 </p>
               </div>
@@ -187,27 +176,27 @@ export default function AdminMessagesPage() {
                 >
                   <Card
                     className={cn(
-                      "rounded-3xl border transition-all cursor-pointer group overflow-hidden relative shadow-sm dark:shadow-none",
+                      "group relative cursor-pointer overflow-hidden rounded-3xl border shadow-sm transition-all dark:shadow-none",
                       selectedMessage?._id === m._id
-                        ? "bg-blue-500/5 dark:bg-blue-600/10 border-blue-500/40 shadow-lg shadow-blue-500/5"
-                        : "bg-white dark:bg-slate-900/40 border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10",
+                        ? "border-blue-500/40 bg-blue-500/5 shadow-lg shadow-blue-500/5 dark:bg-blue-600/10"
+                        : "border-slate-200 bg-white hover:border-slate-300 dark:border-white/5 dark:bg-slate-900/40 dark:hover:border-white/10",
                       m.status === "unread" &&
-                        "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:bg-blue-500",
+                        "before:absolute before:top-0 before:bottom-0 before:left-0 before:w-1.5 before:bg-blue-500"
                     )}
                   >
                     <CardContent className="p-3">
-                      <div className="flex justify-between items-start mb-2">
+                      <div className="mb-2 flex items-start justify-between">
                         <p
                           className={cn(
-                            "font-bold truncate max-w-37.5",
+                            "max-w-37.5 truncate font-bold",
                             m.status === "unread"
                               ? "text-slate-900 dark:text-white"
-                              : "text-slate-500 dark:text-slate-400",
+                              : "text-slate-500 dark:text-slate-400"
                           )}
                         >
                           {m.name}
                         </p>
-                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                        <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
                           {new Date(m.createdAt).toLocaleDateString(undefined, {
                             month: "short",
                             day: "numeric",
@@ -216,10 +205,10 @@ export default function AdminMessagesPage() {
                       </div>
                       <p
                         className={cn(
-                          "text-xs line-clamp-1",
+                          "line-clamp-1 text-xs",
                           m.status === "unread"
                             ? "text-slate-600 dark:text-slate-300"
-                            : "text-slate-400 dark:text-slate-500",
+                            : "text-slate-400 dark:text-slate-500"
                         )}
                       >
                         {m.message}
@@ -242,24 +231,24 @@ export default function AdminMessagesPage() {
                   exit={{ opacity: 0, y: -10 }}
                   className="space-y-6"
                 >
-                  <Card className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/60 backdrop-blur-xl overflow-hidden shadow-2xl dark:shadow-none">
-                    <CardContent className="p-6 md:p-10 space-y-8">
+                  <Card className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/60 dark:shadow-none">
+                    <CardContent className="space-y-8 p-6 md:p-10">
                       {/* Meta */}
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 dark:border-white/5 pb-8">
+                      <div className="flex flex-col justify-between gap-6 border-b border-slate-100 pb-8 md:flex-row md:items-center dark:border-white/5">
                         <div className="flex items-center gap-5">
-                          <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                          <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 text-blue-400">
                             <FaUser size={28} />
                           </div>
                           <div>
-                            <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
                               {selectedMessage.name}
                             </h2>
-                            <p className="text-blue-400 font-bold text-sm tracking-wide">
+                            <p className="text-sm font-bold tracking-wide text-blue-400">
                               {selectedMessage.email}
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3 text-slate-500 dark:text-slate-500 text-xs font-bold uppercase tracking-widest bg-slate-50 dark:bg-slate-950/50 px-4 py-2 rounded-full border border-slate-200 dark:border-white/5">
+                        <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-bold tracking-widest text-slate-500 uppercase dark:border-white/5 dark:bg-slate-950/50 dark:text-slate-500">
                           <FaCalendarAlt className="text-blue-500" />
                           {new Date(selectedMessage.createdAt).toLocaleString()}
                         </div>
@@ -267,29 +256,26 @@ export default function AdminMessagesPage() {
 
                       {/* Body */}
                       <div className="space-y-4">
-                        <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />{" "}
-                          Message Body
+                        <h4 className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] text-slate-500 uppercase">
+                          <div className="h-1.5 w-1.5 rounded-full bg-blue-500" /> Message
+                          Body
                         </h4>
-                        <div className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg whitespace-pre-wrap font-medium">
+                        <div className="text-lg leading-relaxed font-medium whitespace-pre-wrap text-slate-600 dark:text-slate-300">
                           {selectedMessage.message}
                         </div>
                       </div>
 
                       {/* Footer Actions */}
-                      <div className="flex items-center justify-between pt-8 border-t border-slate-100 dark:border-white/5">
-                        <a
-                          href={`mailto:${selectedMessage.email}`}
-                          className="group"
-                        >
-                          <Button className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl px-8 h-12 font-bold shadow-lg shadow-blue-600/20 group-hover:scale-105 transition-all">
+                      <div className="flex items-center justify-between border-t border-slate-100 pt-8 dark:border-white/5">
+                        <a href={`mailto:${selectedMessage.email}`} className="group">
+                          <Button className="h-12 rounded-2xl bg-blue-600 px-8 font-bold text-white shadow-lg shadow-blue-600/20 transition-all group-hover:scale-105 hover:bg-blue-500">
                             <FaEnvelope className="mr-2" /> Reply via Email
                           </Button>
                         </a>
                         <Button
                           variant="ghost"
                           onClick={() => handleDelete(selectedMessage._id)}
-                          className="w-12 h-12 rounded-2xl bg-red-500/5 text-red-500 hover:bg-red-500/20 hover:text-red-400 border border-transparent hover:border-red-500/20"
+                          className="h-12 w-12 rounded-2xl border border-transparent bg-red-500/5 text-red-500 hover:border-red-500/20 hover:bg-red-500/20 hover:text-red-400"
                         >
                           <FaTrash size={18} />
                         </Button>
@@ -298,11 +284,11 @@ export default function AdminMessagesPage() {
                   </Card>
                 </motion.div>
               ) : (
-                <div className="h-125 flex flex-col items-center justify-center text-center space-y-4 bg-white dark:bg-slate-900/20 rounded-[3rem] border border-dashed border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none">
-                  <div className="w-20 h-20 rounded-3xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center text-slate-300 dark:text-slate-700">
+                <div className="flex h-125 flex-col items-center justify-center space-y-4 rounded-[3rem] border border-dashed border-slate-200 bg-white text-center shadow-sm dark:border-white/5 dark:bg-slate-900/20 dark:shadow-none">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-50 text-slate-300 dark:bg-slate-900 dark:text-slate-700">
                     <FaEnvelopeOpen size={40} />
                   </div>
-                  <p className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest text-xs">
+                  <p className="text-xs font-bold tracking-widest text-slate-400 uppercase dark:text-slate-500">
                     Select a message to read
                   </p>
                 </div>

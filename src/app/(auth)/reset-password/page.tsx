@@ -4,19 +4,10 @@ import { useMutation } from "@tanstack/react-query";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useSearchParams, useRouter } from "next/navigation";
 
-function OtpInput({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-}) {
+function OtpInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const handleChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value.replace(/\D/g, ""); // Only allow numbers
 
     if (val.length > 1) {
@@ -37,10 +28,7 @@ function OtpInput({
     }
   };
 
-  const handleKeyDown = (
-    index: number,
-    e: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace") {
       if (!value[index] && index > 0) {
         // If empty, move focus back
@@ -58,10 +46,7 @@ function OtpInput({
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const pasted = e.clipboardData
-      .getData("text")
-      .replace(/\D/g, "")
-      .slice(0, 6);
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
     if (pasted) {
       onChange(pasted);
       const focusIndex = Math.min(pasted.length, 5);
@@ -84,7 +69,7 @@ function OtpInput({
           onChange={(e) => handleChange(index, e)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
-          className="w-12 h-14 sm:w-14 sm:h-14 text-center text-xl sm:text-2xl font-bold bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/50 rounded-xl text-slate-900 dark:text-white outline-none transition-all"
+          className="h-14 w-12 rounded-xl border border-slate-200 bg-slate-50 text-center text-xl font-bold text-slate-900 transition-all outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/50 sm:h-14 sm:w-14 sm:text-2xl dark:border-slate-700 dark:bg-slate-800 dark:text-white"
         />
       ))}
     </div>
@@ -108,7 +93,7 @@ function ResetPasswordForm() {
   const [message, setMessage] = useState(
     sentParam === "true"
       ? "Password reset link and OTP sent! Please check your email."
-      : "",
+      : ""
   );
   const verifyOtpMutation = useMutation({
     mutationFn: async () => {
@@ -171,14 +156,14 @@ function ResetPasswordForm() {
 
   return (
     <>
-      <div className="flex flex-col items-center mb-8">
-        <div className="w-16 h-16 bg-emerald-600/10 dark:bg-emerald-600/20 border border-emerald-500/20 dark:border-emerald-500/30 rounded-2xl flex items-center justify-center mb-4">
-          <FaLock className="text-emerald-600 dark:text-emerald-400 text-2xl" />
+      <div className="mb-8 flex flex-col items-center">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-600/10 dark:border-emerald-500/30 dark:bg-emerald-600/20">
+          <FaLock className="text-2xl text-emerald-600 dark:text-emerald-400" />
         </div>
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
           {step === 1 ? "Verify OTP" : "Create New Password"}
         </h1>
-        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1 text-center">
+        <p className="mt-1 text-center text-sm text-slate-500 dark:text-slate-400">
           {step === 1
             ? emailParam
               ? `Enter the 6-digit OTP sent to ${emailParam}`
@@ -188,13 +173,13 @@ function ResetPasswordForm() {
       </div>
 
       {(verifyOtpMutation.isError || resetMutation.isError) && (
-        <div className="mb-6 p-3 bg-red-900/30 border border-red-500/30 rounded-lg text-red-400 text-sm text-center">
+        <div className="mb-6 rounded-lg border border-red-500/30 bg-red-900/30 p-3 text-center text-sm text-red-400">
           {verifyOtpMutation.error?.message || resetMutation.error?.message}
         </div>
       )}
 
       {message && (
-        <div className="mb-6 p-3 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-emerald-400 text-sm text-center">
+        <div className="mb-6 rounded-lg border border-emerald-500/30 bg-emerald-900/30 p-3 text-center text-sm text-emerald-400">
           {message}
         </div>
       )}
@@ -203,7 +188,7 @@ function ResetPasswordForm() {
         <form onSubmit={handleVerifyOTP} className="space-y-4">
           {!emailParam && (
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Email Address
               </label>
               <div className="relative">
@@ -213,7 +198,7 @@ function ResetPasswordForm() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="admin@example.com"
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm outline-none transition-all"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition-all outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500"
                 />
               </div>
             </div>
@@ -224,7 +209,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={verifyOtpMutation.isPending}
-            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors text-sm mt-2"
+            className="mt-2 w-full rounded-lg bg-emerald-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {verifyOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
           </button>
@@ -232,23 +217,23 @@ function ResetPasswordForm() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
               New Password
             </label>
             <div className="relative">
-              <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm" />
+              <FaLock className="absolute top-1/2 left-3.5 -translate-y-1/2 text-sm text-slate-500" />
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full pl-10 pr-11 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm outline-none transition-all"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2.5 pr-11 pl-10 text-sm text-slate-900 placeholder-slate-400 transition-all outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-500 transition-colors hover:text-slate-300"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -256,23 +241,23 @@ function ResetPasswordForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Confirm Password
             </label>
             <div className="relative">
-              <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm" />
+              <FaLock className="absolute top-1/2 left-3.5 -translate-y-1/2 text-sm text-slate-500" />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full pl-10 pr-11 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm outline-none transition-all"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2.5 pr-11 pl-10 text-sm text-slate-900 placeholder-slate-400 transition-all outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-500 transition-colors hover:text-slate-300"
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -282,7 +267,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={resetMutation.isPending || message !== ""}
-            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors text-sm mt-2"
+            className="mt-2 w-full rounded-lg bg-emerald-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {resetMutation.isPending ? "Resetting..." : "Reset Password"}
           </button>
@@ -294,17 +279,15 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-emerald-500/10 blur-3xl" />
       </div>
 
       <div className="relative w-full max-w-md">
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-2xl">
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
           <Suspense
-            fallback={
-              <div className="text-center text-slate-500">Loading...</div>
-            }
+            fallback={<div className="text-center text-slate-500">Loading...</div>}
           >
             <ResetPasswordForm />
           </Suspense>

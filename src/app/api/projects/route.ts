@@ -9,7 +9,9 @@ export async function GET() {
   await connectDB();
   // Ensure target schemas are registered before populate is called
   const _modelRef = [Technology, Category];
-  if (_modelRef.length > 0) { /* register model check */ }
+  if (_modelRef.length > 0) {
+    /* register model check */
+  }
   const projects = await Project.find()
     .populate("technologyIds")
     .populate("categoryIds")
@@ -18,8 +20,12 @@ export async function GET() {
 
   const mappedProjects = projects.map((p: any) => ({
     ...p,
-    techNames: Array.isArray(p.technologyIds) ? p.technologyIds.map((t: any) => t.name || t.toString()) : [],
-    category: Array.isArray(p.categoryIds) ? p.categoryIds.map((c: any) => c.name || c.toString()) : [],
+    techNames: Array.isArray(p.technologyIds)
+      ? p.technologyIds.map((t: any) => t.name || t.toString())
+      : [],
+    category: Array.isArray(p.categoryIds)
+      ? p.categoryIds.map((c: any) => c.name || c.toString())
+      : [],
   }));
 
   return NextResponse.json(mappedProjects, {

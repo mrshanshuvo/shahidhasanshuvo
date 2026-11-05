@@ -14,7 +14,7 @@ const TechSchema = new Schema<ITech>(
     },
     techList: [{ type: String }],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Enforce singleton behavior by forcing a fixed _id

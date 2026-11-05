@@ -5,9 +5,7 @@ import ExperienceClient from "./ExperienceClient";
 
 async function getExperiences() {
   await connectDB();
-  const raw = await ExperienceModel.find()
-    .sort({ order: 1 })
-    .lean();
+  const raw = await ExperienceModel.find().sort({ order: 1 }).lean();
   return JSON.parse(JSON.stringify(raw));
 }
 

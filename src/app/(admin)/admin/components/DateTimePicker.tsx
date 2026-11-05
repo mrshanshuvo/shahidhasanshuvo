@@ -6,11 +6,7 @@ import { ChevronDownIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { DropdownProps } from "react-day-picker";
 
 // ─── Custom calendar month/year dropdown ────────────────────────────────────
@@ -61,14 +57,14 @@ function CalendarDropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center gap-0.5 h-7 px-2 rounded-lg text-sm font-semibold text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/8 transition-colors select-none"
+        className="flex h-7 items-center gap-0.5 rounded-lg px-2 text-sm font-semibold text-slate-800 transition-colors select-none hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-white/8"
       >
         {selected?.label ?? "—"}
         <ChevronDownIcon
           size={13}
           className={cn(
             "text-slate-400 transition-transform duration-200",
-            open && "rotate-180",
+            open && "rotate-180"
           )}
         />
       </button>
@@ -78,7 +74,7 @@ function CalendarDropdown({
         <div
           ref={listRef}
           role="listbox"
-          className="absolute left-0 top-full z-200 mt-1 w-fit max-h-52 overflow-y-auto rounded-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 shadow-2xl py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="absolute top-full left-0 z-200 mt-1 max-h-52 w-fit overflow-y-auto rounded-sm border border-slate-200 bg-white py-1 shadow-2xl [scrollbar-width:none] dark:border-white/10 dark:bg-slate-900 [&::-webkit-scrollbar]:hidden"
         >
           {options.map((opt) => {
             const isSelected = opt.value === value;
@@ -92,11 +88,11 @@ function CalendarDropdown({
                 disabled={opt.disabled}
                 onClick={() => handleSelect(opt.value)}
                 className={cn(
-                  "w-full text-left px-3 py-1.5 text-sm font-medium transition-colors",
+                  "w-full px-3 py-1.5 text-left text-sm font-medium transition-colors",
                   isSelected
-                    ? "bg-orange-500 text-white font-bold"
-                    : "text-slate-700 dark:text-slate-200 hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400",
-                  opt.disabled && "pointer-events-none opacity-40",
+                    ? "bg-orange-500 font-bold text-white"
+                    : "text-slate-700 hover:bg-orange-500/10 hover:text-orange-600 dark:text-slate-200 dark:hover:text-orange-400",
+                  opt.disabled && "pointer-events-none opacity-40"
                 )}
               >
                 {opt.label}
@@ -163,13 +159,13 @@ export default function DateTimePicker({
         {/* ── Trigger ─────────────────────────────────────────────────────── */}
         <PopoverTrigger
           className={cn(
-            "relative flex items-center gap-3 w-full h-12 px-4",
-            "bg-white dark:bg-slate-950/40 rounded-xl",
+            "relative flex h-12 w-full items-center gap-3 px-4",
+            "rounded-xl bg-white dark:bg-slate-950/40",
             "border border-slate-200 dark:border-white/6",
-            "shadow-inner dark:shadow-black/20 cursor-pointer select-none",
+            "cursor-pointer shadow-inner select-none dark:shadow-black/20",
             "hover:border-orange-400/50 dark:hover:border-orange-500/30",
             "focus-within:border-orange-500/50 focus-within:ring-4 focus-within:ring-orange-500/5",
-            "transition-all duration-300",
+            "transition-all duration-300"
           )}
         >
           <FaCalendarAlt
@@ -178,10 +174,10 @@ export default function DateTimePicker({
           />
           <span
             className={cn(
-              "flex-1 text-sm font-semibold text-left truncate",
+              "flex-1 truncate text-left text-sm font-semibold",
               value
                 ? "text-slate-900 dark:text-slate-100"
-                : "text-slate-400 dark:text-slate-500",
+                : "text-slate-400 dark:text-slate-500"
             )}
           >
             {formatDisplay()}
@@ -191,7 +187,7 @@ export default function DateTimePicker({
         {/* ── Popover panel ────────────────────────────────────────────────── */}
         <PopoverContent
           align="start"
-          className="w-auto p-0 overflow-visible bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl"
+          className="w-auto overflow-visible rounded-2xl border border-slate-200 bg-white p-0 shadow-2xl dark:border-white/10 dark:bg-slate-900"
         >
           {/* Calendar */}
           <div className="p-3">
@@ -215,27 +211,27 @@ export default function DateTimePicker({
           </div>
 
           {/* ── Time row ─────────────────────────────────────────────────── */}
-          <div className="px-4 py-3 border-t border-slate-100 dark:border-white/5 bg-slate-50/60 dark:bg-white/2">
-            <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+          <div className="border-t border-slate-100 bg-slate-50/60 px-4 py-3 dark:border-white/5 dark:bg-white/2">
+            <p className="mb-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
               Time
             </p>
             <div className="flex items-center gap-2">
               <div
                 className={cn(
-                  "flex items-center gap-2 flex-1 h-10 px-3 rounded-xl",
+                  "flex h-10 flex-1 items-center gap-2 rounded-xl px-3",
                   "bg-white dark:bg-slate-950/60",
                   "border border-slate-200 dark:border-white/8",
                   "shadow-inner dark:shadow-black/20",
                   "focus-within:border-orange-500/40 focus-within:ring-3 focus-within:ring-orange-500/10",
-                  "transition-all duration-200",
+                  "transition-all duration-200"
                 )}
               >
-                <FaClock size={12} className="text-orange-400 shrink-0" />
+                <FaClock size={12} className="shrink-0 text-orange-400" />
                 <input
                   type="time"
                   value={timeValue}
                   onChange={handleTimeChange}
-                  className="flex-1 bg-transparent outline-none border-none text-sm font-bold tabular-nums text-slate-800 dark:text-slate-100 scheme-light dark:scheme-dark"
+                  className="flex-1 border-none bg-transparent text-sm font-bold text-slate-800 tabular-nums scheme-light outline-none dark:text-slate-100 dark:scheme-dark"
                 />
               </div>
 
@@ -243,11 +239,11 @@ export default function DateTimePicker({
                 type="button"
                 onClick={() => setIsOpen(false)}
                 className={cn(
-                  "shrink-0 h-10 px-4 rounded-xl",
+                  "h-10 shrink-0 rounded-xl px-4",
                   "bg-orange-500 hover:bg-orange-600 active:scale-95",
-                  "text-white text-xs font-black",
+                  "text-xs font-black text-white",
                   "shadow-md shadow-orange-500/20",
-                  "transition-all duration-200",
+                  "transition-all duration-200"
                 )}
               >
                 Done

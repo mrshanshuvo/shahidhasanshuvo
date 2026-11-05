@@ -67,14 +67,8 @@ function SortableSkillRow({
   onDelete: () => void;
   isDeleting: boolean;
 }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: skill._id! });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: skill._id! });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -87,22 +81,21 @@ function SortableSkillRow({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "group flex items-center gap-4 bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 rounded-2xl p-2 transition-all duration-300 shadow-sm dark:shadow-none",
-        isDragging &&
-          "z-50 border-purple-500/50 shadow-2xl shadow-purple-500/10",
+        "group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm backdrop-blur-xl transition-all duration-300 hover:border-slate-300 dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none dark:hover:border-white/10",
+        isDragging && "z-50 border-purple-500/50 shadow-2xl shadow-purple-500/10"
       )}
     >
       <div
         {...attributes}
         {...listeners}
-        className="cursor-grab active:cursor-grabbing text-slate-300 dark:text-slate-600 hover:text-purple-500 transition-colors"
+        className="cursor-grab text-slate-300 transition-colors hover:text-purple-500 active:cursor-grabbing dark:text-slate-600"
       >
         <FaGripVertical size={14} />
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-lg flex items-center justify-center">
+          <div className="flex items-center justify-center rounded-lg bg-purple-500/10 p-2 text-purple-600 dark:text-purple-400">
             {skill.iconUrl ? (
               <Image
                 src={skill.iconUrl}
@@ -116,10 +109,10 @@ function SortableSkillRow({
             )}
           </div>
           <div className="min-w-0">
-            <h3 className="font-bold text-slate-900 dark:text-white truncate text-sm">
+            <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
               {skill.name}
             </h3>
-            <p className="text-[10px] text-slate-500 dark:text-slate-500 uppercase tracking-widest font-medium">
+            <p className="text-[10px] font-medium tracking-widest text-slate-500 uppercase dark:text-slate-500">
               {skill.tech}
             </p>
           </div>
@@ -127,12 +120,12 @@ function SortableSkillRow({
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
           <Button
             variant="ghost"
             size="icon"
             onClick={onEdit}
-            className="h-8 w-8 rounded-lg text-slate-400 hover:text-purple-400 hover:bg-purple-400/10"
+            className="h-8 w-8 rounded-lg text-slate-400 hover:bg-purple-400/10 hover:text-purple-400"
           >
             <FaEdit size={12} />
           </Button>
@@ -141,10 +134,10 @@ function SortableSkillRow({
             size="icon"
             onClick={onDelete}
             disabled={isDeleting}
-            className="h-8 w-8 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-400/10"
+            className="h-8 w-8 rounded-lg text-slate-400 hover:bg-red-400/10 hover:text-red-400"
           >
             {isDeleting ? (
-              <div className="h-3 w-3 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
+              <div className="h-3 w-3 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
             ) : (
               <FaTrash size={12} />
             )}
@@ -174,7 +167,7 @@ export default function AdminSkillsPage() {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    }),
+    })
   );
 
   function showToast(msg: string, type: "success" | "error" = "success") {
@@ -227,9 +220,7 @@ export default function AdminSkillsPage() {
   const saveMutation = useMutation({
     mutationFn: async (skill: Skill) => {
       const isEdit = !!skill._id;
-      const url = isEdit
-        ? `/api/admin/skills?id=${skill._id}`
-        : "/api/admin/skills";
+      const url = isEdit ? `/api/admin/skills?id=${skill._id}` : "/api/admin/skills";
       const method = isEdit ? "PATCH" : "POST";
       const res = await fetch(url, {
         method,
@@ -278,7 +269,7 @@ export default function AdminSkillsPage() {
       if (oldIndex === -1 || newIndex === -1) return;
       const reorderedExpertises = arrayMove(expertises, oldIndex, newIndex);
       const updatedSkills = skills.map((s) =>
-        s.isTechnology ? s : reorderedExpertises.shift()!,
+        s.isTechnology ? s : reorderedExpertises.shift()!
       );
       setSkills(updatedSkills);
       fetch("/api/admin/skills", {
@@ -291,7 +282,7 @@ export default function AdminSkillsPage() {
   }
 
   return (
-    <div className="p-4 md:p-8 space-y-6">
+    <div className="space-y-6 p-4 md:p-8">
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -299,60 +290,52 @@ export default function AdminSkillsPage() {
             animate={{ opacity: 1, y: 0, x: "-50%" }}
             exit={{ opacity: 0, y: -20, x: "-50%" }}
             className={cn(
-              "fixed top-8 left-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl",
+              "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
               toast.type === "success"
-                ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                : "bg-red-500/20 border-red-500/50 text-red-400",
+                ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
+                : "border-red-500/50 bg-red-500/20 text-red-400"
             )}
           >
             <div
               className={cn(
-                "p-1.5 rounded-full",
-                toast.type === "success"
-                  ? "bg-emerald-500/20"
-                  : "bg-red-500/20",
+                "rounded-full p-1.5",
+                toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
               )}
             >
-              {toast.type === "success" ? (
-                <FaCheck size={10} />
-              ) : (
-                <FaTimes size={10} />
-              )}
+              {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
             </div>
-            <span className="font-bold text-sm tracking-tight">
-              {toast.msg}
-            </span>
+            <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="max-w-7xl mx-auto space-y-6">
-        <div className="flex items-center justify-between bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 shadow-sm dark:shadow-none">
+      <div className="mx-auto max-w-7xl space-y-6">
+        <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">
           <div className="flex items-center gap-3">
             <Badge
               variant="outline"
-              className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20 px-3 py-1 rounded-full font-bold uppercase tracking-widest text-[10px]"
+              className="rounded-full border-purple-500/20 bg-purple-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-purple-600 uppercase dark:text-purple-400"
             >
               {expertises.length} Expertise Areas
             </Badge>
             <Badge
               variant="outline"
-              className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 px-3 py-1 rounded-full font-bold uppercase tracking-widest text-[10px]"
+              className="rounded-full border-blue-500/20 bg-blue-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400"
             >
               {technologies.length} Brand Techs
             </Badge>
           </div>
           <Button
             onClick={openNew}
-            className="bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold px-6 h-10 shadow-lg shadow-purple-600/20 active:scale-95 transition-all group text-xs"
+            className="group h-10 rounded-xl bg-purple-600 px-6 text-xs font-bold text-white shadow-lg shadow-purple-600/20 transition-all hover:bg-purple-500 active:scale-95"
           >
-            <FaPlus className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+            <FaPlus className="mr-2 transition-transform duration-300 group-hover:rotate-90" />
             Add Expertise
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in duration-700">
-          <Card className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/40 backdrop-blur-xl overflow-hidden shadow-sm dark:shadow-none">
+        <div className="animate-in fade-in grid grid-cols-1 gap-6 duration-700 lg:grid-cols-2">
+          <Card className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/40 dark:shadow-none">
             <CardHeader className="p-4 pb-1">
               <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
                 Skill Expertise
@@ -364,17 +347,17 @@ export default function AdminSkillsPage() {
                   {Array.from({ length: 4 }).map((_, i) => (
                     <div
                       key={i}
-                      className="h-16 bg-slate-100 dark:bg-slate-800/20 rounded-2xl animate-pulse"
+                      className="h-16 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800/20"
                     />
                   ))}
                 </div>
               ) : expertises.length === 0 ? (
-                <div className="text-center py-16 bg-white dark:bg-slate-950/20 rounded-3xl border border-dashed border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none">
+                <div className="rounded-3xl border border-dashed border-slate-200 bg-white py-16 text-center shadow-sm dark:border-white/5 dark:bg-slate-950/20 dark:shadow-none">
                   <FaLaptopCode
-                    className="mx-auto text-slate-200 dark:text-slate-800 mb-4"
+                    className="mx-auto mb-4 text-slate-200 dark:text-slate-800"
                     size={40}
                   />
-                  <p className="text-slate-400 dark:text-slate-500 font-medium">
+                  <p className="font-medium text-slate-400 dark:text-slate-500">
                     No expertises found. Add your expertise above.
                   </p>
                 </div>
@@ -406,10 +389,10 @@ export default function AdminSkillsPage() {
 
                   <DragOverlay dropAnimation={null}>
                     {activeId ? (
-                      <div className="flex items-center gap-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-4 shadow-2xl opacity-90 scale-105">
+                      <div className="flex scale-105 items-center gap-4 rounded-2xl border border-purple-500/30 bg-white/90 p-4 opacity-90 shadow-2xl backdrop-blur-xl dark:bg-slate-800/90">
                         <FaGripVertical className="text-purple-500" size={14} />
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-slate-900 dark:text-white truncate text-sm">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
                             {skills.find((s) => s._id === activeId)?.name}
                           </h3>
                         </div>
@@ -420,18 +403,18 @@ export default function AdminSkillsPage() {
               )}
 
               {!loading && expertises.length > 0 && (
-                <p className="text-center text-[10px] text-slate-400 dark:text-slate-700 mt-8 font-bold uppercase tracking-widest">
+                <p className="mt-8 text-center text-[10px] font-bold tracking-widest text-slate-400 uppercase dark:text-slate-700">
                   Drag rows to reorder • Changes save automatically
                 </p>
               )}
             </CardContent>
           </Card>
 
-          <Card className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/40 backdrop-blur-xl overflow-hidden shadow-sm dark:shadow-none">
+          <Card className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/40 dark:shadow-none">
             <CardHeader className="p-4 pb-1">
               <div className="flex flex-row items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-xl">
+                  <div className="rounded-xl bg-blue-500/10 p-2.5 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
                     <FaCode size={20} />
                   </div>
                   <div>
@@ -439,8 +422,7 @@ export default function AdminSkillsPage() {
                       Brand Tech Registry ({technologies.length})
                     </CardTitle>
                     <CardDescription className="text-slate-500 dark:text-slate-500">
-                      Technologies with custom colors & icons selectable in
-                      Projects.
+                      Technologies with custom colors & icons selectable in Projects.
                     </CardDescription>
                   </div>
                 </div>
@@ -455,34 +437,34 @@ export default function AdminSkillsPage() {
                     });
                     setIsDialogOpen(true);
                   }}
-                  className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold px-4 h-9 shadow-lg shadow-blue-600/20 text-xs active:scale-95 transition-all cursor-pointer"
+                  className="h-9 cursor-pointer rounded-xl bg-blue-600 px-4 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition-all hover:bg-blue-500 active:scale-95"
                 >
                   <FaPlus className="mr-1.5" size={10} /> Add Tech
                 </Button>
               </div>
             </CardHeader>
             <CardContent className="space-y-6 pt-2">
-              <div className="flex flex-wrap gap-2.5 min-h-20 p-4 bg-slate-50 dark:bg-slate-950/20 rounded-2xl border border-slate-200 dark:border-white/5">
+              <div className="flex min-h-20 flex-wrap gap-2.5 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/5 dark:bg-slate-950/20">
                 {technologies.map((t) => (
                   <Badge
                     key={t._id}
                     variant="outline"
-                    className="pl-3 pr-2 py-2 gap-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-white/5 text-slate-700 dark:text-slate-300 rounded-xl group shadow-sm dark:shadow-none hover:scale-102 transition-transform cursor-default"
+                    className="group cursor-default gap-2 rounded-xl border-slate-200 bg-white py-2 pr-2 pl-3 text-slate-700 shadow-sm transition-transform hover:scale-102 dark:border-white/5 dark:bg-slate-950 dark:text-slate-300 dark:shadow-none"
                     style={{
                       borderLeft: `3px solid #10B981`,
                     }}
                   >
                     <span className="text-xs font-black">{t.name}</span>
-                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                       <button
                         onClick={() => openEdit(t)}
-                        className="h-5 w-5 rounded-full hover:bg-blue-500/10 dark:hover:bg-blue-500/20 hover:text-blue-500 flex items-center justify-center transition-colors cursor-pointer"
+                        className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-blue-500/10 hover:text-blue-500 dark:hover:bg-blue-500/20"
                       >
                         <FaEdit size={10} />
                       </button>
                       <button
                         onClick={() => handleDelete(t._id!)}
-                        className="h-5 w-5 rounded-full hover:bg-red-500/10 dark:hover:bg-red-500/20 hover:text-red-500 flex items-center justify-center transition-colors cursor-pointer"
+                        className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-red-500/10 hover:text-red-500 dark:hover:bg-red-500/20"
                       >
                         <FaTrash size={9} />
                       </button>
@@ -490,7 +472,7 @@ export default function AdminSkillsPage() {
                   </Badge>
                 ))}
                 {technologies.length === 0 && (
-                  <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold m-auto py-6">
+                  <p className="m-auto py-6 text-[10px] font-bold tracking-widest text-slate-400 uppercase">
                     No brand technologies registered
                   </p>
                 )}
@@ -517,12 +499,12 @@ export default function AdminSkillsPage() {
         {" "}
         {currentSkill && (
           <div className="px-1">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-10">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr]">
               {/* Left Column: Visuals & Classification */}
               <div className="space-y-8">
                 <AdminField label="Skill Classification">
-                  <div className="flex items-center h-12 px-4 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/5 rounded-xl">
-                    <label className="flex items-center gap-3 cursor-pointer w-full select-none">
+                  <div className="flex h-12 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 dark:border-white/5 dark:bg-slate-950/40">
+                    <label className="flex w-full cursor-pointer items-center gap-3 select-none">
                       <input
                         type="checkbox"
                         checked={!!currentSkill.isTechnology}
@@ -536,10 +518,10 @@ export default function AdminSkillsPage() {
                                   tech: isTech ? "Technology" : "",
                                   iconUrl: prev.iconUrl || "",
                                 }
-                              : null,
+                              : null
                           );
                         }}
-                        className="size-4 accent-purple-500 rounded border-slate-300 dark:border-white/10 dark:bg-slate-950 focus:ring-purple-500 cursor-pointer"
+                        className="size-4 cursor-pointer rounded border-slate-300 accent-purple-500 focus:ring-purple-500 dark:border-white/10 dark:bg-slate-950"
                       />
                       <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                         Is Technology Logo / Brand
@@ -552,9 +534,7 @@ export default function AdminSkillsPage() {
                   <ImageUpload
                     value={currentSkill.iconUrl || ""}
                     onChange={(val) =>
-                      setCurrentSkill((prev) =>
-                        prev ? { ...prev, iconUrl: val } : null,
-                      )
+                      setCurrentSkill((prev) => (prev ? { ...prev, iconUrl: val } : null))
                     }
                   />
                 </AdminField>
@@ -574,7 +554,7 @@ export default function AdminSkillsPage() {
                     value={currentSkill.name}
                     onChange={(e) =>
                       setCurrentSkill((prev) =>
-                        prev ? { ...prev, name: e.target.value } : null,
+                        prev ? { ...prev, name: e.target.value } : null
                       )
                     }
                     placeholder={
@@ -589,11 +569,11 @@ export default function AdminSkillsPage() {
                   <AdminField label="Stack / Technologies">
                     <AdminInput
                       icon={FaCode}
-                      className="font-medium text-sm"
+                      className="text-sm font-medium"
                       value={currentSkill.tech}
                       onChange={(e) =>
                         setCurrentSkill((prev) =>
-                          prev ? { ...prev, tech: e.target.value } : null,
+                          prev ? { ...prev, tech: e.target.value } : null
                         )
                       }
                       placeholder="e.g. React, Next.js, TypeScript"

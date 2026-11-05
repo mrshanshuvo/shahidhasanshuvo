@@ -49,7 +49,8 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
 
   const _modelRef = [Technology, Category];
-  if (_modelRef.length > 0) {}
+  if (_modelRef.length > 0) {
+  }
 
   const raw = await ProjectModel.findOne({ slug })
     .populate("technologyIds")
@@ -63,14 +64,18 @@ export default async function ProjectPage({ params }: Props) {
 
   const mapped = {
     ...raw,
-    techNames: Array.isArray(raw.technologyIds) ? raw.technologyIds.map((t: any) => t.name || t.toString()) : [],
-    category: Array.isArray(raw.categoryIds) ? raw.categoryIds.map((c: any) => c.name || c.toString()) : [],
+    techNames: Array.isArray(raw.technologyIds)
+      ? raw.technologyIds.map((t: any) => t.name || t.toString())
+      : [],
+    category: Array.isArray(raw.categoryIds)
+      ? raw.categoryIds.map((c: any) => c.name || c.toString())
+      : [],
   };
 
   const project: Project = JSON.parse(JSON.stringify(mapped));
 
   return (
-    <div className="bg-white dark:bg-[#020617] text-slate-900 dark:text-slate-50 min-h-screen font-sans selection:bg-emerald-500/30">
+    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-emerald-500/30 dark:bg-[#020617] dark:text-slate-50">
       <Navbar resumeUrl={resumeUrl} />
       <ProjectDetailClient project={project} iconRegistry={iconRegistry} />
     </div>

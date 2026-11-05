@@ -32,29 +32,29 @@ function loadEnv() {
 
 // 2. Define the project and demo tech stack mappings
 const projectTechMapping: Record<string, string[]> = {
-  "whereisit": ["React", "Node.js", "Express", "MongoDB", "TensorFlow.js", "Firebase"],
+  whereisit: ["React", "Node.js", "Express", "MongoDB", "TensorFlow.js", "Firebase"],
   "my-portfolio": ["Next.js", "React", "Tailwind CSS", "Node.js"],
   "car-doctor-nextjs": ["Next.js", "React", "Tailwind CSS", "Node.js"],
-  "profast": ["React", "Node.js", "Express", "MongoDB", "Leaflet", "Tailwind CSS"],
-  "mcms": ["React", "Next.js", "Node.js", "MongoDB", "Tailwind CSS"]
+  profast: ["React", "Node.js", "Express", "MongoDB", "Leaflet", "Tailwind CSS"],
+  mcms: ["React", "Next.js", "Node.js", "MongoDB", "Tailwind CSS"],
 };
 
 const demoTechMapping: Record<string, string[]> = {
   "ai-image-classifier": ["TensorFlow.js", "React", "Webcam API"],
-  "3d-portfolio-scene": ["Three.js", "R3F", "GLSL"]
+  "3d-portfolio-scene": ["Three.js", "R3F", "GLSL"],
 };
 
 // All technologies referenced in mappings
 const requiredTechNames = Array.from(
   new Set([
     ...Object.values(projectTechMapping).flat(),
-    ...Object.values(demoTechMapping).flat()
+    ...Object.values(demoTechMapping).flat(),
   ])
 );
 
 async function migrate() {
   loadEnv();
-  
+
   const uri = process.env.MONGODB_URI;
   if (!uri) {
     console.error("Error: MONGODB_URI is not set!");
@@ -72,7 +72,10 @@ async function migrate() {
     const existingTechNamesMap = new Map<string, mongoose.Types.ObjectId>();
 
     for (const t of existingTechs) {
-      existingTechNamesMap.set(t.name.toLowerCase().trim(), t._id as mongoose.Types.ObjectId);
+      existingTechNamesMap.set(
+        t.name.toLowerCase().trim(),
+        t._id as mongoose.Types.ObjectId
+      );
     }
 
     const techNameMap = new Map<string, mongoose.Types.ObjectId>();
@@ -80,7 +83,7 @@ async function migrate() {
     for (const techName of requiredTechNames) {
       const canonicalKey = techName.toLowerCase().trim();
       const existingId = existingTechNamesMap.get(canonicalKey);
-      
+
       if (existingId) {
         console.log(`Technology "${techName}" already exists in DB.`);
         techNameMap.set(canonicalKey, existingId);
@@ -89,8 +92,9 @@ async function migrate() {
         console.log(`Creating missing technology document for: "${techName}"`);
         const newTech = await Technology.create({
           name: techName,
-          iconUrl: "https://res.cloudinary.com/doqpmh01f/image/upload/v1780455417/portfolio/placeholder.svg", // Admin/User can update with Cloudinary URL later, text fallback works immediately
-          order: 0
+          iconUrl:
+            "https://res.cloudinary.com/doqpmh01f/image/upload/v1780455417/portfolio/placeholder.svg", // Admin/User can update with Cloudinary URL later, text fallback works immediately
+          order: 0,
         });
         techNameMap.set(canonicalKey, newTech._id as mongoose.Types.ObjectId);
       }
@@ -104,9 +108,11 @@ async function migrate() {
     for (const project of projects) {
       console.log(`Processing project: "${project.title}" (slug: "${project.slug}")`);
       const targetTechNames = projectTechMapping[project.slug];
-      
+
       if (!targetTechNames) {
-        console.warn(`Warning: No tech mapping defined for project slug "${project.slug}". Skipping tech mapping.`);
+        console.warn(
+          `Warning: No tech mapping defined for project slug "${project.slug}". Skipping tech mapping.`
+        );
         continue;
       }
 
@@ -120,13 +126,15 @@ async function migrate() {
         }
       }
 
-      console.log(`-> Mapping to ${technologyIds.length} technology ObjectIds: [${targetTechNames.join(", ")}]`);
+      console.log(
+        `-> Mapping to ${technologyIds.length} technology ObjectIds: [${targetTechNames.join(", ")}]`
+      );
 
       await Project.updateOne(
         { _id: project._id },
-        { 
+        {
           $set: { technologyIds },
-          $unset: { skillIds: "" }
+          $unset: { skillIds: "" },
         }
       );
       console.log(`-> Updated project "${project.title}" successfully.`);
@@ -140,9 +148,11 @@ async function migrate() {
     for (const demo of demos) {
       console.log(`Processing demo: "${demo.title}" (slug: "${demo.slug}")`);
       const targetTechNames = demoTechMapping[demo.slug];
-      
+
       if (!targetTechNames) {
-        console.warn(`Warning: No tech mapping defined for demo slug "${demo.slug}". Skipping tech mapping.`);
+        console.warn(
+          `Warning: No tech mapping defined for demo slug "${demo.slug}". Skipping tech mapping.`
+        );
         continue;
       }
 
@@ -156,13 +166,15 @@ async function migrate() {
         }
       }
 
-      console.log(`-> Mapping to ${technologyIds.length} technology ObjectIds: [${targetTechNames.join(", ")}]`);
+      console.log(
+        `-> Mapping to ${technologyIds.length} technology ObjectIds: [${targetTechNames.join(", ")}]`
+      );
 
       await Demo.updateOne(
         { _id: demo._id },
         {
           $set: { technologyIds },
-          $unset: { skillIds: "" }
+          $unset: { skillIds: "" },
         }
       );
       console.log(`-> Updated demo "${demo.title}" successfully.`);

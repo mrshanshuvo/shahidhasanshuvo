@@ -64,19 +64,14 @@ async function getStats() {
 async function getRecentActivity() {
   await connectDB();
 
-  const [
-    recentProjects,
-    recentMsgs,
-    recentBlogs,
-    recentExp,
-    recentCerts,
-  ] = await Promise.all([
-    Project.find().sort({ updatedAt: -1 }).limit(3).lean(),
-    Message.find().sort({ createdAt: -1 }).limit(3).lean(),
-    Blog.find().sort({ updatedAt: -1 }).limit(2).lean(),
-    Experience.find().sort({ updatedAt: -1 }).limit(2).lean(),
-    Certification.find().sort({ updatedAt: -1 }).limit(2).lean(),
-  ]);
+  const [recentProjects, recentMsgs, recentBlogs, recentExp, recentCerts] =
+    await Promise.all([
+      Project.find().sort({ updatedAt: -1 }).limit(3).lean(),
+      Message.find().sort({ createdAt: -1 }).limit(3).lean(),
+      Blog.find().sort({ updatedAt: -1 }).limit(2).lean(),
+      Experience.find().sort({ updatedAt: -1 }).limit(2).lean(),
+      Certification.find().sort({ updatedAt: -1 }).limit(2).lean(),
+    ]);
 
   const activities = [
     ...recentProjects.map((p: any) => ({
@@ -109,7 +104,6 @@ async function getRecentActivity() {
       time: c.updatedAt,
       action: "Added",
     })),
-
   ]
     .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
     .slice(0, 6);
@@ -223,10 +217,7 @@ const sections = [
 ];
 
 export default async function AdminDashboard() {
-  const [statsData, activities] = await Promise.all([
-    getStats(),
-    getRecentActivity(),
-  ]);
+  const [statsData, activities] = await Promise.all([getStats(), getRecentActivity()]);
 
   const topStats = [
     {
@@ -263,26 +254,19 @@ export default async function AdminDashboard() {
     {
       label: "Professional Identity",
       items: sections.filter((s) =>
-        [
-          "Identity",
-          "Social Links",
-          "Biography",
-          "Skills & Tech",
-        ].includes(s.label),
+        ["Identity", "Social Links", "Biography", "Skills & Tech"].includes(s.label)
       ),
     },
     {
       label: "Portfolio & Writing",
       items: sections.filter((s) =>
-        ["Projects", "Playground", "Blog & Writing"].includes(
-          s.label,
-        ),
+        ["Projects", "Playground", "Blog & Writing"].includes(s.label)
       ),
     },
     {
       label: "Experience & Education",
       items: sections.filter((s) =>
-        ["Experience", "Education", "Certifications"].includes(s.label),
+        ["Experience", "Education", "Certifications"].includes(s.label)
       ),
     },
     {
@@ -292,36 +276,36 @@ export default async function AdminDashboard() {
   ];
 
   return (
-    <div className="p-4 md:p-8 space-y-8">
+    <div className="space-y-8 p-4 md:p-8">
       {/* Action bar — title is already shown in the AdminTopbar breadcrumb */}
       <div className="flex items-center justify-end gap-3">
-        <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 dark:border-emerald-500/20 px-4 py-1.5 rounded-full font-bold uppercase tracking-widest text-[10px]">
+        <Badge className="rounded-full border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:border-emerald-500/20 dark:text-emerald-400">
           System Online
         </Badge>
-        <Badge className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 dark:border-blue-500/20 px-4 py-1.5 rounded-full font-bold uppercase tracking-widest text-[10px]">
+        <Badge className="rounded-full border-blue-500/20 bg-blue-500/10 px-4 py-1.5 text-[10px] font-bold tracking-widest text-blue-600 uppercase dark:border-blue-500/20 dark:text-blue-400">
           v2.4.0
         </Badge>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {topStats.map((s) => (
           <Card
             key={s.label}
-            className="bg-white dark:bg-slate-900/40 border-slate-200 dark:border-white/5 backdrop-blur-xl rounded-3xl overflow-hidden group hover:border-emerald-500/20 dark:hover:border-white/10 transition-all shadow-sm dark:shadow-none"
+            className="group overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm backdrop-blur-xl transition-all hover:border-emerald-500/20 dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none dark:hover:border-white/10"
           >
             <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-2xl ${s.bg} ${s.color}`}>
+              <div className="mb-4 flex items-center justify-between">
+                <div className={`rounded-2xl p-3 ${s.bg} ${s.color}`}>
                   <s.icon size={20} />
                 </div>
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
               </div>
               <div className="space-y-1">
-                <p className="text-3xl font-black text-slate-900 dark:text-white group-hover:scale-110 origin-left transition-transform duration-500">
+                <p className="origin-left text-3xl font-black text-slate-900 transition-transform duration-500 group-hover:scale-110 dark:text-white">
                   {s.value}
                 </p>
-                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <p className="text-[10px] font-bold tracking-[0.2em] text-slate-500 uppercase">
                   {s.label}
                 </p>
               </div>
@@ -333,42 +317,38 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
         {/* Management Sections */}
-        <div className="lg:col-span-2 space-y-12">
+        <div className="space-y-12 lg:col-span-2">
           {groupedSections.map((group) => (
             <div key={group.label} className="space-y-6">
               <div className="flex items-center gap-4">
-                <h2 className="text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] whitespace-nowrap">
+                <h2 className="text-sm font-black tracking-[0.3em] whitespace-nowrap text-slate-400 uppercase dark:text-slate-500">
                   {group.label}
                 </h2>
                 <div className="h-px w-full bg-slate-200 dark:bg-white/5" />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {group.items.map((section) => (
-                  <Link
-                    key={section.href}
-                    href={section.href}
-                    className="group"
-                  >
-                    <Card className="h-full bg-white dark:bg-slate-900/40 border-slate-200 dark:border-white/5 backdrop-blur-xl rounded-3xl overflow-hidden hover:border-emerald-500/20 dark:hover:border-white/20 transition-all duration-500 shadow-sm dark:shadow-none">
-                      <CardContent className="p-4 flex items-start gap-5">
+                  <Link key={section.href} href={section.href} className="group">
+                    <Card className="h-full overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm backdrop-blur-xl transition-all duration-500 hover:border-emerald-500/20 dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none dark:hover:border-white/20">
+                      <CardContent className="flex items-start gap-5 p-4">
                         <div
-                          className={`p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 ${section.iconColor} group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+                          className={`rounded-2xl border border-slate-200 bg-slate-50 p-3.5 dark:border-white/5 dark:bg-slate-950 ${section.iconColor} transition-all duration-500 group-hover:scale-110 group-hover:rotate-3`}
                         >
                           <section.icon size={22} />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1">
-                            <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                        <div className="min-w-0 flex-1">
+                          <div className="mb-1 flex items-center justify-between">
+                            <h3 className="text-base font-bold text-slate-900 transition-colors group-hover:text-emerald-600 dark:text-white dark:group-hover:text-emerald-400">
                               {section.label}
                             </h3>
                             <FaChevronRight
                               size={10}
-                              className="text-slate-700 group-hover:text-white group-hover:translate-x-1 transition-all"
+                              className="text-slate-700 transition-all group-hover:translate-x-1 group-hover:text-white"
                             />
                           </div>
-                          <p className="text-slate-500 text-xs leading-relaxed line-clamp-1 group-hover:text-slate-400 transition-colors">
+                          <p className="line-clamp-1 text-xs leading-relaxed text-slate-500 transition-colors group-hover:text-slate-400">
                             {section.desc}
                           </p>
                         </div>
@@ -384,36 +364,30 @@ export default async function AdminDashboard() {
         {/* Sidebar / Recent Activity */}
         <div className="space-y-8">
           <div className="space-y-6">
-            <h2 className="text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em]">
+            <h2 className="text-sm font-black tracking-[0.3em] text-slate-400 uppercase dark:text-slate-500">
               Recent Activity
             </h2>
-            <Card className="bg-white dark:bg-slate-900/40 border-slate-200 dark:border-white/5 backdrop-blur-xl rounded-3xl overflow-hidden shadow-sm dark:shadow-none">
-              <CardContent className="p-4 space-y-6">
+            <Card className="overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">
+              <CardContent className="space-y-6 p-4">
                 {activities.length > 0 ? (
                   activities.map((act: any, idx: number) => (
-                    <div key={idx} className="flex gap-4 group">
+                    <div key={idx} className="group flex gap-4">
                       <div className="relative flex flex-col items-center">
-                        <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:border-emerald-500/30 transition-colors">
-                          {act.type === "Project" && (
-                            <FaProjectDiagram size={16} />
-                          )}
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-emerald-600 transition-colors group-hover:border-emerald-500/30 dark:border-white/5 dark:bg-slate-950 dark:text-emerald-400">
+                          {act.type === "Project" && <FaProjectDiagram size={16} />}
                           {act.type === "Message" && <FaEnvelope size={16} />}
                           {act.type === "Blog" && <FaPenNib size={16} />}
-                          {(act.type === "Experience" ||
-                            act.type === "Education") && (
+                          {(act.type === "Experience" || act.type === "Education") && (
                             <FaBriefcase size={16} />
                           )}
-                          {act.type === "Certification" && (
-                            <FaAward size={16} />
-                          )}
-
+                          {act.type === "Certification" && <FaAward size={16} />}
                         </div>
                         {idx !== activities.length - 1 && (
-                          <div className="w-px h-full bg-slate-200 dark:bg-white/5 mt-2" />
+                          <div className="mt-2 h-full w-px bg-slate-200 dark:bg-white/5" />
                         )}
                       </div>
                       <div className="flex-1 pt-1">
-                        <div className="flex items-center justify-between mb-0.5">
+                        <div className="mb-0.5 flex items-center justify-between">
                           <p className="text-xs font-black text-slate-900 dark:text-white">
                             {act.type} {act.action}
                           </p>
@@ -421,14 +395,14 @@ export default async function AdminDashboard() {
                             {new Date(act.time).toLocaleDateString()}
                           </p>
                         </div>
-                        <p className="text-slate-400 text-sm font-medium line-clamp-1">
+                        <p className="line-clamp-1 text-sm font-medium text-slate-400">
                           {act.title}
                         </p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-slate-600 text-center text-sm py-4">
+                  <p className="py-4 text-center text-sm text-slate-600">
                     No recent activity found.
                   </p>
                 )}
@@ -436,21 +410,21 @@ export default async function AdminDashboard() {
             </Card>
           </div>
 
-          <Card className="bg-emerald-50 dark:bg-emerald-500/5 border-emerald-200 dark:border-emerald-500/20 rounded-3xl p-6 shadow-sm dark:shadow-none">
+          <Card className="rounded-3xl border-emerald-200 bg-emerald-50 p-6 shadow-sm dark:border-emerald-500/20 dark:bg-emerald-500/5 dark:shadow-none">
             <div className="space-y-4">
-              <div className="w-12 h-12 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
                 <FaRocket size={24} />
               </div>
               <div className="space-y-1">
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">
                   Quick Preview
                 </h3>
-                <p className="text-emerald-600/60 dark:text-emerald-400/60 text-xs leading-relaxed">
+                <p className="text-xs leading-relaxed text-emerald-600/60 dark:text-emerald-400/60">
                   View your changes live on the public-facing portfolio.
                 </p>
               </div>
               <Link href="/" target="_blank" className="block">
-                <Button className="w-full bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold shadow-lg shadow-emerald-600/20 py-6">
+                <Button className="w-full rounded-xl bg-emerald-600 py-6 font-bold text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-500">
                   Launch Site
                 </Button>
               </Link>

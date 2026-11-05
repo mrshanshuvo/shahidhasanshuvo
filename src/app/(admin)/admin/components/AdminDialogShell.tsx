@@ -1,12 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { IconType } from "react-icons";
 import { motion } from "framer-motion";
@@ -61,24 +56,24 @@ export function AdminDialogShell({
       <DialogContent
         showCloseButton={false}
         className={cn(
-          "bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-3xl shadow-[0_0_80px_rgba(0,0,0,0.1)] dark:shadow-[0_0_80px_rgba(0,0,0,0.6)] overflow-hidden p-0 gap-0 flex flex-col max-h-[95vh] outline-none",
-          widthClasses[maxWidth],
+          "flex max-h-[95vh] flex-col gap-0 overflow-hidden rounded-3xl border-slate-200 bg-white p-0 text-slate-900 shadow-[0_0_80px_rgba(0,0,0,0.1)] outline-none dark:border-white/10 dark:bg-slate-900 dark:text-white dark:shadow-[0_0_80px_rgba(0,0,0,0.6)]",
+          widthClasses[maxWidth]
         )}
       >
-        <DialogHeader className="p-8 pb-4 relative z-20 border-b border-slate-100 dark:border-white/5 shrink-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl">
+        <DialogHeader className="relative z-20 shrink-0 border-b border-slate-100 bg-white/60 p-8 pb-4 backdrop-blur-xl dark:border-white/5 dark:bg-slate-900/60">
           {/* Subtle accent glow in header */}
           <div
             className={cn(
-              "absolute inset-0 bg-linear-to-br via-transparent pointer-events-none opacity-30",
-              accentColor,
+              "pointer-events-none absolute inset-0 bg-linear-to-br via-transparent opacity-30",
+              accentColor
             )}
           />
-          <div className="flex items-center justify-between relative z-10">
+          <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center gap-5">
               <div
                 className={cn(
-                  "w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center border border-slate-200 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20",
-                  iconColor,
+                  "flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 shadow-xl shadow-black/5 dark:border-white/10 dark:bg-white/5 dark:shadow-black/20",
+                  iconColor
                 )}
               >
                 <Icon size={28} />
@@ -88,7 +83,7 @@ export function AdminDialogShell({
                   {title}
                 </DialogTitle>
                 {subtitle && (
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mt-1">
+                  <p className="mt-1 text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase dark:text-slate-500">
                     {subtitle}
                   </p>
                 )}
@@ -98,14 +93,14 @@ export function AdminDialogShell({
               <Button
                 variant="ghost"
                 onClick={() => onOpenChange(false)}
-                className="rounded-xl h-10 px-5 font-bold text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-[10px] uppercase tracking-[0.15em] border border-transparent hover:border-slate-200 dark:hover:border-white/10"
+                className="h-10 rounded-xl border border-transparent px-5 text-[10px] font-bold tracking-[0.15em] text-slate-400 uppercase transition-all hover:border-slate-200 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-500 dark:hover:border-white/10 dark:hover:bg-white/5 dark:hover:text-white"
               >
                 {cancelLabel}
               </Button>
               <Button
                 onClick={onSave}
                 disabled={saving}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl px-6 h-10 font-black shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] active:scale-[0.98] transition-all disabled:opacity-50 text-[10px] uppercase tracking-[0.15em] border border-emerald-400/20"
+                className="h-10 rounded-xl border border-emerald-400/20 bg-emerald-600 px-6 text-[10px] font-black tracking-[0.15em] text-white uppercase shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all hover:bg-emerald-500 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] active:scale-[0.98] disabled:opacity-50"
               >
                 {saving ? savingLabel : saveLabel}
               </Button>
@@ -114,7 +109,7 @@ export function AdminDialogShell({
         </DialogHeader>
 
         <div
-          className="p-8 pt-6 relative z-10 flex-1 overflow-y-auto custom-scrollbar outline-none min-h-0"
+          className="custom-scrollbar relative z-10 min-h-0 flex-1 overflow-y-auto p-8 pt-6 outline-none"
           tabIndex={0}
           onWheel={(e) => e.stopPropagation()}
         >

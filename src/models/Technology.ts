@@ -16,7 +16,7 @@ const TechnologySchema = new Schema<ITechnology>(
     brandColor: { type: String },
     order: { type: Number, default: 0 },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 if (process.env.NODE_ENV === "development") {

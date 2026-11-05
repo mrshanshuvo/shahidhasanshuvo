@@ -18,43 +18,43 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 p-6 dark:bg-slate-950">
       {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-full">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-[120px]" />
+      <div className="absolute top-0 left-0 h-full w-full">
+        <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-red-500/5 blur-[120px]" />
+        <div className="absolute right-1/4 bottom-1/4 h-96 w-96 rounded-full bg-orange-500/5 blur-[120px]" />
       </div>
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="max-w-xl w-full bg-white dark:bg-slate-900/50 backdrop-blur-2xl border border-slate-200 dark:border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl relative z-10 text-center"
+        className="relative z-10 w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-2xl backdrop-blur-2xl md:p-12 dark:border-white/10 dark:bg-slate-900/50"
       >
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-red-500/10 rounded-3xl mb-8">
-          <FaExclamationTriangle className="text-red-500 text-3xl" />
+        <div className="mb-8 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-red-500/10">
+          <FaExclamationTriangle className="text-3xl text-red-500" />
         </div>
 
-        <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">
+        <h1 className="mb-4 text-3xl font-black tracking-tight text-slate-900 md:text-4xl dark:text-white">
           System <span className="text-red-500">Anomaly</span>
         </h1>
 
-        <p className="text-slate-600 dark:text-slate-400 text-lg font-medium mb-8 leading-relaxed">
-          The application encountered an unexpected runtime exception. Our
-          systems have been alerted, but you can try to recover the session.
+        <p className="mb-8 text-lg leading-relaxed font-medium text-slate-600 dark:text-slate-400">
+          The application encountered an unexpected runtime exception. Our systems have
+          been alerted, but you can try to recover the session.
         </p>
 
         {error.digest && (
-          <div className="mb-8 p-3 bg-slate-100 dark:bg-slate-950/50 rounded-xl border border-slate-200 dark:border-white/5">
-            <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">
+          <div className="mb-8 rounded-xl border border-slate-200 bg-slate-100 p-3 dark:border-white/5 dark:bg-slate-950/50">
+            <p className="font-mono text-[10px] tracking-widest text-slate-500 uppercase">
               Error Digest: {error.digest}
             </p>
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <button
             onClick={() => reset()}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-red-600 hover:bg-red-500 text-white rounded-2xl font-bold transition-all hover:scale-105 shadow-lg shadow-red-600/20"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-600 px-8 py-4 font-bold text-white shadow-lg shadow-red-600/20 transition-all hover:scale-105 hover:bg-red-500 sm:w-auto"
           >
             <FaRedo className="text-sm" />
             Retry System
@@ -62,7 +62,7 @@ export default function Error({
 
           <Link
             href="/"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white rounded-2xl font-bold transition-all border border-slate-200 dark:border-white/10"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-100 px-8 py-4 font-bold text-slate-900 transition-all hover:bg-slate-200 sm:w-auto dark:border-white/10 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
           >
             <FaHome className="text-sm" />
             Back to Safety
