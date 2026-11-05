@@ -1,12 +1,10 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function proxy(request: NextRequest) {
-  const session = await auth();
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow unauthenticated admin routes
+  // Allow unauthenticated auth routes if matcher captures them
   if (
     pathname === "/login" ||
     pathname === "/forgot-password" ||
@@ -17,8 +15,16 @@ export async function proxy(request: NextRequest) {
 
   // Protect all /admin routes
   if (pathname.startsWith("/admin")) {
-    if (!session) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    const sessionToken =
+      request.cookies.get("authjs.session-token")?.value ||
+      request.cookies.get("__Secure-authjs.session-token")?.value ||
+      request.cookies.get("next-auth.session-token")?.value ||
+      request.cookies.get("__Secure-next-auth.session-token")?.value;
+
+    if (!sessionToken) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
     }
   }
 
