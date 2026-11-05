@@ -66,4 +66,3 @@ ${rssItemsXml}
     return new NextResponse("Error generating feed", { status: 500 });
   }
 }
-
