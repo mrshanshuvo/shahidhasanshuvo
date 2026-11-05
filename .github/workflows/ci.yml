@@ -43,8 +43,8 @@ jobs:
       - name: Build Next.js Application
         if: ${{ secrets.MONGODB_URI != '' }}
         env:
-          NEXT_PUBLIC_SITE_URL: "https://shahidhshuvo.dev"
-          NEXTAUTH_URL: "https://shahidhshuvo.dev"
+          NEXT_PUBLIC_SITE_URL: "https://shahidhasanshuvo.vercel.app"
+          NEXTAUTH_URL: "https://shahidhasanshuvo.vercel.app"
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'ci-build-placeholder-secret-key-32chars' }}
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: pnpm build

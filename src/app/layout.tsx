@@ -27,7 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
     settings?.siteDescription ||
     "Full-Stack Developer & Machine Learning Enthusiast building high-performance, cinematic digital experiences.";
   const ogImage = settings?.ogImage || "/favicons/android-chrome-512x512.png";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://shahidhshuvo.dev";
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://shahidhasanshuvo.vercel.app";
 
   return {
     metadataBase: new URL(siteUrl),

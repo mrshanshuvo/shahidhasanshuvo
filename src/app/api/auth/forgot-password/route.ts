@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     const baseUrl =
       process.env.NEXTAUTH_URL ||
       process.env.NEXT_PUBLIC_SITE_URL ||
-      "https://shahidhshuvo.dev";
+      "https://shahidhasanshuvo.vercel.app";
     const resetUrl = `${baseUrl.replace(/\/$/, "")}/reset-password?token=${resetToken}`;
 
     // Configure nodemailer

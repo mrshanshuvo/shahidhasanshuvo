@@ -3,7 +3,8 @@ import { connectDB } from "@/lib/mongodb";
 import ProjectModel from "@/models/Project";
 import DemoModel from "@/models/Demo";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://shahidhshuvo.dev";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://shahidhasanshuvo.vercel.app";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await connectDB();

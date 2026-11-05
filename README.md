@@ -10,7 +10,7 @@
 
 A modern, high-performance personal portfolio and content management system built with Next.js 16, React 19, Auth.js v5, and MongoDB Atlas. Features an interactive public showcase with cinematic UI animations, server-rendered dynamic routes, comprehensive SEO, and a protected administrative dashboard.
 
-**Live Deployment:** [https://shahidhshuvo.dev](https://shahidhshuvo.dev)
+**Live Deployment:** [https://shahidhasanshuvo.vercel.app](https://shahidhasanshuvo.vercel.app)
 
 ---
 
@@ -233,7 +233,7 @@ Every pull request and push to `main` triggers our GitHub Actions pipeline ([`.g
 **Shahid Hasan Shuvo**  
 Full-Stack Developer & Machine Learning Enthusiast
 
-- Website: [shahidhshuvo.dev](https://shahidhshuvo.dev)
+- Website: [shahidhasanshuvo.vercel.app](https://shahidhasanshuvo.vercel.app)
 - GitHub: [@mrshanshuvo](https://github.com/mrshanshuvo)
 - Email: [shahidhasanshovu@gmail.com](mailto:shahidhasanshovu@gmail.com)
 
