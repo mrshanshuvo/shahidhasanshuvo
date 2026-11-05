@@ -158,7 +158,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         service: "gmail",
         auth: {
           user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
+          pass: process.env.EMAIL_PASS?.replace(/\s+/g, ""),
         },
       });
 
