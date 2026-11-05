@@ -77,6 +77,45 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const settings = await Setting.findOne().lean();
   const accentColor = settings?.accentColor || "#10b981";
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://shahidhasanshuvo.vercel.app/#person",
+        name: "Shahid Hasan Shuvo",
+        jobTitle: "Full-Stack Developer & Machine Learning Engineer",
+        url: "https://shahidhasanshuvo.vercel.app",
+        image: "https://shahidhasanshuvo.vercel.app/favicons/android-chrome-512x512.png",
+        sameAs: [
+          "https://github.com/mrshanshuvo",
+          "https://linkedin.com/in/mrshanshuvo",
+          "https://twitter.com/shahidhshuvo",
+        ],
+        knowsAbout: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Node.js",
+          "Python",
+          "MongoDB",
+          "Machine Learning",
+          "Tailwind CSS",
+          "Full-Stack Web Development",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://shahidhasanshuvo.vercel.app/#website",
+        url: "https://shahidhasanshuvo.vercel.app",
+        name: settings?.siteName || "Shahid Hasan Shuvo – Portfolio",
+        publisher: {
+          "@id": "https://shahidhasanshuvo.vercel.app/#person",
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body
@@ -84,6 +123,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         style={{ "--dynamic-accent": accentColor } as any}
         suppressHydrationWarning
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <ThemeProvider>
           <a href="#main-content" className="skip-nav">
             Skip to main content

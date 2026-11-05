@@ -40,6 +40,9 @@ jobs:
       - name: TypeScript Type Check
         run: pnpm typecheck
 
+      - name: Run Automated Tests (Vitest)
+        run: pnpm test
+
       - name: Build Next.js Application
         env:
           NEXT_PUBLIC_SITE_URL: "https://shahidhasanshuvo.vercel.app"
