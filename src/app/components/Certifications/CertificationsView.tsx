@@ -73,6 +73,7 @@ export default function CertificationsView({ certifications }: CertificationsVie
                             alt={cert.issuer}
                             fill
                             className="object-contain"
+                            sizes="24px"
                           />
                         </div>
                       )}
@@ -91,6 +92,7 @@ export default function CertificationsView({ certifications }: CertificationsVie
                             alt={cert.issuer}
                             fill
                             className="object-contain"
+                            sizes="24px"
                           />
                         </div>
                       )}
