@@ -120,6 +120,7 @@ export default function EducationClient({ education }: Props) {
                             alt={edu.institution}
                             fill
                             className="object-contain p-2 transition-transform duration-700 group-hover:scale-110"
+                            sizes="80px"
                           />
                         ) : (
                           <div className="text-3xl font-black text-slate-200 uppercase dark:text-slate-600">

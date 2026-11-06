@@ -16,6 +16,7 @@ import {
   FaPenNib,
   FaChevronRight,
   FaCog,
+  FaCode,
 } from "react-icons/fa";
 import Message from "@/models/Message";
 import { Card, CardContent } from "@/components/ui/card";
@@ -141,13 +142,22 @@ const sections = [
   },
 
   {
-    href: "/admin/skills",
-    label: "Skills & Tech",
-    desc: "Manage your technical expertise and proficiency levels",
+    href: "/admin/expertise",
+    label: "Expertise Areas",
+    desc: "Manage engineering domains and core technical specializations",
     icon: FaRocket,
     color: "pink",
     gradient: "from-pink-500/20 to-pink-600/5 border-pink-500/20",
     iconColor: "text-pink-400",
+  },
+  {
+    href: "/admin/technologies",
+    label: "Technologies",
+    desc: "Catalog tech stack brands, badges, and icon assets",
+    icon: FaCode,
+    color: "blue",
+    gradient: "from-blue-500/20 to-blue-600/5 border-blue-500/20",
+    iconColor: "text-blue-400",
   },
 
   {

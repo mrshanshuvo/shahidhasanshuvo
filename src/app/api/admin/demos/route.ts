@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import Demo from "@/models/Demo";
 import Technology from "@/models/Technology";
 import { revalidatePortfolio } from "@/lib/revalidate";
+import { demoSchema } from "@/lib/validations";
 
 export async function GET(req: Request) {
   try {
@@ -49,8 +50,16 @@ export async function POST(req: Request) {
     await connectDB();
     const body = await req.json();
 
+    const validation = demoSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.issues[0]?.message || "Validation failed" },
+        { status: 400 }
+      );
+    }
+
     // Map tech names to technologyIds
-    const techList = Array.isArray(body.tech) ? body.tech : [];
+    const techList = Array.isArray(validation.data.tech) ? validation.data.tech : [];
     const techs = await Technology.find({ name: { $in: techList } });
     const technologyIds = techs.map((t) => t._id);
 
@@ -58,7 +67,7 @@ export async function POST(req: Request) {
     const order = lastItem ? lastItem.order + 1 : 0;
 
     const newItem = await Demo.create({
-      ...body,
+      ...validation.data,
       technologyIds,
       order,
     });
