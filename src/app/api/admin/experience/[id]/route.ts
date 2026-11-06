@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Experience from "@/models/Experience";
+import { revalidatePortfolio } from "@/lib/revalidate";
 
 export async function PUT(
   request: Request,
@@ -19,6 +20,7 @@ export async function PUT(
     runValidators: true,
   });
   if (!exp) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  revalidatePortfolio();
   return NextResponse.json(exp);
 }
 
@@ -33,5 +35,6 @@ export async function DELETE(
   await connectDB();
   const { id } = await params;
   await Experience.findByIdAndDelete(id);
+  revalidatePortfolio();
   return NextResponse.json({ success: true });
 }

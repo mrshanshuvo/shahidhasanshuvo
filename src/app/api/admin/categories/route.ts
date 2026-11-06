@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Category from "@/models/Category";
+import { revalidatePortfolio } from "@/lib/revalidate";
 
 export async function GET() {
   try {
@@ -46,6 +47,7 @@ export async function PUT(req: Request) {
       await Category.insertMany(sanitized);
     }
 
+    revalidatePortfolio();
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Category Sync Error:", error);

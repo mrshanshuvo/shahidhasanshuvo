@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Hero from "@/models/Hero";
 import SocialLink from "@/models/SocialLink";
+import { revalidatePortfolio } from "@/lib/revalidate";
 
 export async function GET() {
   const session = await auth();
@@ -39,6 +40,8 @@ export async function PUT(request: Request) {
     upsert: true,
     runValidators: true,
   });
+
+  revalidatePortfolio();
 
   return NextResponse.json({ ...hero.toObject(), socialLinks });
 }

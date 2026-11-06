@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Certification from "@/models/Certification";
+import { revalidatePortfolio } from "@/lib/revalidate";
 
 export async function GET(req: Request) {
   try {
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
     const order = lastItem ? lastItem.order + 1 : 0;
 
     const newItem = await Certification.create({ ...body, order });
+    revalidatePortfolio();
     return NextResponse.json(newItem);
   } catch (error) {
     return NextResponse.json({ error: "Failed to create" }, { status: 500 });
@@ -61,6 +63,7 @@ export async function PATCH(req: Request) {
         returnDocument: "after",
       });
       if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
+      revalidatePortfolio();
       return NextResponse.json(updated);
     }
 
@@ -69,6 +72,7 @@ export async function PATCH(req: Request) {
         Certification.findByIdAndUpdate(item._id, { order: idx })
       );
       await Promise.all(updates);
+      revalidatePortfolio();
       return NextResponse.json({ message: "Order updated" });
     }
 
@@ -93,6 +97,7 @@ export async function DELETE(req: Request) {
     const deleted = await Certification.findByIdAndDelete(id);
     if (!deleted) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+    revalidatePortfolio();
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
@@ -117,6 +122,7 @@ export async function PUT(req: Request) {
         )
       );
       await Promise.all(updates);
+      revalidatePortfolio();
       return NextResponse.json({ message: "Bulk saved" });
     }
 

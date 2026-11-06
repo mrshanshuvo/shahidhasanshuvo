@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Setting from "@/models/Setting";
 import { auth } from "@/lib/auth";
+import { revalidatePortfolio } from "@/lib/revalidate";
 
 export async function GET() {
   try {
@@ -34,6 +35,8 @@ export async function PATCH(req: Request) {
       { $set: body },
       { upsert: true, returnDocument: "after" }
     );
+
+    revalidatePortfolio();
 
     return NextResponse.json(settings);
   } catch (error) {

@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Technology from "@/models/Technology";
 import Category from "@/models/Category";
+import { revalidatePortfolio } from "@/lib/revalidate";
 
 export async function GET() {
   try {
@@ -162,6 +163,8 @@ export async function PUT(req: Request) {
 
       await Project.insertMany(sanitized);
     }
+
+    revalidatePortfolio(["/projects", "/sitemap.xml"]);
 
     return NextResponse.json({ message: "Projects synchronized" });
   } catch (error: any) {

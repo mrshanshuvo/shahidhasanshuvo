@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Technology from "@/models/Technology";
 import Category from "@/models/Category";
+import { revalidatePortfolio } from "@/lib/revalidate";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -131,6 +132,8 @@ export async function PATCH(req: Request, { params }: Params) {
     if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     const u = updated as any;
+    revalidatePortfolio(["/projects", `/projects/${u.slug}`, "/sitemap.xml"]);
+
     return NextResponse.json({
       ...u,
       techNames: Array.isArray(u.technologyIds)
@@ -157,6 +160,7 @@ export async function DELETE(_req: Request, { params }: Params) {
     const { id } = await params;
     await connectDB();
     await Project.findByIdAndDelete(id);
+    revalidatePortfolio(["/projects", "/sitemap.xml"]);
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete" }, { status: 500 });

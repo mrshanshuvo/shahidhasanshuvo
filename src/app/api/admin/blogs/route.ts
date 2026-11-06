@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Blog from "@/models/Blog";
+import { revalidatePortfolio } from "@/lib/revalidate";
 
 export async function GET(req: Request) {
   try {
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
     const order = lastItem ? lastItem.order + 1 : 0;
 
     const newItem = await Blog.create({ ...body, order });
+    revalidatePortfolio(["/blog", "/feed.xml", "/sitemap.xml"]);
     return NextResponse.json(newItem);
   } catch (error) {
     return NextResponse.json({ error: "Failed to create" }, { status: 500 });
@@ -59,6 +61,7 @@ export async function PATCH(req: Request) {
     if (id) {
       const updated = await Blog.findByIdAndUpdate(id, body, { returnDocument: "after" });
       if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
+      revalidatePortfolio(["/blog", "/feed.xml", "/sitemap.xml"]);
       return NextResponse.json(updated);
     }
 
@@ -67,6 +70,7 @@ export async function PATCH(req: Request) {
         Blog.findByIdAndUpdate(item._id, { order: idx })
       );
       await Promise.all(updates);
+      revalidatePortfolio(["/blog", "/feed.xml", "/sitemap.xml"]);
       return NextResponse.json({ message: "Order updated" });
     }
 
@@ -91,6 +95,7 @@ export async function DELETE(req: Request) {
     const deleted = await Blog.findByIdAndDelete(id);
     if (!deleted) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+    revalidatePortfolio(["/blog", "/feed.xml", "/sitemap.xml"]);
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
@@ -111,6 +116,7 @@ export async function PUT(req: Request) {
         Blog.findByIdAndUpdate(item._id, { ...item, order: idx }, { upsert: true })
       );
       await Promise.all(updates);
+      revalidatePortfolio(["/blog", "/feed.xml", "/sitemap.xml"]);
       return NextResponse.json({ message: "Bulk saved" });
     }
 
