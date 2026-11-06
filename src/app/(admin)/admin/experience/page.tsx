@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -15,182 +16,23 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-  useSortable,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import {
-  FaPlus,
-  FaTimes,
-  FaCheck,
-  FaBriefcase,
-  FaGripVertical,
-  FaEdit,
-  FaTrash,
-  FaUniversity,
-  FaCalendarAlt,
-  FaInfoCircle,
-  FaLink,
-  FaRocket,
-  FaPenNib,
-} from "react-icons/fa";
-import { AdminDialogShell } from "../components/AdminDialogShell";
-import { AdminField, AdminInput } from "../components/AdminFields";
+import { FaPlus, FaBriefcase, FaCheck, FaTimes } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-interface Experience {
-  _id?: string;
-  title: string;
-  org: string;
-  duration: string;
-  details: string[];
-  order: number;
-  url?: string;
-  previousTitles?: string[];
-  links?: { label?: string; url: string }[];
-  technologies?: string[];
-}
-
-import { forwardRef } from "react";
-
-const ExpRow = forwardRef<HTMLDivElement, any>(
-  (
-    {
-      exp,
-      isOverlay,
-      isDragging,
-      isDeleting,
-      onEdit,
-      onDelete,
-      attributes,
-      listeners,
-      style,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <div
-        ref={ref}
-        style={style}
-        {...props}
-        className={cn(
-          "group flex w-full items-center gap-4 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-slate-900 dark:shadow-none",
-          !isOverlay &&
-            "transition-colors duration-300 hover:border-slate-300 dark:bg-slate-900/40 dark:hover:border-white/10",
-          isDragging && !isOverlay && "opacity-50",
-          isOverlay &&
-            "z-99999 scale-[1.02] cursor-grabbing border-emerald-500/50 shadow-2xl shadow-emerald-500/20"
-        )}
-      >
-        <div
-          {...attributes}
-          {...listeners}
-          className={cn(
-            "text-slate-300 transition-colors dark:text-slate-600",
-            isOverlay
-              ? "cursor-grabbing"
-              : "cursor-grab hover:text-emerald-500 dark:hover:text-emerald-400"
-          )}
-        >
-          <FaGripVertical size={14} />
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-3">
-            <div className="shrink-0 rounded-lg bg-emerald-500/10 p-2 text-emerald-400">
-              <FaBriefcase size={14} />
-            </div>
-            <div className="min-w-0">
-              <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
-                {exp.title}
-              </h3>
-              <p className="truncate text-xs text-slate-500 dark:text-slate-400">
-                {exp.org}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-6 pr-2">
-          <div className="hidden items-center gap-2 text-slate-500 md:flex">
-            <FaCalendarAlt size={10} />
-            <span className="text-[10px] font-medium">{exp.duration}</span>
-          </div>
-
-          <div
-            className={cn(
-              "flex items-center gap-2 transition-opacity",
-              isOverlay ? "opacity-0" : ""
-            )}
-          >
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onEdit}
-              className="h-8 w-8 rounded-lg text-slate-400 hover:bg-emerald-400/10 hover:text-emerald-400"
-            >
-              <FaEdit size={12} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onDelete}
-              disabled={isDeleting}
-              className="h-8 w-8 rounded-lg text-slate-400 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400"
-            >
-              {isDeleting ? (
-                <div className="h-3 w-3 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
-              ) : (
-                <FaTrash size={12} />
-              )}
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-);
-ExpRow.displayName = "ExpRow";
-
-function SortableExpRow({ exp, onEdit, onDelete, isDeleting }: any) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: exp._id! });
-  const style = {
-    transform: CSS.Translate.toString(transform),
-    transition,
-  };
-  return (
-    <ExpRow
-      ref={setNodeRef}
-      style={style}
-      exp={exp}
-      isDragging={isDragging}
-      attributes={attributes}
-      listeners={listeners}
-      onEdit={onEdit}
-      onDelete={onDelete}
-      isDeleting={isDeleting}
-    />
-  );
-}
+import { ExpRow, SortableExpRow, type ExperienceItem } from "./_components/ExperienceRow";
+import { ExperienceDialog } from "./_components/ExperienceDialog";
 
 export default function AdminExperiencePage() {
   const queryClient = useQueryClient();
-  const [data, setData] = useState<Experience[]>([]);
-  const [prevFetchedData, setPrevFetchedData] = useState<any>(null);
+  const [localData, setLocalData] = useState<ExperienceItem[] | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [currentExp, setCurrentExp] = useState<Experience | null>(null);
-  const [detailInput, setDetailInput] = useState("");
-  const [techInput, setTechInput] = useState("");
-  const [prevTitleInput, setPrevTitleInput] = useState("");
-  const [linkLabelInput, setLinkLabelInput] = useState("");
-  const [linkUrlInput, setLinkUrlInput] = useState("");
+  const [currentExp, setCurrentExp] = useState<ExperienceItem | null>(null);
   const [toast, setToast] = useState<{
     msg: string;
     type: "success" | "error";
@@ -208,7 +50,7 @@ export default function AdminExperiencePage() {
     setTimeout(() => setToast(null), 3000);
   }
 
-  const { data: fetchedData, isLoading: loading } = useQuery({
+  const { data: fetchedData, isLoading: loading } = useQuery<ExperienceItem[]>({
     queryKey: ["experience"],
     queryFn: async () => {
       const r = await fetch("/api/admin/experience");
@@ -217,12 +59,7 @@ export default function AdminExperiencePage() {
     },
   });
 
-  if (fetchedData !== prevFetchedData) {
-    setPrevFetchedData(fetchedData);
-    if (fetchedData) {
-      setData(Array.isArray(fetchedData) ? fetchedData : []);
-    }
-  }
+  const data = localData ?? fetchedData ?? [];
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
@@ -233,7 +70,7 @@ export default function AdminExperiencePage() {
       return id;
     },
     onSuccess: (id) => {
-      setData((prev) => prev.filter((s) => s._id !== id));
+      setLocalData((prev) => (prev ?? data).filter((s) => s._id !== id));
       queryClient.invalidateQueries({ queryKey: ["experience"] });
       showToast("Record deleted.");
       setDeletingId(null);
@@ -244,13 +81,8 @@ export default function AdminExperiencePage() {
     },
   });
 
-  async function handleDelete(id: string) {
-    setDeletingId(id);
-    deleteMutation.mutate(id);
-  }
-
   const saveMutation = useMutation({
-    mutationFn: async (exp: Experience) => {
+    mutationFn: async (exp: ExperienceItem) => {
       const isEdit = !!exp._id;
       const url = isEdit
         ? `/api/admin/experience?id=${exp._id}`
@@ -267,6 +99,7 @@ export default function AdminExperiencePage() {
     onSuccess: ({ isEdit }) => {
       setIsDialogOpen(false);
       showToast(isEdit ? "Experience updated!" : "Experience added!");
+      setLocalData(null);
       queryClient.invalidateQueries({ queryKey: ["experience"] });
     },
     onError: () => {
@@ -274,12 +107,16 @@ export default function AdminExperiencePage() {
     },
   });
 
-  async function handleAddOrUpdate() {
-    if (!currentExp?.title || !currentExp?.org) return;
-    saveMutation.mutate(currentExp);
+  function handleDelete(id: string) {
+    setDeletingId(id);
+    deleteMutation.mutate(id);
   }
 
-  function openEdit(item: Experience) {
+  function handleSave(exp: ExperienceItem) {
+    saveMutation.mutate(exp);
+  }
+
+  function openEdit(item: ExperienceItem) {
     setCurrentExp({
       ...item,
       details: item.details || [],
@@ -311,13 +148,16 @@ export default function AdminExperiencePage() {
       const oldIndex = data.findIndex((i) => i._id === active.id);
       const newIndex = data.findIndex((i) => i._id === over.id);
       const newData = arrayMove(data, oldIndex, newIndex);
-      setData(newData);
+      setLocalData(newData);
       // Auto save order using PATCH
       fetch("/api/admin/experience", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newData),
-      }).then(() => queryClient.invalidateQueries({ queryKey: ["experience"] }));
+      }).then(() => {
+        queryClient.invalidateQueries({ queryKey: ["experience"] });
+        setLocalData(null);
+      });
     }
     setActiveId(null);
   }
@@ -431,379 +271,14 @@ export default function AdminExperiencePage() {
           </Card>
         </div>
 
-        <AdminDialogShell
+        <ExperienceDialog
+          key={currentExp?._id ?? (isDialogOpen ? "open-new" : "closed")}
           open={isDialogOpen}
           onOpenChange={setIsDialogOpen}
-          title={currentExp?._id ? "Refine Work History" : "New Career Milestone"}
-          subtitle="Document your professional evolution and impact"
-          icon={FaBriefcase}
-          iconColor="text-emerald-400"
-          accentColor="from-emerald-500/5 to-teal-500/5"
-          onSave={handleAddOrUpdate}
-          saving={saveMutation.isPending}
-          saveLabel={currentExp?._id ? "Update Chronicle" : "Save Experience"}
-          savingLabel="Archiving..."
-          maxWidth="5xl"
-        >
-          {currentExp && (
-            <div className="space-y-8 px-1">
-              {/* Top Info Grid */}
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                <AdminField label="Job Title">
-                  <AdminInput
-                    icon={FaBriefcase}
-                    value={currentExp.title}
-                    onChange={(e) =>
-                      setCurrentExp({ ...currentExp, title: e.target.value })
-                    }
-                    placeholder="e.g. Senior Software Engineer"
-                  />
-                </AdminField>
-                <AdminField label="Organization">
-                  <AdminInput
-                    icon={FaUniversity}
-                    value={currentExp.org}
-                    onChange={(e) =>
-                      setCurrentExp({ ...currentExp, org: e.target.value })
-                    }
-                    placeholder="e.g. Google"
-                  />
-                </AdminField>
-                <AdminField label="Duration">
-                  <AdminInput
-                    icon={FaCalendarAlt}
-                    value={currentExp.duration}
-                    onChange={(e) =>
-                      setCurrentExp({ ...currentExp, duration: e.target.value })
-                    }
-                    placeholder="e.g. Jan 2022 - Present"
-                  />
-                </AdminField>
-                <AdminField label="Website URL">
-                  <AdminInput
-                    icon={FaLink}
-                    value={currentExp.url || ""}
-                    onChange={(e) =>
-                      setCurrentExp({ ...currentExp, url: e.target.value })
-                    }
-                    placeholder="e.g. https://google.com"
-                  />
-                </AdminField>
-              </div>
-
-              {/* Arrays Section in Grid */}
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                {/* Previous Titles */}
-                <AdminField label="Previous Titles (Optional)">
-                  <div className="space-y-4">
-                    <div className="flex gap-2">
-                      <AdminInput
-                        icon={FaBriefcase}
-                        value={prevTitleInput}
-                        onChange={(e) => setPrevTitleInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            if (prevTitleInput.trim()) {
-                              setCurrentExp({
-                                ...currentExp,
-                                previousTitles: [
-                                  ...(currentExp.previousTitles || []),
-                                  prevTitleInput.trim(),
-                                ],
-                              });
-                              setPrevTitleInput("");
-                            }
-                          }
-                        }}
-                        placeholder="e.g. Software Engineer II"
-                      />
-                      <Button
-                        onClick={() => {
-                          if (prevTitleInput.trim()) {
-                            setCurrentExp({
-                              ...currentExp,
-                              previousTitles: [
-                                ...(currentExp.previousTitles || []),
-                                prevTitleInput.trim(),
-                              ],
-                            });
-                            setPrevTitleInput("");
-                          }
-                        }}
-                        className="bg-emerald-600 text-white hover:bg-emerald-700"
-                      >
-                        Add
-                      </Button>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {(currentExp.previousTitles || []).map((t, i) => (
-                        <Badge
-                          key={i}
-                          variant="secondary"
-                          className="gap-2 py-1.5 pr-2 pl-3"
-                        >
-                          {t}
-                          <button
-                            onClick={() =>
-                              setCurrentExp({
-                                ...currentExp,
-                                previousTitles: (currentExp.previousTitles || []).filter(
-                                  (_, idx) => idx !== i
-                                ),
-                              })
-                            }
-                            className="hover:text-red-500"
-                          >
-                            <FaTimes size={12} />
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </AdminField>
-
-                {/* Technologies */}
-                <AdminField label="Technologies Used">
-                  <div className="space-y-4">
-                    <div className="flex gap-2">
-                      <AdminInput
-                        icon={FaRocket}
-                        value={techInput}
-                        onChange={(e) => setTechInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            if (techInput.trim()) {
-                              setCurrentExp({
-                                ...currentExp,
-                                technologies: [
-                                  ...(currentExp.technologies || []),
-                                  techInput.trim(),
-                                ],
-                              });
-                              setTechInput("");
-                            }
-                          }
-                        }}
-                        placeholder="e.g. React"
-                      />
-                      <Button
-                        onClick={() => {
-                          if (techInput.trim()) {
-                            setCurrentExp({
-                              ...currentExp,
-                              technologies: [
-                                ...(currentExp.technologies || []),
-                                techInput.trim(),
-                              ],
-                            });
-                            setTechInput("");
-                          }
-                        }}
-                        className="bg-emerald-600 text-white hover:bg-emerald-700"
-                      >
-                        Add
-                      </Button>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {(currentExp.technologies || []).map((t, i) => (
-                        <Badge
-                          key={i}
-                          variant="outline"
-                          className="gap-2 border-emerald-500/30 py-1.5 pr-2 pl-3 text-emerald-600 dark:text-emerald-400"
-                        >
-                          {t}
-                          <button
-                            onClick={() =>
-                              setCurrentExp({
-                                ...currentExp,
-                                technologies: (currentExp.technologies || []).filter(
-                                  (_, idx) => idx !== i
-                                ),
-                              })
-                            }
-                            className="hover:text-red-500"
-                          >
-                            <FaTimes size={12} />
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </AdminField>
-              </div>
-
-              {/* Custom Links */}
-              <AdminField label="Custom Links (e.g., Company Post, Project)">
-                <div className="space-y-4">
-                  <div className="flex gap-2">
-                    <AdminInput
-                      icon={FaPenNib}
-                      value={linkLabelInput}
-                      onChange={(e) => setLinkLabelInput(e.target.value)}
-                      placeholder="Label (e.g. Blog Post)"
-                    />
-                    <AdminInput
-                      icon={FaLink}
-                      value={linkUrlInput}
-                      onChange={(e) => setLinkUrlInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          if (linkUrlInput.trim()) {
-                            setCurrentExp({
-                              ...currentExp,
-                              links: [
-                                ...(currentExp.links || []),
-                                {
-                                  label: linkLabelInput.trim() || undefined,
-                                  url: linkUrlInput.trim(),
-                                },
-                              ],
-                            });
-                            setLinkLabelInput("");
-                            setLinkUrlInput("");
-                          }
-                        }
-                      }}
-                      placeholder="URL (https://...)"
-                    />
-                    <Button
-                      onClick={() => {
-                        if (linkUrlInput.trim()) {
-                          setCurrentExp({
-                            ...currentExp,
-                            links: [
-                              ...(currentExp.links || []),
-                              {
-                                label: linkLabelInput.trim() || undefined,
-                                url: linkUrlInput.trim(),
-                              },
-                            ],
-                          });
-                          setLinkLabelInput("");
-                          setLinkUrlInput("");
-                        }
-                      }}
-                      className="bg-emerald-600 text-white hover:bg-emerald-700"
-                    >
-                      Add
-                    </Button>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <AnimatePresence>
-                      {(currentExp.links || []).map((link, i) => (
-                        <motion.div
-                          key={i}
-                          layout
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.9 }}
-                          className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-white/5 dark:bg-slate-900"
-                        >
-                          <div className="flex items-center gap-3">
-                            <FaLink className="text-slate-400" />
-                            <div>
-                              <span className="block text-sm font-bold">
-                                {link.label || "Link"}
-                              </span>
-                              <span className="text-xs text-slate-500">{link.url}</span>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() =>
-                              setCurrentExp({
-                                ...currentExp,
-                                links: (currentExp.links || []).filter(
-                                  (_, idx) => idx !== i
-                                ),
-                              })
-                            }
-                            className="p-2 text-slate-400 hover:text-red-500"
-                          >
-                            <FaTimes />
-                          </button>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </AdminField>
-
-              {/* Impact & Details */}
-              <AdminField label="Impact & Responsibilities">
-                <div className="space-y-4">
-                  <div className="flex gap-3">
-                    <AdminInput
-                      icon={FaInfoCircle}
-                      value={detailInput}
-                      onChange={(e) => setDetailInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          if (detailInput.trim()) {
-                            setCurrentExp({
-                              ...currentExp,
-                              details: [...currentExp.details, detailInput.trim()],
-                            });
-                            setDetailInput("");
-                          }
-                        }
-                      }}
-                      placeholder="e.g. Spearheaded the migration to microservices architecture..."
-                      className="h-12"
-                    />
-                    <Button
-                      onClick={() => {
-                        if (detailInput.trim()) {
-                          setCurrentExp({
-                            ...currentExp,
-                            details: [...currentExp.details, detailInput.trim()],
-                          });
-                          setDetailInput("");
-                        }
-                      }}
-                      className="h-12 rounded-xl bg-slate-900 px-6 text-white hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700"
-                    >
-                      Add
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-1 gap-3">
-                    <AnimatePresence mode="popLayout">
-                      {(currentExp.details || []).map((detail, i) => (
-                        <motion.div
-                          key={i}
-                          layout
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.9 }}
-                          className="group/item flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-inner shadow-black/5 dark:border-white/5 dark:bg-slate-950/40 dark:shadow-black/10"
-                        >
-                          <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
-                          <span className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-300">
-                            {detail}
-                          </span>
-                          <button
-                            onClick={() =>
-                              setCurrentExp({
-                                ...currentExp,
-                                details: currentExp.details.filter((_, idx) => idx !== i),
-                              })
-                            }
-                            className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-red-400/10 hover:text-red-400"
-                          >
-                            <FaTimes size={14} />
-                          </button>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </AdminField>
-            </div>
-          )}
-        </AdminDialogShell>
+          experience={currentExp}
+          onSave={handleSave}
+          isSaving={saveMutation.isPending}
+        />
 
         <DragOverlay zIndex={99999} dropAnimation={null}>
           {activeId ? (
