@@ -8,7 +8,6 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import ScrollProgress from "./components/UI/ScrollProgress";
 import PageTransition from "./components/UI/PageTransition";
-import Script from "next/script";
 
 const geistSans = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
@@ -147,11 +146,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             </RecaptchaProvider>
           </SmoothScroll>
         </ThemeProvider>
-        <Script
-          src="https://cdn.userway.org/widget.js"
-          data-account="XpO6b06zbX"
-          strategy="lazyOnload"
-        />
       </body>
     </html>
   );
