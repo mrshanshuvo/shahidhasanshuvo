@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import type { NextRequest } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Message from "@/models/Message";
+import { contactRateLimiter, getClientIp } from "@/lib/rateLimit";
 
 interface RecaptchaResponse {
   success: boolean;
@@ -54,6 +55,30 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
  */
 export async function POST(req: NextRequest): Promise<Response> {
   try {
+    // 1. Sliding Window IP Rate Limiting
+    const clientIp = getClientIp(req);
+    const rateCheck = contactRateLimiter.check(clientIp);
+
+    if (!rateCheck.success) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error:
+            "Too many contact requests from this IP. Please wait a few minutes before trying again.",
+        }),
+        {
+          status: 429,
+          headers: {
+            "Content-Type": "application/json",
+            "Retry-After": String(rateCheck.retryAfterSeconds ?? 60),
+            "X-RateLimit-Limit": String(rateCheck.limit),
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": String(Math.ceil(rateCheck.reset / 1000)),
+          },
+        }
+      );
+    }
+
     const { name, email, message, honeypot, recaptchaToken } =
       (await req.json()) as ContactBody;
 
