@@ -39,11 +39,28 @@ export function ExperienceDialog({
   const [prevTitleInput, setPrevTitleInput] = useState("");
   const [linkLabelInput, setLinkLabelInput] = useState("");
   const [linkUrlInput, setLinkUrlInput] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   if (!open || !form) return null;
 
   const handleSave = () => {
-    if (!form.title || !form.org) return;
+    const newErrors: Record<string, string> = {};
+    if (!form.title.trim()) {
+      newErrors.title = "Job title is required";
+    }
+    if (!form.org.trim()) {
+      newErrors.org = "Organization is required";
+    }
+    if (!form.duration.trim()) {
+      newErrors.duration = "Duration is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     onSave(form);
   };
 
@@ -65,32 +82,48 @@ export function ExperienceDialog({
       <div className="space-y-8 px-1">
         {/* Top Info Grid */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          <AdminField label="Job Title">
+          <AdminField label="Job Title" id="exp-title" required error={errors.title}>
             <AdminInput
+              id="exp-title"
               icon={FaBriefcase}
               value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              hasError={!!errors.title}
+              onChange={(e) => {
+                setForm({ ...form, title: e.target.value });
+                if (errors.title) setErrors((prev) => ({ ...prev, title: "" }));
+              }}
               placeholder="e.g. Senior Software Engineer"
             />
           </AdminField>
-          <AdminField label="Organization">
+          <AdminField label="Organization" id="exp-org" required error={errors.org}>
             <AdminInput
+              id="exp-org"
               icon={FaUniversity}
               value={form.org}
-              onChange={(e) => setForm({ ...form, org: e.target.value })}
+              hasError={!!errors.org}
+              onChange={(e) => {
+                setForm({ ...form, org: e.target.value });
+                if (errors.org) setErrors((prev) => ({ ...prev, org: "" }));
+              }}
               placeholder="e.g. Google"
             />
           </AdminField>
-          <AdminField label="Duration">
+          <AdminField label="Duration" id="exp-duration" required error={errors.duration}>
             <AdminInput
+              id="exp-duration"
               icon={FaCalendarAlt}
               value={form.duration}
-              onChange={(e) => setForm({ ...form, duration: e.target.value })}
+              hasError={!!errors.duration}
+              onChange={(e) => {
+                setForm({ ...form, duration: e.target.value });
+                if (errors.duration) setErrors((prev) => ({ ...prev, duration: "" }));
+              }}
               placeholder="e.g. Jan 2022 - Present"
             />
           </AdminField>
-          <AdminField label="Website URL">
+          <AdminField label="Website URL" id="exp-url">
             <AdminInput
+              id="exp-url"
               icon={FaLink}
               value={form.url || ""}
               onChange={(e) => setForm({ ...form, url: e.target.value })}

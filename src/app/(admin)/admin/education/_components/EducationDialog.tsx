@@ -47,6 +47,7 @@ export function EducationDialog({
 }: EducationDialogProps) {
   const [formData, setFormData] = useState<Education>(education || emptyEdu);
   const [detailInput, setDetailInput] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const addDetail = () => {
     const trimmed = detailInput.trim();
@@ -67,7 +68,20 @@ export function EducationDialog({
   };
 
   const handleSave = () => {
-    if (!formData.degree || !formData.institution) return;
+    const newErrors: Record<string, string> = {};
+    if (!formData.degree.trim()) {
+      newErrors.degree = "Degree or course is required";
+    }
+    if (!formData.institution.trim()) {
+      newErrors.institution = "Institution name is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     onSave(formData);
   };
 
@@ -125,29 +139,46 @@ export function EducationDialog({
           {/* Right Column: Academic Details */}
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              <AdminField label="Degree / Course">
+              <AdminField
+                label="Degree / Course"
+                id="edu-degree"
+                required
+                error={errors.degree}
+              >
                 <AdminInput
+                  id="edu-degree"
                   icon={FaGraduationCap}
                   value={formData.degree}
-                  onChange={(e) =>
+                  hasError={!!errors.degree}
+                  onChange={(e) => {
                     setFormData((prev) => ({
                       ...prev,
                       degree: e.target.value,
-                    }))
-                  }
+                    }));
+                    if (errors.degree) setErrors((prev) => ({ ...prev, degree: "" }));
+                  }}
                   placeholder="e.g. B.Sc in Computer Science"
                 />
               </AdminField>
-              <AdminField label="Institution">
+              <AdminField
+                label="Institution"
+                id="edu-institution"
+                required
+                error={errors.institution}
+              >
                 <AdminInput
+                  id="edu-institution"
                   icon={FaUniversity}
                   value={formData.institution}
-                  onChange={(e) =>
+                  hasError={!!errors.institution}
+                  onChange={(e) => {
                     setFormData((prev) => ({
                       ...prev,
                       institution: e.target.value,
-                    }))
-                  }
+                    }));
+                    if (errors.institution)
+                      setErrors((prev) => ({ ...prev, institution: "" }));
+                  }}
                   placeholder="e.g. Stanford University"
                 />
               </AdminField>

@@ -41,6 +41,7 @@ export function DemoDialog({
   isSaving,
 }: DemoDialogProps) {
   const [formData, setFormData] = useState<Demo>(demo || emptyDemo);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleTitleChange = (title: string) => {
     const slug = title
@@ -53,9 +54,30 @@ export function DemoDialog({
       title,
       slug: prev._id ? prev.slug : slug,
     }));
+    if (errors.title) setErrors((prev) => ({ ...prev, title: "" }));
   };
 
   const handleSave = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.title.trim()) {
+      newErrors.title = "Demo title is required";
+    }
+    if (!formData.url.trim()) {
+      newErrors.url = "Live URL is required";
+    } else {
+      try {
+        new URL(formData.url.trim());
+      } catch {
+        newErrors.url = "Must be a valid URL (e.g. https://...)";
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     onSave(formData);
   };
 
@@ -113,16 +135,24 @@ export function DemoDialog({
           {/* Right Column: Information */}
           <div className="space-y-6">
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              <AdminField label="Demo Title">
+              <AdminField
+                label="Demo Title"
+                id="demo-title"
+                required
+                error={errors.title}
+              >
                 <AdminInput
+                  id="demo-title"
                   icon={FaFlask}
                   value={formData.title}
+                  hasError={!!errors.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   placeholder="e.g. AI-Powered Chatbot"
                 />
               </AdminField>
-              <AdminField label="Slug">
+              <AdminField label="Slug" id="demo-slug">
                 <AdminInput
+                  id="demo-slug"
                   icon={FaLink}
                   value={formData.slug || ""}
                   onChange={(e) =>
@@ -137,13 +167,16 @@ export function DemoDialog({
             </div>
 
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              <AdminField label="Live URL">
+              <AdminField label="Live URL" id="demo-url" required error={errors.url}>
                 <AdminInput
+                  id="demo-url"
                   icon={FaLink}
                   value={formData.url}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, url: e.target.value }))
-                  }
+                  hasError={!!errors.url}
+                  onChange={(e) => {
+                    setFormData((prev) => ({ ...prev, url: e.target.value }));
+                    if (errors.url) setErrors((prev) => ({ ...prev, url: "" }));
+                  }}
                   placeholder="https://playground..."
                 />
               </AdminField>

@@ -42,6 +42,7 @@ export function ExpertiseDialog({
   const [newTechName, setNewTechName] = useState("");
   const [newTechIcon, setNewTechIcon] = useState("");
   const [showQuickAdd, setShowQuickAdd] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const selectedTechs = formData.tech
     ? formData.tech
@@ -85,7 +86,17 @@ export function ExpertiseDialog({
   };
 
   const handleSave = () => {
-    if (!formData.name) return;
+    const newErrors: Record<string, string> = {};
+    if (!formData.name.trim()) {
+      newErrors.name = "Expertise title is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     onSave(formData);
   };
 
@@ -118,13 +129,21 @@ export function ExpertiseDialog({
 
           {/* Right Column: Details */}
           <div className="space-y-6">
-            <AdminField label="Expertise Title">
+            <AdminField
+              label="Expertise Title"
+              id="expertise-name"
+              required
+              error={errors.name}
+            >
               <AdminInput
+                id="expertise-name"
                 icon={FaLaptopCode}
                 value={formData.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, name: e.target.value }))
-                }
+                hasError={!!errors.name}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, name: e.target.value }));
+                  if (errors.name) setErrors((prev) => ({ ...prev, name: "" }));
+                }}
                 placeholder="e.g. Full Stack Development"
               />
             </AdminField>

@@ -9,19 +9,43 @@ import { cn } from "@/lib/utils";
 interface AdminFieldProps {
   label: string;
   error?: string;
+  id?: string;
+  required?: boolean;
   children: React.ReactNode;
   className?: string;
 }
 
-export function AdminField({ label, error, children, className }: AdminFieldProps) {
+export function AdminField({
+  label,
+  error,
+  id,
+  required,
+  children,
+  className,
+}: AdminFieldProps) {
+  const errorId = id && error ? `${id}-error` : undefined;
+
   return (
     <div className={cn("space-y-1.5", className)}>
-      <label className="ml-1.5 text-[11px] font-black tracking-[0.2em] text-slate-500 uppercase transition-all duration-300 group-focus-within:text-emerald-600 dark:text-slate-400/80 dark:group-focus-within:text-emerald-400">
+      <label
+        htmlFor={id}
+        className="ml-1.5 text-[11px] font-black tracking-[0.2em] text-slate-500 uppercase transition-all duration-300 group-focus-within:text-emerald-600 dark:text-slate-400/80 dark:group-focus-within:text-emerald-400"
+      >
         {label}
+        {required && (
+          <span className="ml-1 text-red-500" aria-hidden="true">
+            *
+          </span>
+        )}
       </label>
       <div className="group relative mt-2">{children}</div>
       {error && (
-        <p className="animate-in slide-in-from-top-1 ml-1 text-[10px] font-bold text-red-500">
+        <p
+          id={errorId}
+          role="alert"
+          aria-live="polite"
+          className="animate-in slide-in-from-top-1 ml-1 text-[10px] font-bold text-red-500"
+        >
           {error}
         </p>
       )}
@@ -31,9 +55,19 @@ export function AdminField({ label, error, children, className }: AdminFieldProp
 
 interface AdminInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: IconType;
+  hasError?: boolean;
 }
 
-export function AdminInput({ icon: Icon, className, ...props }: AdminInputProps) {
+export function AdminInput({
+  icon: Icon,
+  hasError,
+  className,
+  id,
+  "aria-describedby": ariaDescribedBy,
+  ...props
+}: AdminInputProps) {
+  const describedBy = ariaDescribedBy || (hasError && id ? `${id}-error` : undefined);
+
   return (
     <div className="group/input relative w-full">
       {Icon && (
@@ -42,9 +76,14 @@ export function AdminInput({ icon: Icon, className, ...props }: AdminInputProps)
         </div>
       )}
       <Input
+        id={id}
+        aria-invalid={hasError ? "true" : undefined}
+        aria-describedby={describedBy}
         className={cn(
           "h-12 rounded-xl border-slate-200 bg-white text-sm font-bold text-slate-900 shadow-inner transition-all duration-300 placeholder:text-slate-500 focus:border-emerald-500/30 focus:ring-4 focus:ring-emerald-500/5 dark:border-white/5 dark:bg-slate-950/40 dark:text-slate-200 dark:shadow-black/20 dark:placeholder:text-slate-600",
           Icon && "pl-11",
+          hasError &&
+            "border-red-500/50 focus:border-red-500 focus:ring-red-500/10 dark:border-red-500/50",
           className
         )}
         {...props}
@@ -55,9 +94,19 @@ export function AdminInput({ icon: Icon, className, ...props }: AdminInputProps)
 
 interface AdminTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   icon?: IconType;
+  hasError?: boolean;
 }
 
-export function AdminTextarea({ icon: Icon, className, ...props }: AdminTextareaProps) {
+export function AdminTextarea({
+  icon: Icon,
+  hasError,
+  className,
+  id,
+  "aria-describedby": ariaDescribedBy,
+  ...props
+}: AdminTextareaProps) {
+  const describedBy = ariaDescribedBy || (hasError && id ? `${id}-error` : undefined);
+
   return (
     <div className="group/input relative w-full">
       {Icon && (
@@ -66,9 +115,14 @@ export function AdminTextarea({ icon: Icon, className, ...props }: AdminTextarea
         </div>
       )}
       <Textarea
+        id={id}
+        aria-invalid={hasError ? "true" : undefined}
+        aria-describedby={describedBy}
         className={cn(
           "min-h-25 rounded-xl border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-900 shadow-inner transition-all duration-300 placeholder:text-slate-500 focus:border-emerald-500/30 focus:ring-4 focus:ring-emerald-500/5 dark:border-white/5 dark:bg-slate-950/40 dark:text-slate-200 dark:shadow-black/20 dark:placeholder:text-slate-600",
           Icon && "pl-11",
+          hasError &&
+            "border-red-500/50 focus:border-red-500 focus:ring-red-500/10 dark:border-red-500/50",
           className
         )}
         {...props}

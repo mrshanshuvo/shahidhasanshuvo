@@ -32,9 +32,29 @@ export function SocialDialog({
   isSaving,
 }: SocialDialogProps) {
   const [formData, setFormData] = useState<SocialLink>(social || emptySocial);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSave = () => {
-    if (!formData.label || !formData.href) return;
+    const newErrors: Record<string, string> = {};
+    if (!formData.label.trim()) {
+      newErrors.label = "Display label is required";
+    }
+    if (!formData.href.trim()) {
+      newErrors.href = "Destination URL is required";
+    } else {
+      try {
+        new URL(formData.href.trim());
+      } catch {
+        newErrors.href = "Must be a valid URL (e.g. https://...)";
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     onSave(formData);
   };
 
@@ -54,23 +74,36 @@ export function SocialDialog({
     >
       <div className="space-y-8">
         <div className="grid grid-cols-1 gap-6">
-          <AdminField label="Display Label">
+          <AdminField
+            label="Display Label"
+            id="social-label"
+            required
+            error={errors.label}
+          >
             <AdminInput
+              id="social-label"
               value={formData.label}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, label: e.target.value }))
-              }
+              hasError={!!errors.label}
+              onChange={(e) => {
+                setFormData((prev) => ({ ...prev, label: e.target.value }));
+                if (errors.label) setErrors((prev) => ({ ...prev, label: "" }));
+              }}
               placeholder="e.g. GitHub Profile"
             />
           </AdminField>
         </div>
 
-        <AdminField label="Destination URL">
+        <AdminField label="Destination URL" id="social-href" required error={errors.href}>
           <AdminInput
+            id="social-href"
             icon={FaLink}
             className="text-sm font-medium"
             value={formData.href}
-            onChange={(e) => setFormData((prev) => ({ ...prev, href: e.target.value }))}
+            hasError={!!errors.href}
+            onChange={(e) => {
+              setFormData((prev) => ({ ...prev, href: e.target.value }));
+              if (errors.href) setErrors((prev) => ({ ...prev, href: "" }));
+            }}
             placeholder="https://social.network/profile"
           />
         </AdminField>

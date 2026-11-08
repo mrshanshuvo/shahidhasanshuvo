@@ -38,6 +38,7 @@ export function BlogDialog({
 }: BlogDialogProps) {
   const [formData, setFormData] = useState<Blog>(blog || emptyBlog);
   const [tagInput, setTagInput] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const addTag = () => {
     const trimmed = tagInput.trim();
@@ -58,6 +59,26 @@ export function BlogDialog({
   };
 
   const handleSave = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.title.trim()) {
+      newErrors.title = "Article title is required";
+    }
+    if (!formData.link.trim()) {
+      newErrors.link = "Article source URL is required";
+    } else {
+      try {
+        new URL(formData.link.trim());
+      } catch {
+        newErrors.link = "Must be a valid URL (e.g. https://...)";
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     onSave(formData);
   };
 
@@ -103,21 +124,29 @@ export function BlogDialog({
 
           {/* Right Column: Article Details */}
           <div className="space-y-4">
-            <AdminField label="Article Title">
+            <AdminField
+              label="Article Title"
+              id="blog-title"
+              required
+              error={errors.title}
+            >
               <AdminInput
+                id="blog-title"
                 icon={FaBookOpen}
                 value={formData.title}
-                onChange={(e) =>
+                hasError={!!errors.title}
+                onChange={(e) => {
                   setFormData((prev) => ({
                     ...prev,
                     title: e.target.value,
-                  }))
-                }
+                  }));
+                  if (errors.title) setErrors((prev) => ({ ...prev, title: "" }));
+                }}
                 placeholder="e.g. Master Next.js 14 Server Actions"
               />
             </AdminField>
 
-            <AdminField label="Publish Date">
+            <AdminField label="Publish Date" id="blog-date">
               <DateTimePicker
                 value={formData.date}
                 onChange={(val) =>
@@ -129,13 +158,21 @@ export function BlogDialog({
               />
             </AdminField>
 
-            <AdminField label="Article Source URL">
+            <AdminField
+              label="Article Source URL"
+              id="blog-link"
+              required
+              error={errors.link}
+            >
               <AdminInput
+                id="blog-link"
                 icon={FaLink}
                 value={formData.link}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, link: e.target.value }))
-                }
+                hasError={!!errors.link}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, link: e.target.value }));
+                  if (errors.link) setErrors((prev) => ({ ...prev, link: "" }));
+                }}
                 placeholder="https://medium.com/your-article"
               />
             </AdminField>

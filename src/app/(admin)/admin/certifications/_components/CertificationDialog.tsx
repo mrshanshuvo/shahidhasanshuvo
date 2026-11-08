@@ -44,6 +44,7 @@ export function CertificationDialog({
 }: CertificationDialogProps) {
   const [formData, setFormData] = useState<Certification>(certification || emptyCert);
   const [skillInput, setSkillInput] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const addSkill = () => {
     const trimmed = skillInput.trim();
@@ -64,7 +65,20 @@ export function CertificationDialog({
   };
 
   const handleSave = () => {
-    if (!formData.title || !formData.issuer) return;
+    const newErrors: Record<string, string> = {};
+    if (!formData.title.trim()) {
+      newErrors.title = "Certification title is required";
+    }
+    if (!formData.issuer.trim()) {
+      newErrors.issuer = "Issuing authority is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     onSave(formData);
   };
 
@@ -109,30 +123,46 @@ export function CertificationDialog({
                 </div>
               </AdminField>
 
-              <div className="col-span-2">
-                <AdminField label="Certification Title">
+              <div className="col-span-2 space-y-4">
+                <AdminField
+                  label="Certification Title"
+                  id="cert-title"
+                  required
+                  error={errors.title}
+                >
                   <AdminInput
+                    id="cert-title"
                     icon={FaCertificate}
                     value={formData.title}
-                    onChange={(e) =>
+                    hasError={!!errors.title}
+                    onChange={(e) => {
                       setFormData((prev) => ({
                         ...prev,
                         title: e.target.value,
-                      }))
-                    }
+                      }));
+                      if (errors.title) setErrors((prev) => ({ ...prev, title: "" }));
+                    }}
                     placeholder="e.g. AWS Solutions Architect"
                   />
                 </AdminField>
-                <AdminField label="Issuing Authority">
+                <AdminField
+                  label="Issuing Authority"
+                  id="cert-issuer"
+                  required
+                  error={errors.issuer}
+                >
                   <AdminInput
+                    id="cert-issuer"
                     icon={FaUniversity}
                     value={formData.issuer}
-                    onChange={(e) =>
+                    hasError={!!errors.issuer}
+                    onChange={(e) => {
                       setFormData((prev) => ({
                         ...prev,
                         issuer: e.target.value,
-                      }))
-                    }
+                      }));
+                      if (errors.issuer) setErrors((prev) => ({ ...prev, issuer: "" }));
+                    }}
                     placeholder="e.g. Amazon Web Services"
                   />
                 </AdminField>
