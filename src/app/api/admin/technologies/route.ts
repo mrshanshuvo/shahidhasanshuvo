@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Technology from "@/models/Technology";
 import { revalidatePortfolio } from "@/lib/revalidate";
+import { technologySchema } from "@/lib/validations";
 
 export async function GET(req: Request) {
   try {
@@ -36,10 +37,18 @@ export async function POST(req: Request) {
     await connectDB();
     const body = await req.json();
 
+    const validation = technologySchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.issues[0]?.message || "Validation failed" },
+        { status: 400 }
+      );
+    }
+
     const lastItem = await Technology.findOne().sort({ order: -1 });
     const order = lastItem ? lastItem.order + 1 : 0;
 
-    const newItem = await Technology.create({ ...body, order });
+    const newItem = await Technology.create({ ...validation.data, order });
     revalidatePortfolio();
     return NextResponse.json(newItem);
   } catch (error) {
@@ -59,7 +68,15 @@ export async function PATCH(req: Request) {
     const body = await req.json();
 
     if (id) {
-      const updated = await Technology.findByIdAndUpdate(id, body, {
+      const validation = technologySchema.partial().safeParse(body);
+      if (!validation.success) {
+        return NextResponse.json(
+          { error: validation.error.issues[0]?.message || "Validation failed" },
+          { status: 400 }
+        );
+      }
+
+      const updated = await Technology.findByIdAndUpdate(id, validation.data, {
         returnDocument: "after",
       });
       if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });

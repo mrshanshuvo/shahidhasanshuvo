@@ -25,7 +25,11 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
-    const items: any[] = await req.json();
+    const items = await req.json();
+
+    if (!Array.isArray(items)) {
+      return NextResponse.json({ error: "Array required" }, { status: 400 });
+    }
 
     // Clean slate synchronization
     await Category.deleteMany({});

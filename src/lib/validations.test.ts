@@ -9,6 +9,8 @@ import {
   expertiseSchema,
   experienceSchema,
   heroSchema,
+  technologySchema,
+  settingSchema,
 } from "./validations";
 
 describe("Zod Validation Schemas", () => {
@@ -169,6 +171,41 @@ describe("Zod Validation Schemas", () => {
 
     it("fails when name is empty", () => {
       const result = heroSchema.safeParse({ name: "", lastName: "Shovu" });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("technologySchema", () => {
+    it("validates valid technology record", () => {
+      const valid = {
+        name: "Next.js",
+        iconUrl: "/icons/nextjs.svg",
+        brandColor: "#000000",
+      };
+      const result = technologySchema.safeParse(valid);
+      expect(result.success).toBe(true);
+    });
+
+    it("fails when name or iconUrl is empty", () => {
+      const result = technologySchema.safeParse({ name: "", iconUrl: "" });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("settingSchema", () => {
+    it("validates global site settings", () => {
+      const valid = {
+        siteName: "Shahid Hasan Shovu Portfolio",
+        siteDescription: "Senior Full Stack Engineer",
+        contactEmail: "shovu@example.com",
+        accentColor: "emerald",
+      };
+      const result = settingSchema.safeParse(valid);
+      expect(result.success).toBe(true);
+    });
+
+    it("fails on invalid email", () => {
+      const result = settingSchema.safeParse({ contactEmail: "not-an-email" });
       expect(result.success).toBe(false);
     });
   });

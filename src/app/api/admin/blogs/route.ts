@@ -68,7 +68,17 @@ export async function PATCH(req: Request) {
     const body = await req.json();
 
     if (id) {
-      const updated = await Blog.findByIdAndUpdate(id, body, { returnDocument: "after" });
+      const validation = blogSchema.partial().safeParse(body);
+      if (!validation.success) {
+        return NextResponse.json(
+          { error: validation.error.issues[0]?.message || "Validation failed" },
+          { status: 400 }
+        );
+      }
+
+      const updated = await Blog.findByIdAndUpdate(id, validation.data, {
+        returnDocument: "after",
+      });
       if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
       revalidatePortfolio(["/blog", "/feed.xml", "/sitemap.xml"]);
       return NextResponse.json(updated);

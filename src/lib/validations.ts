@@ -111,3 +111,28 @@ export const heroSchema = z.object({
     )
     .default([]),
 });
+
+export const technologySchema = z.object({
+  name: z.string().trim().min(1, "Name is required"),
+  iconUrl: z.string().trim().min(1, "Icon URL is required"),
+  brandColor: z.string().default(""),
+  order: z.number().default(0),
+});
+
+export const settingSchema = z.object({
+  siteName: z.string().trim().default("Portfolio"),
+  siteDescription: z.string().default(""),
+  keywords: z.array(z.string()).default([]),
+  contactEmail: z
+    .string()
+    .trim()
+    .email("Must be a valid email")
+    .or(z.literal(""))
+    .default(""),
+  contactPhone: z.string().default(""),
+  contactLocation: z.string().default(""),
+  ogImage: z.string().default(""),
+  isHireable: z.boolean().default(true),
+  maintenanceMode: z.boolean().default(false),
+  accentColor: z.enum(["emerald", "blue", "purple", "rose", "amber"]).default("emerald"),
+});

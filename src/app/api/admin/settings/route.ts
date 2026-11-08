@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import Setting from "@/models/Setting";
 import { auth } from "@/lib/auth";
 import { revalidatePortfolio } from "@/lib/revalidate";
+import { settingSchema } from "@/lib/validations";
 
 export async function GET() {
   try {
@@ -28,11 +29,20 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
+
+    const validation = settingSchema.partial().safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.issues[0]?.message || "Validation failed" },
+        { status: 400 }
+      );
+    }
+
     await connectDB();
 
     const settings = await Setting.findOneAndUpdate(
       {},
-      { $set: body },
+      { $set: validation.data },
       { upsert: true, returnDocument: "after" }
     );
 

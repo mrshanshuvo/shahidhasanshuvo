@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Message from "@/models/Message";
 import { auth } from "@/lib/auth";
+import { z } from "zod";
 
 export async function DELETE(
   _req: NextRequest,
@@ -33,11 +34,20 @@ export async function PATCH(
 
   try {
     const { id } = await params;
-    const { status } = await req.json();
+    const body = await req.json();
+
+    const validation = z.object({ status: z.enum(["unread", "read"]) }).safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.issues[0]?.message || "Invalid status" },
+        { status: 400 }
+      );
+    }
+
     await connectDB();
     const updated = await Message.findByIdAndUpdate(
       id,
-      { status },
+      { status: validation.data.status },
       { returnDocument: "after" }
     );
     if (!updated)

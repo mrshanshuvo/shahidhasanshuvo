@@ -90,10 +90,18 @@ export async function PATCH(req: Request) {
     const body = await req.json();
 
     if (id) {
+      const validation = demoSchema.partial().safeParse(body);
+      if (!validation.success) {
+        return NextResponse.json(
+          { error: validation.error.issues[0]?.message || "Validation failed" },
+          { status: 400 }
+        );
+      }
+
       // Map tech names to technologyIds if present in body
-      let updatePayload = { ...body };
-      if (body.tech) {
-        const techList = Array.isArray(body.tech) ? body.tech : [];
+      let updatePayload: Record<string, any> = { ...validation.data };
+      if (validation.data.tech) {
+        const techList = Array.isArray(validation.data.tech) ? validation.data.tech : [];
         const techs = await Technology.find({ name: { $in: techList } });
         updatePayload.technologyIds = techs.map((t) => t._id);
       }

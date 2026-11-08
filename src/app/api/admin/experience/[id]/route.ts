@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Experience from "@/models/Experience";
 import { revalidatePortfolio } from "@/lib/revalidate";
+import { experienceSchema } from "@/lib/validations";
 
 export async function PUT(
   request: Request,
@@ -15,7 +16,16 @@ export async function PUT(
   await connectDB();
   const { id } = await params;
   const body = await request.json();
-  const exp = await Experience.findByIdAndUpdate(id, body, {
+
+  const validation = experienceSchema.partial().safeParse(body);
+  if (!validation.success) {
+    return NextResponse.json(
+      { error: validation.error.issues[0]?.message || "Validation failed" },
+      { status: 400 }
+    );
+  }
+
+  const exp = await Experience.findByIdAndUpdate(id, validation.data, {
     returnDocument: "after",
     runValidators: true,
   });
