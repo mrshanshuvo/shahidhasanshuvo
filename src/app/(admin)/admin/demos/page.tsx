@@ -18,15 +18,15 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { FaPlus, FaTimes, FaCheck, FaFlask, FaSearch } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { FaPlus, FaFlask, FaSearch } from "react-icons/fa";
+import { AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import type { Technology } from "@/types";
 import { SortableDemoRow, DemoOverlay, type Demo } from "./_components/DemoRow";
 import { DemoDialog } from "./_components/DemoDialog";
+import { AdminToast, useAdminToast } from "../components/AdminToast";
 
 export default function AdminDemosPage() {
   const queryClient = useQueryClient();
@@ -36,10 +36,7 @@ export default function AdminDemosPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentDemo, setCurrentDemo] = useState<Demo | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [toast, setToast] = useState<{
-    msg: string;
-    type: "success" | "error";
-  } | null>(null);
+  const { toast, showToast } = useAdminToast();
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -47,11 +44,6 @@ export default function AdminDemosPage() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
-  function showToast(msg: string, type: "success" | "error" = "success") {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3000);
-  }
 
   const { data: fetchedData, isLoading: loading } = useQuery<Demo[]>({
     queryKey: ["demos"],
@@ -184,31 +176,7 @@ export default function AdminDemosPage() {
       onDragEnd={handleDragEnd}
     >
       <div className="space-y-6 p-4 md:p-8">
-        <AnimatePresence>
-          {toast && (
-            <motion.div
-              initial={{ opacity: 0, y: -20, x: "-50%" }}
-              animate={{ opacity: 1, y: 0, x: "-50%" }}
-              exit={{ opacity: 0, y: -20, x: "-50%" }}
-              className={cn(
-                "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
-                toast.type === "success"
-                  ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
-                  : "border-red-500/50 bg-red-500/20 text-red-400"
-              )}
-            >
-              <div
-                className={cn(
-                  "rounded-full p-1.5",
-                  toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
-                )}
-              >
-                {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
-              </div>
-              <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <AdminToast toast={toast} />
 
         <div className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm backdrop-blur-xl md:flex-row md:items-center dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">
           <div className="flex flex-1 flex-wrap items-center gap-4">

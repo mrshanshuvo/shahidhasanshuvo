@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
+import { AdminToast, useAdminToast } from "./AdminToast";
 import type { Category } from "@/types";
 
 interface CategoryManagerDialogProps {
@@ -21,15 +21,7 @@ interface CategoryManagerDialogProps {
 export default function CategoryManagerDialog({ onUpdate }: CategoryManagerDialogProps) {
   const [data, setData] = useState<Category[]>([]);
   const [saving, setSaving] = useState(false);
-  const [toast, setToast] = useState<{
-    msg: string;
-    type: "success" | "error";
-  } | null>(null);
-
-  function showToast(msg: string, type: "success" | "error" = "success") {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3000);
-  }
+  const { toast, showToast } = useAdminToast();
 
   const fetchCats = () => {
     fetch("/api/admin/categories")
@@ -185,23 +177,7 @@ export default function CategoryManagerDialog({ onUpdate }: CategoryManagerDialo
         </div>
 
         {/* Toast Overlay */}
-        <AnimatePresence>
-          {toast && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className={cn(
-                "absolute bottom-4 left-1/2 -translate-x-1/2 rounded-lg border px-4 py-2 text-xs font-bold shadow-xl backdrop-blur-xl",
-                toast.type === "success"
-                  ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
-                  : "border-red-500/50 bg-red-500/20 text-red-400"
-              )}
-            >
-              {toast.msg}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <AdminToast toast={toast} />
       </DialogContent>
     </Dialog>
   );

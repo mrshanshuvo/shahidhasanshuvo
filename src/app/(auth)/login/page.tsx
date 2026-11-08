@@ -59,7 +59,11 @@ export default function LoginPage() {
           </div>
 
           {loginMutation.isError && (
-            <div className="mb-6 rounded-lg border border-red-500/30 bg-red-900/30 p-3 text-center text-sm text-red-400">
+            <div
+              role="alert"
+              aria-live="assertive"
+              className="mb-6 rounded-lg border border-red-500/30 bg-red-900/30 p-3 text-center text-sm text-red-400"
+            >
               {loginMutation.error.message}
             </div>
           )}

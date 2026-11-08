@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FaPlus, FaTimes, FaCheck, FaCode, FaEdit, FaTrash } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { FaPlus, FaCode, FaEdit, FaTrash } from "react-icons/fa";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -13,9 +12,9 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { AdminDialogShell } from "../components/AdminDialogShell";
 import { AdminField, AdminInput } from "../components/AdminFields";
+import { AdminToast, useAdminToast } from "../components/AdminToast";
 import ImageUpload from "../components/ImageUpload";
 import type { Technology } from "@/types";
 
@@ -25,15 +24,7 @@ export default function AdminTechnologiesPage() {
   const [prevData, setPrevData] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentTech, setCurrentTech] = useState<Technology | null>(null);
-  const [toast, setToast] = useState<{
-    msg: string;
-    type: "success" | "error";
-  } | null>(null);
-
-  function showToast(msg: string, type: "success" | "error" = "success") {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3000);
-  }
+  const { toast, showToast } = useAdminToast();
 
   const { data, isLoading: loading } = useQuery({
     queryKey: ["technologies"],
@@ -118,31 +109,7 @@ export default function AdminTechnologiesPage() {
 
   return (
     <div className="space-y-6 p-4 md:p-8">
-      <AnimatePresence>
-        {toast && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: -20, x: "-50%" }}
-            className={cn(
-              "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
-              toast.type === "success"
-                ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
-                : "border-red-500/50 bg-red-500/20 text-red-400"
-            )}
-          >
-            <div
-              className={cn(
-                "rounded-full p-1.5",
-                toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
-              )}
-            >
-              {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
-            </div>
-            <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AdminToast toast={toast} />
 
       <div className="mx-auto max-w-4xl space-y-6">
         <Card className="animate-in fade-in overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur-xl duration-700 dark:border-white/10 dark:bg-slate-900/40 dark:shadow-none">

@@ -1,16 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import {
-  FaCheck,
-  FaTimes,
-  FaSave,
-  FaStar,
-  FaRegStar,
-  FaInfoCircle,
-  FaPlus,
-  FaTrash,
-} from "react-icons/fa";
+import { FaSave, FaStar, FaRegStar, FaInfoCircle, FaPlus, FaTrash } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import ImageUpload from "../../components/ImageUpload";
 import MediaGalleryManager from "../../components/MediaGalleryManager";
@@ -19,6 +10,7 @@ import CategoryCombobox from "../../components/CategoryCombobox";
 import TechCombobox from "../../components/TechCombobox";
 import { Button } from "@/components/ui/button";
 import { AdminField, AdminInput, AdminTextarea } from "../../components/AdminFields";
+import { AdminToast, useAdminToast } from "../../components/AdminToast";
 import { cn } from "@/lib/utils";
 import type {
   Project,
@@ -55,15 +47,7 @@ export default function ProjectEditPage() {
   const [impInput, setImpInput] = useState("");
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
-  const [toast, setToast] = useState<{
-    msg: string;
-    type: "success" | "error";
-  } | null>(null);
-
-  function showToast(msg: string, type: "success" | "error" = "success") {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3000);
-  }
+  const { toast, showToast } = useAdminToast();
 
   function update<K extends keyof Project>(field: K, val: Project[K]) {
     setForm((prev) => ({ ...prev, [field]: val }));
@@ -165,31 +149,7 @@ export default function ProjectEditPage() {
   return (
     <div className="space-y-6 p-4 md:p-8">
       {/* Toast */}
-      <AnimatePresence>
-        {toast && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: -20, x: "-50%" }}
-            className={cn(
-              "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
-              toast.type === "success"
-                ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
-                : "border-red-500/50 bg-red-500/20 text-red-400"
-            )}
-          >
-            <div
-              className={cn(
-                "rounded-full p-1.5",
-                toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
-              )}
-            >
-              {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
-            </div>
-            <span className="text-sm font-bold">{toast.msg}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AdminToast toast={toast} />
 
       {/* Form */}
       <main className="mx-auto max-w-400 px-6 md:px-12">

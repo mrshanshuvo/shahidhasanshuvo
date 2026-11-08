@@ -18,18 +18,18 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { FaPlus, FaCheck, FaTimes, FaAward } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { FaPlus, FaAward } from "react-icons/fa";
+import { AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import {
   SortableCertRow,
   CertOverlay,
   type Certification,
 } from "./_components/CertificationRow";
 import { CertificationDialog } from "./_components/CertificationDialog";
+import { AdminToast, useAdminToast } from "../components/AdminToast";
 
 export default function AdminCertificationsPage() {
   const queryClient = useQueryClient();
@@ -38,10 +38,7 @@ export default function AdminCertificationsPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentCert, setCurrentCert] = useState<Certification | null>(null);
-  const [toast, setToast] = useState<{
-    msg: string;
-    type: "success" | "error";
-  } | null>(null);
+  const { toast, showToast } = useAdminToast();
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -49,11 +46,6 @@ export default function AdminCertificationsPage() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
-  function showToast(msg: string, type: "success" | "error" = "success") {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3000);
-  }
 
   const { data: fetchedData, isLoading: loading } = useQuery<Certification[]>({
     queryKey: ["certifications"],
@@ -165,31 +157,7 @@ export default function AdminCertificationsPage() {
       onDragEnd={handleDragEnd}
     >
       <div className="space-y-6 p-4 md:p-8">
-        <AnimatePresence>
-          {toast && (
-            <motion.div
-              initial={{ opacity: 0, y: -20, x: "-50%" }}
-              animate={{ opacity: 1, y: 0, x: "-50%" }}
-              exit={{ opacity: 0, y: -20, x: "-50%" }}
-              className={cn(
-                "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
-                toast.type === "success"
-                  ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
-                  : "border-red-500/50 bg-red-500/20 text-red-400"
-              )}
-            >
-              <div
-                className={cn(
-                  "rounded-full p-1.5",
-                  toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
-                )}
-              >
-                {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
-              </div>
-              <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <AdminToast toast={toast} />
 
         <div className="mx-auto max-w-4xl space-y-6">
           <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">

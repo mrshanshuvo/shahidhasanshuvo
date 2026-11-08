@@ -148,6 +148,9 @@ export function ContactForm() {
 
       {status.message && (
         <motion.div
+          role={status.type === "error" ? "alert" : "status"}
+          aria-live={status.type === "error" ? "assertive" : "polite"}
+          aria-atomic="true"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`rounded-lg p-4 ${

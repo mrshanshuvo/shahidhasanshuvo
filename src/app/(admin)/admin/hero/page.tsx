@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import type { Hero } from "@/types";
-import { FaSave, FaCheck, FaTimes } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { FaSave } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
 import { HeroIdentitySection } from "./_components/HeroIdentitySection";
 import { HeroBioEditor } from "./_components/HeroBioEditor";
 import { TypeSequenceSection } from "./_components/TypeSequenceSection";
+import { AdminToast, useAdminToast } from "../components/AdminToast";
 
 const DEFAULT: Hero = {
   name: "Shahid Hasan",
@@ -30,15 +30,7 @@ const DEFAULT: Hero = {
 function HeroFormClient({ initialData }: { initialData: Hero }) {
   const queryClient = useQueryClient();
   const [data, setData] = useState<Hero>(initialData);
-  const [toast, setToast] = useState<{
-    msg: string;
-    type: "success" | "error";
-  } | null>(null);
-
-  function showToast(msg: string, type: "success" | "error" = "success") {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3000);
-  }
+  const { toast, showToast } = useAdminToast();
 
   const saveMutation = useMutation({
     mutationFn: async (heroData: Hero) => {
@@ -62,31 +54,7 @@ function HeroFormClient({ initialData }: { initialData: Hero }) {
   return (
     <div className="space-y-6 p-4 md:p-8">
       {/* Toast Notification */}
-      <AnimatePresence>
-        {toast && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: -20, x: "-50%" }}
-            className={cn(
-              "fixed top-8 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-xl",
-              toast.type === "success"
-                ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
-                : "border-red-500/50 bg-red-500/20 text-red-400"
-            )}
-          >
-            <div
-              className={cn(
-                "rounded-full p-1.5",
-                toast.type === "success" ? "bg-emerald-500/20" : "bg-red-500/20"
-              )}
-            >
-              {toast.type === "success" ? <FaCheck size={10} /> : <FaTimes size={10} />}
-            </div>
-            <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AdminToast toast={toast} />
 
       <div className="mx-auto max-w-350 space-y-6">
         <div className="space-y-8">
