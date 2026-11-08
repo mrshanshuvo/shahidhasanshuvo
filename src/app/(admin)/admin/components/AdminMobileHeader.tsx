@@ -29,6 +29,8 @@ export default function AdminMobileHeader({
         variant="ghost"
         size="icon"
         onClick={onMenuClick}
+        aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={isOpen}
         className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
       >
         {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}

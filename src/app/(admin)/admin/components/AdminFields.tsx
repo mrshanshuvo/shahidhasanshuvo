@@ -10,6 +10,7 @@ interface AdminFieldProps {
   label: string;
   error?: string;
   id?: string;
+  htmlFor?: string;
   required?: boolean;
   children: React.ReactNode;
   className?: string;
@@ -19,16 +20,18 @@ export function AdminField({
   label,
   error,
   id,
+  htmlFor,
   required,
   children,
   className,
 }: AdminFieldProps) {
-  const errorId = id && error ? `${id}-error` : undefined;
+  const targetId = id || htmlFor;
+  const errorId = targetId && error ? `${targetId}-error` : undefined;
 
   return (
     <div className={cn("space-y-1.5", className)}>
       <label
-        htmlFor={id}
+        htmlFor={targetId}
         className="ml-1.5 text-[11px] font-black tracking-[0.2em] text-slate-500 uppercase transition-all duration-300 group-focus-within:text-emerald-600 dark:text-slate-400/80 dark:group-focus-within:text-emerald-400"
       >
         {label}

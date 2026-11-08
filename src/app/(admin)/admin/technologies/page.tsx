@@ -24,6 +24,7 @@ export default function AdminTechnologiesPage() {
   const [prevData, setPrevData] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentTech, setCurrentTech] = useState<Technology | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const { toast, showToast } = useAdminToast();
 
   const { data, isLoading: loading } = useQuery({
@@ -90,19 +91,30 @@ export default function AdminTechnologiesPage() {
   });
 
   async function handleAddOrUpdate() {
-    if (!currentTech?.name || !currentTech?.iconUrl) {
-      showToast("Name and Icon are required", "error");
+    const errs: Record<string, string> = {};
+    if (!currentTech?.name?.trim()) {
+      errs.name = "Technology name is required";
+    }
+    if (!currentTech?.iconUrl?.trim()) {
+      errs.iconUrl = "Technology logo/icon is required";
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      showToast("Please fill in all required fields", "error");
       return;
     }
-    saveMutation.mutate(currentTech);
+    setErrors({});
+    saveMutation.mutate(currentTech!);
   }
 
   function openEdit(tech: Technology) {
+    setErrors({});
     setCurrentTech({ ...tech });
     setIsDialogOpen(true);
   }
 
   function openNew() {
+    setErrors({});
     setCurrentTech({ name: "", iconUrl: "" });
     setIsDialogOpen(true);
   }
@@ -229,25 +241,46 @@ export default function AdminTechnologiesPage() {
         {currentTech && (
           <div className="flex flex-col items-start gap-6 sm:flex-row">
             <div className="w-40 shrink-0">
-              <AdminField label="Logo (SVG/PNG)">
+              <AdminField label="Logo (SVG/PNG)" required error={errors.iconUrl}>
                 <ImageUpload
                   value={currentTech.iconUrl || ""}
-                  onChange={(val) =>
-                    setCurrentTech((prev) => (prev ? { ...prev, iconUrl: val } : null))
-                  }
+                  onChange={(val) => {
+                    setCurrentTech((prev) => (prev ? { ...prev, iconUrl: val } : null));
+                    if (errors.iconUrl) {
+                      setErrors((prev) => {
+                        const next = { ...prev };
+                        delete next.iconUrl;
+                        return next;
+                      });
+                    }
+                  }}
                 />
               </AdminField>
             </div>
             <div className="w-full flex-1">
-              <AdminField label="Technology Name">
+              <AdminField
+                label="Technology Name"
+                required
+                htmlFor="tech-name"
+                error={errors.name}
+              >
                 <AdminInput
+                  id="tech-name"
                   icon={FaCode}
+                  hasError={!!errors.name}
                   value={currentTech.name}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setCurrentTech((prev) =>
                       prev ? { ...prev, name: e.target.value } : null
-                    )
-                  }
+                    );
+                    if (errors.name) {
+                      setErrors((prev) => {
+                        const next = { ...prev };
+                        delete next.name;
+                        return next;
+                      });
+                    }
+                  }}
                   placeholder="e.g. React"
                 />
               </AdminField>

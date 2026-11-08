@@ -144,4 +144,39 @@ describe("Contact Component", () => {
       })
     );
   });
+
+  it("displays server-provided error message and sets role='alert'", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({
+        success: false,
+        error:
+          "Too many contact requests from this IP. Please wait a few minutes before trying again.",
+      }),
+    });
+
+    render(<Contact {...defaultProps} />);
+
+    fireEvent.change(screen.getByPlaceholderText("Shahid Hasan Shovu"), {
+      target: { value: "Alex Developer" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("shahid@example.com"), {
+      target: { value: "alex@example.com" },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/hello! i'd like to discuss/i), {
+      target: { value: "Let's build a Next.js application together." },
+    });
+
+    const submitBtn = screen.getByRole("button", { name: /send message/i });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      const alertElem = screen.getByRole("alert");
+      expect(alertElem).toBeInTheDocument();
+      expect(alertElem.getAttribute("aria-live")).toBe("assertive");
+      expect(
+        screen.getByText(/too many contact requests from this ip/i)
+      ).toBeInTheDocument();
+    });
+  });
 });

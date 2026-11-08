@@ -8,18 +8,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { FaGlobe, FaEnvelope, FaPalette, FaShieldAlt } from "react-icons/fa";
 import ImageUpload from "../components/ImageUpload";
+import { AdminToast, useAdminToast } from "../components/AdminToast";
 
 export default function SettingsForm({ initialSettings }: { initialSettings: any }) {
   const [settings, setSettings] = useState(initialSettings);
-  const [prevInitialSettings, setPrevInitialSettings] = useState(initialSettings);
-  const [status, setStatus] = useState<string | null>(null);
+  const { toast, showToast } = useAdminToast();
   const router = useRouter();
-
-  // Keep local state in sync if initialSettings changes
-  if (initialSettings !== prevInitialSettings) {
-    setPrevInitialSettings(initialSettings);
-    setSettings(initialSettings);
-  }
 
   const saveMutation = useMutation({
     mutationFn: async (newSettings: any) => {
@@ -28,39 +22,25 @@ export default function SettingsForm({ initialSettings }: { initialSettings: any
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newSettings),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error("Failed to save settings");
       return newSettings;
     },
     onSuccess: () => {
-      setStatus("Settings applied successfully!");
-      setTimeout(() => setStatus(null), 3000);
+      showToast("Settings applied successfully!", "success");
       router.refresh();
-      // Optional: if we were querying this via React Query on client side, we'd invalidate here
     },
     onError: () => {
-      setStatus("Failed to apply settings.");
-      setTimeout(() => setStatus(null), 3000);
+      showToast("Failed to apply settings.", "error");
     },
   });
 
-  const handleSave = async () => {
-    setStatus("Saving DNA...");
+  const handleSave = () => {
     saveMutation.mutate(settings);
   };
 
   return (
     <div className="space-y-8 pb-20">
-      {status && (
-        <div
-          className={`animate-in fade-in slide-in-from-top-4 fixed top-24 right-8 z-100 rounded-2xl border px-6 py-4 shadow-2xl backdrop-blur-xl duration-500 ${
-            status.includes("Failed")
-              ? "border-red-500/20 bg-red-500/10 text-red-400"
-              : "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
-          }`}
-        >
-          <p className="font-bold">{status}</p>
-        </div>
-      )}
+      <AdminToast toast={toast} />
 
       {/* SEO & Brand */}
       <Card className="overflow-hidden rounded-2xl border-slate-200 bg-white shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-slate-900/40 dark:shadow-none">

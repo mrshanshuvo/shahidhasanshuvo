@@ -66,5 +66,64 @@ describe("AdminToast Component", () => {
         vi.useRealTimers();
       }
     });
+
+    it("resets dismiss timer on consecutive showToast calls", () => {
+      vi.useFakeTimers();
+      try {
+        const { result } = renderHook(() => useAdminToast(2000));
+
+        act(() => {
+          result.current.showToast("First action", "success");
+        });
+
+        // Fast-forward 1500ms
+        act(() => {
+          vi.advanceTimersByTime(1500);
+        });
+
+        // Trigger second toast before the first 2000ms timer completes
+        act(() => {
+          result.current.showToast("Second action", "error");
+        });
+
+        expect(result.current.toast).toEqual({
+          msg: "Second action",
+          type: "error",
+        });
+
+        // Advance 1000ms: first timer would have fired at 2000ms, but reset timer should still keep second toast active
+        act(() => {
+          vi.advanceTimersByTime(1000);
+        });
+        expect(result.current.toast).toEqual({
+          msg: "Second action",
+          type: "error",
+        });
+
+        // Advance remaining 1100ms: second timer now elapses
+        act(() => {
+          vi.advanceTimersByTime(1100);
+        });
+        expect(result.current.toast).toBeNull();
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it("cleans up timer on unmount without throwing", () => {
+      vi.useFakeTimers();
+      try {
+        const { result, unmount } = renderHook(() => useAdminToast(2000));
+        act(() => {
+          result.current.showToast("Will unmount", "success");
+        });
+        unmount();
+        act(() => {
+          vi.advanceTimersByTime(2500);
+        });
+      } finally {
+        vi.useRealTimers();
+      }
+    });
   });
 });

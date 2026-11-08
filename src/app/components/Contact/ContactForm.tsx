@@ -63,9 +63,13 @@ export function ContactForm() {
       } else {
         throw new Error(result.error ?? "Failed to send message");
       }
-    } catch {
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error && err.message
+          ? err.message
+          : "Sorry, there was an error sending your message. ❌";
       setStatus({
-        message: "Sorry, there was an error sending your message. ❌",
+        message: errorMessage,
         type: "error",
       });
     } finally {

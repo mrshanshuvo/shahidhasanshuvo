@@ -47,6 +47,7 @@ export default function ProjectEditPage() {
   const [impInput, setImpInput] = useState("");
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const { toast, showToast } = useAdminToast();
 
   function update<K extends keyof Project>(field: K, val: Project[K]) {
@@ -101,9 +102,11 @@ export default function ProjectEditPage() {
 
   async function handleSave() {
     if (!form.title.trim()) {
+      setErrors({ title: "Project title is required" });
       showToast("Title is required.", "error");
       return;
     }
+    setErrors({});
     setSaving(true);
     let res: Response;
     if (isNew) {
@@ -170,11 +173,28 @@ export default function ProjectEditPage() {
           {/* Right Column: Content & Metadata */}
           <div className="space-y-6">
             <div className="flex items-end gap-4">
-              <AdminField label="Project Title" className="flex-1">
+              <AdminField
+                label="Project Title"
+                required
+                htmlFor="project-title"
+                error={errors.title}
+                className="flex-1"
+              >
                 <AdminInput
+                  id="project-title"
+                  hasError={!!errors.title}
                   className="h-14"
                   value={form.title}
-                  onChange={(e) => update("title", e.target.value)}
+                  onChange={(e) => {
+                    update("title", e.target.value);
+                    if (errors.title) {
+                      setErrors((prev) => {
+                        const next = { ...prev };
+                        delete next.title;
+                        return next;
+                      });
+                    }
+                  }}
                   placeholder="e.g. AI-Powered Dashboard"
                 />
               </AdminField>

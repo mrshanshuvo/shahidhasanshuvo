@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { cn } from "@/lib/utils";
@@ -17,14 +17,29 @@ export interface AdminToastProps {
 
 export function useAdminToast(duration = 3000) {
   const [toast, setToast] = useState<ToastState | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const showToast = useCallback(
     (msg: string, type: "success" | "error" = "success") => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
       setToast({ msg, type });
-      setTimeout(() => setToast(null), duration);
+      timerRef.current = setTimeout(() => {
+        setToast(null);
+        timerRef.current = null;
+      }, duration);
     },
     [duration]
   );
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   return { toast, showToast };
 }
