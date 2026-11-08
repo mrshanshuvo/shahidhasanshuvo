@@ -4,5 +4,12 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "workbench.browser.openLocalhostLinks": true,
+  "remote.portsAttributes": {
+    "3000": {
+      "label": "Web App Preview",
+      "onAutoForward": "openPreview"
+    }
+  }
 }
