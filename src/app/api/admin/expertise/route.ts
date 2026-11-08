@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Skill from "@/models/Skill"; // Mongoose model is named Skill for backward compatibility
 import { revalidatePortfolio } from "@/lib/revalidate";
+import { expertiseSchema } from "@/lib/validations";
 
 export async function GET(req: Request) {
   try {
@@ -36,10 +37,18 @@ export async function POST(req: Request) {
     await connectDB();
     const body = await req.json();
 
+    const validation = expertiseSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.issues[0]?.message || "Validation failed" },
+        { status: 400 }
+      );
+    }
+
     const lastItem = await Skill.findOne().sort({ order: -1 });
     const order = lastItem ? lastItem.order + 1 : 0;
 
-    const newItem = await Skill.create({ ...body, order });
+    const newItem = await Skill.create({ ...validation.data, order });
     revalidatePortfolio();
     return NextResponse.json(newItem);
   } catch (error) {
@@ -59,7 +68,15 @@ export async function PATCH(req: Request) {
     const body = await req.json();
 
     if (id) {
-      const updated = await Skill.findByIdAndUpdate(id, body, {
+      const validation = expertiseSchema.partial().safeParse(body);
+      if (!validation.success) {
+        return NextResponse.json(
+          { error: validation.error.issues[0]?.message || "Validation failed" },
+          { status: 400 }
+        );
+      }
+
+      const updated = await Skill.findByIdAndUpdate(id, validation.data, {
         returnDocument: "after",
       });
       if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });

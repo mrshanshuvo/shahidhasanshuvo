@@ -5,6 +5,7 @@ import Project from "@/models/Project";
 import Technology from "@/models/Technology";
 import Category from "@/models/Category";
 import { revalidatePortfolio } from "@/lib/revalidate";
+import { z } from "zod";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -121,6 +122,21 @@ export async function PATCH(req: Request, { params }: Params) {
     const { id } = await params;
     await connectDB();
     const body = await req.json();
+
+    if (body.title !== undefined) {
+      const titleValidation = z
+        .string()
+        .trim()
+        .min(1, "Title cannot be empty")
+        .safeParse(body.title);
+      if (!titleValidation.success) {
+        return NextResponse.json(
+          { error: titleValidation.error.issues[0]?.message || "Invalid title" },
+          { status: 400 }
+        );
+      }
+    }
+
     const sanitized = await sanitizeProject(body);
 
     const updated = await Project.findByIdAndUpdate(id, sanitized, {

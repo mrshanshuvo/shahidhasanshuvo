@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Experience from "@/models/Experience";
 import { revalidatePortfolio } from "@/lib/revalidate";
+import { experienceSchema } from "@/lib/validations";
 
 export async function GET(req: Request) {
   try {
@@ -36,12 +37,20 @@ export async function POST(req: Request) {
     await connectDB();
     const body = await req.json();
 
+    const validation = experienceSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.issues[0]?.message || "Validation failed" },
+        { status: 400 }
+      );
+    }
+
     const lastItem = await Experience.findOne().sort({
       order: -1,
     });
     const order = lastItem ? lastItem.order + 1 : 0;
 
-    const newItem = await Experience.create({ ...body, order });
+    const newItem = await Experience.create({ ...validation.data, order });
     revalidatePortfolio();
     return NextResponse.json(newItem);
   } catch (error) {
@@ -61,7 +70,15 @@ export async function PATCH(req: Request) {
     const body = await req.json();
 
     if (id) {
-      const updated = await Experience.findByIdAndUpdate(id, body, {
+      const validation = experienceSchema.partial().safeParse(body);
+      if (!validation.success) {
+        return NextResponse.json(
+          { error: validation.error.issues[0]?.message || "Validation failed" },
+          { status: 400 }
+        );
+      }
+
+      const updated = await Experience.findByIdAndUpdate(id, validation.data, {
         returnDocument: "after",
       });
       if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });

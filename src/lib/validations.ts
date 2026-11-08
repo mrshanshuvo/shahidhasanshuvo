@@ -75,3 +75,39 @@ export const expertiseSchema = z.object({
   iconUrl: z.string().default(""),
   order: z.number().default(0),
 });
+
+export const experienceSchema = z.object({
+  title: z.string().trim().min(1, "Title is required"),
+  org: z.string().trim().min(1, "Organization is required"),
+  duration: z.string().trim().min(1, "Duration is required"),
+  details: z.array(z.string()).default([]),
+  url: z.string().default(""),
+  previousTitles: z.array(z.string()).default([]),
+  links: z
+    .array(
+      z.object({
+        label: z.string().default(""),
+        url: z.string().default(""),
+      })
+    )
+    .default([]),
+  technologies: z.array(z.string()).default([]),
+  order: z.number().default(0),
+});
+
+export const heroSchema = z.object({
+  name: z.string().trim().min(1, "First name is required"),
+  lastName: z.string().trim().min(1, "Last name is required"),
+  tagline: z.string().default(""),
+  bio: z.string().default(""),
+  profileImage: z.string().default(""),
+  resumeUrl: z.string().default(""),
+  typeSequences: z
+    .array(
+      z.object({
+        text: z.string().default(""),
+        delay: z.number().default(2000),
+      })
+    )
+    .default([]),
+});

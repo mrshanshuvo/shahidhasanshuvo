@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import Hero from "@/models/Hero";
 import SocialLink from "@/models/SocialLink";
 import { revalidatePortfolio } from "@/lib/revalidate";
+import { heroSchema } from "@/lib/validations";
 
 export async function GET() {
   const session = await auth();
@@ -34,8 +35,16 @@ export async function PUT(request: Request) {
   delete heroData._id;
   delete heroData.socialLinks;
 
+  const validation = heroSchema.safeParse(heroData);
+  if (!validation.success) {
+    return NextResponse.json(
+      { error: validation.error.issues[0]?.message || "Validation failed" },
+      { status: 400 }
+    );
+  }
+
   // 1. Update Hero
-  const hero = await Hero.findOneAndUpdate({}, heroData, {
+  const hero = await Hero.findOneAndUpdate({}, validation.data, {
     returnDocument: "after",
     upsert: true,
     runValidators: true,
