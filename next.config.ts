@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://vercel.live https://va.vercel-scripts.com;
@@ -19,10 +21,15 @@ const cspHeader = `
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: process.env.NODE_ENV === "development",
+    unoptimized: isDev,
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   async headers() {
+    // In development, skip frame & CSP restrictions so IDE embedded preview (Jetski / Simple Browser) works
+    if (isDev) {
+      return [];
+    }
+
     return [
       {
         source: "/:path*",
