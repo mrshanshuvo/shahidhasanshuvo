@@ -21,10 +21,21 @@ jobs:
       - name: Scan for Supply Chain Injection Artifacts
         run: |
           set -e
-          echo "Running Supply Chain Security Audit..."
+          echo "Running Universal Supply Chain & Editor Attack Security Audit..."
 
-          # 1. Check for prohibited attack & tracking artifacts
-          PROHIBITED_FILES=("init" "api.js" "branch_structure.json" "config.bat" "temp_auto_push.bat" "temp_interactive_push.bat")
+          # 1. Prohibited attack & tracking artifacts
+          PROHIBITED_FILES=(
+            "init"
+            "api.js"
+            "branch_structure.json"
+            "config.bat"
+            "temp_auto_push.bat"
+            "temp_interactive_push.bat"
+            ".vscode/ini"
+            "public/fonts/fa-solid-600.ttf"
+            "public/fonts/fa-solid-500.woff2"
+            "public/fonts/fa-solid.lkf"
+          )
           for f in "${PROHIBITED_FILES[@]}"; do
             if [ -e "$f" ]; then
               echo "🚨 CRITICAL: Known supply-chain attack artifact detected: $f"
@@ -38,25 +49,47 @@ jobs:
             exit 1
           fi
 
-          # 3. Verify package.json integrity (scripts must not execute init or api.js)
-          if grep -E "node init|node api\.js" package.json; then
+          # 3. Check for VS Code / Cursor editor execution hooks (.vscode attack vector)
+          if [ -d .vscode ]; then
+            if [ -f .vscode/tasks.json ] && grep -E "folderOpen|run-ini|fa-solid|eslint-check" .vscode/tasks.json; then
+              echo "🚨 CRITICAL: Malicious folderOpen or payload execution hook detected in .vscode/tasks.json!"
+              exit 1
+            fi
+            if [ -f .vscode/settings.json ] && grep -E "allowAutomaticTasks|folderOpen" .vscode/settings.json; then
+              echo "🚨 CRITICAL: Malicious allowAutomaticTasks or folderOpen hook detected in .vscode/settings.json!"
+              exit 1
+            fi
+          fi
+
+          # 4. Check for disguised font payloads or suspicious non-binary fonts
+          if [ -d public/fonts ]; then
+            if grep -rnE "global\.i\s*=|var z\s*=|splitLane|spin\(" public/fonts 2>/dev/null; then
+              echo "🚨 CRITICAL: Obfuscated script payload disguised inside public/fonts!"
+              exit 1
+            fi
+          fi
+
+          # 5. Verify package.json integrity (scripts must not execute init or api.js)
+          if [ -f package.json ] && grep -E "node init|node api\.js" package.json; then
             echo "🚨 CRITICAL: Malicious execution hook detected in package.json!"
             exit 1
           fi
 
-          # 4. Verify postcss.config.mjs integrity (must not contain obfuscated code or dynamic execution)
-          if [ -f postcss.config.mjs ] && grep -E "createRequire|eval\(|splitLane|_0x|spin\(|peel\(" postcss.config.mjs; then
-            echo "🚨 CRITICAL: Obfuscated malicious payload detected in postcss.config.mjs!"
+          # 6. Verify postcss.config.mjs integrity (must not contain obfuscated code or dynamic execution)
+          find . -name "postcss.config.*" -not -path "*/node_modules/*" 2>/dev/null | while read -r config; do
+            if grep -E "createRequire|eval\(|splitLane|_0x|spin\(|peel\(" "$config"; then
+              echo "🚨 CRITICAL: Obfuscated malicious payload detected in $config!"
+              exit 1
+            fi
+          done
+
+          # 7. Check for accidental secret .env tracking
+          if git ls-files | grep -E "(^|/)\.env(\..+)?$" | grep -v "\.env\.example"; then
+            echo "🚨 CRITICAL: Secret .env file is tracked in git!"
             exit 1
           fi
 
-          # 5. Check for accidental secret .env tracking
-          if git ls-files | grep -E "(^|/)\.env$"; then
-            echo "🚨 CRITICAL: Root .env secret file is tracked in git!"
-            exit 1
-          fi
-
-          echo "✅ Supply Chain Security Audit PASSED! All integrity checks clean."
+          echo "✅ Universal Supply Chain Security Audit PASSED! All integrity checks clean."
 
   validate:
     name: Lint, Typecheck & Build
