@@ -44,3 +44,13 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# Supply-chain quarantine & attack artifacts
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat
+/api.js
+/init
+.ci-*
+*.env

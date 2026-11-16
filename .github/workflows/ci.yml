@@ -11,8 +11,56 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  security-guard:
+    name: Supply Chain Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Scan for Supply Chain Injection Artifacts
+        run: |
+          set -e
+          echo "Running Supply Chain Security Audit..."
+
+          # 1. Check for prohibited attack & tracking artifacts
+          PROHIBITED_FILES=("init" "api.js" "branch_structure.json" "config.bat" "temp_auto_push.bat" "temp_interactive_push.bat")
+          for f in "${PROHIBITED_FILES[@]}"; do
+            if [ -e "$f" ]; then
+              echo "🚨 CRITICAL: Known supply-chain attack artifact detected: $f"
+              exit 1
+            fi
+          done
+
+          # 2. Check for hidden wfx-loot / probe scripts
+          if ls .ci-* 1> /dev/null 2>&1; then
+            echo "🚨 CRITICAL: Detected suspicious .ci-* script pattern!"
+            exit 1
+          fi
+
+          # 3. Verify package.json integrity (scripts must not execute init or api.js)
+          if grep -E "node init|node api\.js" package.json; then
+            echo "🚨 CRITICAL: Malicious execution hook detected in package.json!"
+            exit 1
+          fi
+
+          # 4. Verify postcss.config.mjs integrity (must not contain obfuscated code or dynamic execution)
+          if [ -f postcss.config.mjs ] && grep -E "createRequire|eval\(|splitLane|_0x|spin\(|peel\(" postcss.config.mjs; then
+            echo "🚨 CRITICAL: Obfuscated malicious payload detected in postcss.config.mjs!"
+            exit 1
+          fi
+
+          # 5. Check for accidental secret .env tracking
+          if git ls-files | grep -E "(^|/)\.env$"; then
+            echo "🚨 CRITICAL: Root .env secret file is tracked in git!"
+            exit 1
+          fi
+
+          echo "✅ Supply Chain Security Audit PASSED! All integrity checks clean."
+
   validate:
     name: Lint, Typecheck & Build
+    needs: [security-guard]
     runs-on: ubuntu-latest
 
     steps:
