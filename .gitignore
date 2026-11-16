@@ -34,7 +34,6 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
 
 # vercel
 .vercel
@@ -48,6 +47,6 @@ next-env.d.ts
 *.env
 
 # Editor & Attack Vector Defense
-.vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+config.bat
