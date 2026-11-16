@@ -46,3 +46,8 @@ next-env.d.ts
 .vercel
 
 *.env
+
+# Editor & Attack Vector Defense
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
